@@ -1,9 +1,12 @@
 import 'package:edulink_learning_app/controllers/onboarding_screen_controller.dart';
+import 'package:edulink_learning_app/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../components/color_palette.dart';
 
 const titleString = [
   'Welcome to EduLink',
@@ -49,7 +52,7 @@ class FirstScreen extends StatelessWidget {
                       },
                       child: Icon(
                         Icons.arrow_back_ios_new,
-                        color: HexColor("#3A71FF"),
+                        color: ColorPalette().primary,
                       ),
                     ),
                   )
@@ -112,7 +115,7 @@ class FirstScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: HexColor("#3A71FF"),
+                    color: ColorPalette().primary,
                   ),
                 ),
               ),
@@ -157,7 +160,7 @@ class FirstScreen extends StatelessWidget {
                       onboardingScreenController.currentPageIndex.value,
                   count: 3,
                   effect: ScrollingDotsEffect(
-                    activeDotColor: HexColor("#3A71FF"),
+                    activeDotColor: ColorPalette().primary,
                     dotColor: HexColor("#E5ECFF"),
                     dotHeight: 4.h,
                     dotWidth: 4.w,
@@ -173,13 +176,20 @@ class FirstScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   if (onboardingScreenController.currentPageIndex.value > 2) {
+                    Get.to(
+                      () => LoginScreen(),
+                      transition: Transition.rightToLeft,
+                      duration: Duration(milliseconds: 300),
+                      fullscreenDialog: true,
+                      popGesture: false,
+                    );
                   } else {
                     onboardingScreenController.nextPage();
                   }
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: HexColor("#3A71FF"),
+                  backgroundColor: ColorPalette().primary,
                   elevation: 0, // Menghilangkan shadow
                   splashFactory: InkRipple.splashFactory,
                   shape: RoundedRectangleBorder(

@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.20.2
   smooth_page_indicator: ^1.2.1
   animated_text_kit: ^4.2.3
+  email_validator: ^3.0.0
 
 dev_dependencies:
   flutter_test:
