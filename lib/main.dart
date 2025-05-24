@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
 
       child: GetMaterialApp(
         title: 'Edulink',
+        theme: ThemeData(fontFamily: 'Montserrat'),
         builder: (context, child) {
           return child!;
         },
