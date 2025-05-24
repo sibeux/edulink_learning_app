@@ -1,3 +1,5 @@
+import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,17 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+class HomeBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<JwtController>(() => JwtController(), fenix: true);
+    Get.lazyPut<UserProfileController>(
+      () => UserProfileController(),
+      fenix: true,
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -56,6 +69,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         showPerformanceOverlay: false,
         initialRoute: '/',
+        initialBinding: HomeBinding(),
         getPages: [GetPage(name: '/', page: () => SplashScreen())],
       ),
     );

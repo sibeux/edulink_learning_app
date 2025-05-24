@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -20,7 +21,7 @@ class JwtController extends GetxController {
     box.write('login', true);
     box.write('email', email);
 
-    // Get.put(UserProfileController());
+    Get.find<UserProfileController>();
   }
 
   Future<void> checkToken() async {

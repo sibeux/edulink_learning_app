@@ -28,12 +28,16 @@ class UserProfileController extends GetxController {
     // final orderController = Get.put(OrderController());
 
     final String url =
-        'https://sibeux.my.id/project/sihalal/user?method=get_user_data&email=$email';
+        'https://sibeux.my.id/project/edulink-php-jwt/api/user?method=get_user_data&email=$email';
 
     try {
       final response = await http.get(Uri.parse(url));
 
       final List<dynamic> listData = json.decode(response.body);
+
+      if (kDebugMode) {
+        print(json.decode(response.body));
+      }
 
       if (listData.isNotEmpty) {
         final list =
@@ -44,7 +48,7 @@ class UserProfileController extends GetxController {
                 passUser: user['password_hash'],
                 nameUser: user['full_name'],
                 userPhone: user['phone_number'],
-                userPhoto: user['user_photo'],
+                userPhoto: user['user_photo'] ?? '',
                 userActor: user['user_actor'],
               );
             }).toList();
@@ -59,7 +63,7 @@ class UserProfileController extends GetxController {
       }
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print("error in userProfileController: $e");
       }
     } finally {
       isLoading.value = false;

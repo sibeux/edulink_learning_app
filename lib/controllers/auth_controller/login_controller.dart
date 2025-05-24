@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
+import 'package:edulink_learning_app/screens/home_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,7 @@ class LoginController extends GetxController {
   }) async {
     isLoading.value = true;
 
-    final jwtController = Get.put(JwtController());
+    final jwtController = Get.find<JwtController>();
     const String url = 'https://sibeux.my.id/project/edulink-php-jwt/login';
 
     try {
@@ -126,10 +127,10 @@ class LoginController extends GetxController {
         if (kDebugMode) {
           print('Login successful, token: ${jsonResponse['token']}');
         }
-        // Get.offAll(
-        //   () => const PersistenBarScreen(),
-        //   transition: Transition.rightToLeftWithFade,
-        // );
+        Get.offAll(
+          () => const HomeScreen(),
+          transition: Transition.rightToLeftWithFade,
+        );
       } else {
         isLoginSuccess.value = false;
       }
