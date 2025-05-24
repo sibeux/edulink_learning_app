@@ -1,7 +1,5 @@
-import 'package:edulink_learning_app/controllers/auth_controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../components/color_palette.dart';

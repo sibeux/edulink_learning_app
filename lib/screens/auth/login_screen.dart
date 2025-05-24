@@ -3,7 +3,6 @@ import 'package:edulink_learning_app/controllers/auth_controller/login_controlle
 import 'package:edulink_learning_app/screens/auth/register_screen.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/login_button/login_submit_disable.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/login_button/login_submit_enable.dart';
-import 'package:edulink_learning_app/widgets/auth_widget/auth_form/form_blueprint.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_form/login_form/email_login_form.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_form/login_form/password_login_form.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/user_type_select.dart';

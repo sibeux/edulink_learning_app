@@ -29,15 +29,11 @@ class UserProfileController extends GetxController {
 
     final String url =
         'https://sibeux.my.id/project/sihalal/user?method=get_user_data&email=$email';
-    const api =
-        'https://sibeux.my.id/cloud-music-player/database/mobile-music-player/api/gdrive_api.php';
 
     try {
       final response = await http.get(Uri.parse(url));
-      final apiResponse = await http.get(Uri.parse(api));
 
       final List<dynamic> listData = json.decode(response.body);
-      final List<dynamic> apiData = json.decode(apiResponse.body);
 
       if (listData.isNotEmpty) {
         final list =
