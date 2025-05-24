@@ -1,40 +1,11 @@
 import 'package:edulink_learning_app/controllers/auth_controller/login_controller.dart';
+import 'package:edulink_learning_app/controllers/auth_controller/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../components/color_palette.dart';
-
-class EmailLoginForm extends StatelessWidget {
-  const EmailLoginForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FormBlueprint(
-      authController: Get.find<LoginController>(),
-      formType: 'emailLogin',
-      formText: 'email',
-      keyboardType: TextInputType.emailAddress,
-      autoFillHints: AutofillHints.email,
-    );
-  }
-}
-
-class PasswordLoginForm extends StatelessWidget {
-  const PasswordLoginForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FormBlueprint(
-      authController: Get.find<LoginController>(),
-      formType: 'passwordLogin',
-      formText: 'password',
-      keyboardType: TextInputType.visiblePassword,
-      autoFillHints: '',
-    );
-  }
-}
+import '../../../components/color_palette.dart';
 
 class FormBlueprint extends StatelessWidget {
   const FormBlueprint({
@@ -129,29 +100,42 @@ UnderlineInputBorder underlineInputBorder(
 ) {
   final textValue = authController.formData[formType]?['text'].toString();
   final isCurrentType = authController.currentType.value == formType;
-  // final userRegisterController = Get.put(UserRegisterController());
-  final loginController = Get.find<LoginController>();
 
-  final bool emailBool =
-      (!authController.getIsEmailValid(formType) && textValue!.isNotEmpty) ||
-      // userRegisterController.isEmailRegistered.value ||
-      (formType.toLowerCase().contains('login') &&
-          !loginController.isLoginSuccess.value);
+  bool isEmailNotValid = false;
+  bool isCannotLogin = false;
+  if (formType.toLowerCase().contains('login')) {
+    final loginController = Get.find<LoginController>();
+    isEmailNotValid =
+        (!authController.getIsEmailValid(formType) && textValue!.isNotEmpty) ||
+        (formType.toLowerCase().contains('login') &&
+            !loginController.isLoginSuccess.value);
+    isCannotLogin = !loginController.isLoginSuccess.value;
+  } else {
+    final registerController = Get.find<RegisterController>();
+    isEmailNotValid =
+        (!authController.getIsEmailValid(formType) && textValue!.isNotEmpty) ||
+        registerController.isEmailRegistered.value;
+  }
 
   return UnderlineInputBorder(
     borderSide: BorderSide(
       color:
+          // Cek apakah yang diklik adalah form saat ini atau form tidak kosong.
           (isCurrentType || textValue!.isNotEmpty)
+              // Cek apakah form saat ini adalah email
               ? formType.toLowerCase().contains('email')
-                  ? emailBool
+                  // Cek apakah email tidak valid
+                  ? isEmailNotValid
                       ? HexColor('#ff0000').withValues(alpha: 0.5)
                       : ColorPalette().primary.withValues(alpha: 0.5)
+                  // Cek apakah form saat ini adalah full name
                   : formType.toLowerCase().contains('name')
+                  // Cek apakah full name valid dan tidak kosong
                   ? authController.getIsNameValid() && textValue!.isNotEmpty
                       ? HexColor('#ff0000').withValues(alpha: 0.5)
                       : ColorPalette().primary.withValues(alpha: 0.5)
-                  : formType.toLowerCase().contains('login') &&
-                      !loginController.isLoginSuccess.value
+                  // Cek apakah form saat ini adalah dari login dan login tidak berhasil
+                  : isCannotLogin
                   ? HexColor('#ff0000').withValues(alpha: 0.5)
                   : ColorPalette().primary.withValues(alpha: 0.5)
               : HexColor('#BABABA').withValues(alpha: 0.93),

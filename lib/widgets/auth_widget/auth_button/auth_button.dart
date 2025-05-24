@@ -4,46 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../components/color_palette.dart';
-
-class LoginSubmitButtonEnable extends StatelessWidget {
-  const LoginSubmitButtonEnable({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final loginController = Get.find<LoginController>();
-    return AuthButton(
-      authType: 'login',
-      buttonText: 'Sign In',
-      foreground: Colors.white,
-      background: ColorPalette().primary,
-      isEnable: true,
-      onPressed: () {
-        // userLoginController.generateJwtLogin(
-        //   email: loginController.formData['emailLogin']!['text'].toString(),
-        //   password:
-        //       loginController.formData['passwordLogin']!['text'].toString(),
-        // );
-      },
-    );
-  }
-}
-
-class LoginSubmitButtonDisable extends StatelessWidget {
-  const LoginSubmitButtonDisable({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AuthButton(
-      authType: 'login',
-      buttonText: 'Sign In',
-      foreground: HexColor('#BABABA'),
-      background: HexColor('#EEEEEE'),
-      isEnable: false,
-      onPressed: () {},
-    );
-  }
-}
+import '../../../components/color_palette.dart';
 
 class AuthButton extends StatelessWidget {
   const AuthButton({

@@ -48,6 +48,9 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   animated_text_kit: ^4.2.3
   email_validator: ^3.0.0
+  flutter_secure_storage: ^9.2.4
+  jwt_decoder: ^2.0.1
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:

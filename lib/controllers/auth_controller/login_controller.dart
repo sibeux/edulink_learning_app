@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
   // 0 = student, 1 = tutor
@@ -91,4 +96,50 @@ class LoginController extends GetxController {
   }
 
   get isObscureValue => isObscure.value;
+
+  Future<void> generateJwtLogin({
+    required String email,
+    required String password,
+    required String actor, // 'student' or 'tutor'
+  }) async {
+    isLoading.value = true;
+
+    final jwtController = Get.put(JwtController());
+    const String url = 'https://sibeux.my.id/project/edulink-php-jwt/login';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: {'email': email, 'password': password, 'user_actor': actor},
+      );
+
+      if (response.statusCode == 200) {
+        isLoginSuccess.value = true;
+        isLoading.value = false;
+        isRedirecting.value = true;
+        final jsonResponse = jsonDecode(response.body);
+        await jwtController.setToken(
+          token: jsonResponse['token'],
+          email: email,
+        );
+        if (kDebugMode) {
+          print('Login successful, token: ${jsonResponse['token']}');
+        }
+        // Get.offAll(
+        //   () => const PersistenBarScreen(),
+        //   transition: Transition.rightToLeftWithFade,
+        // );
+      } else {
+        isLoginSuccess.value = false;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('error: $e');
+      }
+    } finally {
+      isLoading.value = false;
+      isRedirecting.value = false;
+    }
+  }
 }

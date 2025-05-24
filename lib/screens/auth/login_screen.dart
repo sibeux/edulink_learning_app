@@ -1,13 +1,18 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/login_controller.dart';
-import 'package:edulink_learning_app/widgets/auth_widget/form.dart';
+import 'package:edulink_learning_app/screens/auth/register_screen.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_button/login_button/login_submit_disable.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_button/login_button/login_submit_enable.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_form/form_blueprint.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_form/login_form/email_login_form.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_form/login_form/password_login_form.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/user_type_select.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../widgets/auth_widget/auth_button.dart';
+import '../../widgets/auth_widget/auth_button/auth_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -98,8 +103,20 @@ class _LoginScreenState extends State<LoginScreen>
                     loginController.changeIndexUserType(value);
                   },
                   tabs: [
-                    Tab(child: UserTypeSelect(title: 'Student', index: 0)),
-                    Tab(child: UserTypeSelect(title: 'Tutor', index: 1)),
+                    Tab(
+                      child: UserTypeSelect(
+                        title: 'Student',
+                        index: 0,
+                        authController: loginController,
+                      ),
+                    ),
+                    Tab(
+                      child: UserTypeSelect(
+                        title: 'Tutor',
+                        index: 1,
+                        authController: loginController,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -171,12 +188,23 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
                   SizedBox(width: 5.w),
-                  Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: ColorPalette().primary,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () {
+                      Get.off(
+                        () => const RegisterScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                        fullscreenDialog: true,
+                        popGesture: false,
+                      );
+                    },
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: ColorPalette().primary,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],

@@ -60,163 +60,175 @@ class FirstScreen extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Obx(
-              () => AnimatedSwitcher(
-                duration: Duration(milliseconds: 200),
-                switchInCurve: Curves.easeIn,
-                switchOutCurve: Curves.easeOut,
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-                child: Container(
-                  key: ValueKey(
-                    imageString[onboardingScreenController
-                        .currentPageIndex
-                        .value],
-                  ),
-                  width: 268.w,
-                  height: 277.h,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        imageString[onboardingScreenController
-                            .currentPageIndex
-                            .value],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(
+                () => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 200),
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeOut,
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> animation,
+                  ) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  child: Container(
+                    key: ValueKey(
+                      imageString[onboardingScreenController
+                          .currentPageIndex
+                          .value],
+                    ),
+                    width: 268.w,
+                    height: 277.h,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          imageString[onboardingScreenController
+                              .currentPageIndex
+                              .value],
+                        ),
+                        fit: BoxFit.contain,
                       ),
-                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
               ),
-            ),
 
-            SizedBox(height: 56.h),
-            Obx(
-              () => AnimatedSwitcher(
-                duration: Duration(milliseconds: 200),
-                switchInCurve: Curves.easeIn,
-                switchOutCurve: Curves.easeOut,
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-                child: Text(
-                  titleString[onboardingScreenController
-                      .currentPageIndex
-                      .value],
-                  key: ValueKey(
+              SizedBox(height: 56.h),
+              Obx(
+                () => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 200),
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeOut,
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> animation,
+                  ) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  child: Text(
                     titleString[onboardingScreenController
                         .currentPageIndex
                         .value],
-                  ),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: ColorPalette().primary,
+                    key: ValueKey(
+                      titleString[onboardingScreenController
+                          .currentPageIndex
+                          .value],
+                    ),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: ColorPalette().primary,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 25.h),
-            Obx(
-              () => AnimatedSwitcher(
-                duration: Duration(milliseconds: 200),
-                switchInCurve: Curves.easeIn,
-                switchOutCurve: Curves.easeOut,
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-                child: Text(
-                  descriptionString[onboardingScreenController
-                      .currentPageIndex
-                      .value],
-                  key: ValueKey(
+              SizedBox(height: 25.h),
+              Obx(
+                () => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 200),
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeOut,
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> animation,
+                  ) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  child: Text(
                     descriptionString[onboardingScreenController
                         .currentPageIndex
                         .value],
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 4,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: HexColor("#000000"),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 46.h),
-            Obx(
-              () => Opacity(
-                opacity:
-                    onboardingScreenController.currentPageIndex.value > 2
-                        ? 0.0
-                        : 1.0,
-                child: AnimatedSmoothIndicator(
-                  activeIndex:
-                      onboardingScreenController.currentPageIndex.value,
-                  count: 3,
-                  effect: ScrollingDotsEffect(
-                    activeDotColor: ColorPalette().primary,
-                    dotColor: HexColor("#E5ECFF"),
-                    dotHeight: 4.h,
-                    dotWidth: 4.w,
-                    spacing: 6.w,
+                    key: ValueKey(
+                      descriptionString[onboardingScreenController
+                          .currentPageIndex
+                          .value],
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 4,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: HexColor("#000000"),
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 67.h),
-            SizedBox(
-              width: 248.w,
-              height: 47.h,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (onboardingScreenController.currentPageIndex.value > 2) {
-                    Get.to(
-                      () => LoginScreen(),
-                      transition: Transition.rightToLeft,
-                      duration: Duration(milliseconds: 300),
-                      fullscreenDialog: true,
-                      popGesture: false,
-                    );
-                  } else {
-                    onboardingScreenController.nextPage();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: ColorPalette().primary,
-                  elevation: 0, // Menghilangkan shadow
-                  splashFactory: InkRipple.splashFactory,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.0.w,
-                    vertical: 4.0.h,
-                  ),
-                  child: Obx(
-                    () => Text(
+              SizedBox(height: 46.h),
+              Obx(
+                () => Opacity(
+                  opacity:
                       onboardingScreenController.currentPageIndex.value > 2
-                          ? "Login"
-                          : "Next",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                          ? 0.0
+                          : 1.0,
+                  child: AnimatedSmoothIndicator(
+                    activeIndex:
+                        onboardingScreenController.currentPageIndex.value,
+                    count: 3,
+                    effect: ScrollingDotsEffect(
+                      activeDotColor: ColorPalette().primary,
+                      dotColor: HexColor("#E5ECFF"),
+                      dotHeight: 4.h,
+                      dotWidth: 4.w,
+                      spacing: 6.w,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 67.h),
+              SizedBox(
+                width: 248.w,
+                height: 47.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (onboardingScreenController.currentPageIndex.value > 2) {
+                      Get.to(
+                        () => LoginScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: Duration(milliseconds: 300),
+                        fullscreenDialog: true,
+                        popGesture: false,
+                      );
+                    } else {
+                      onboardingScreenController.nextPage();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: ColorPalette().primary,
+                    elevation: 0, // Menghilangkan shadow
+                    splashFactory: InkRipple.splashFactory,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.0.w,
+                      vertical: 4.0.h,
+                    ),
+                    child: Obx(
+                      () => Text(
+                        onboardingScreenController.currentPageIndex.value > 2
+                            ? "Login"
+                            : "Next",
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

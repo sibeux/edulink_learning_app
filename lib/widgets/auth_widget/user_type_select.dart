@@ -4,17 +4,21 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../components/color_palette.dart';
-import '../../controllers/auth_controller/login_controller.dart';
 
 class UserTypeSelect extends StatelessWidget {
-  const UserTypeSelect({super.key, required this.title, required this.index});
+  const UserTypeSelect({
+    super.key,
+    required this.title,
+    required this.index,
+    required this.authController,
+  });
 
   final String title;
   final int index;
+  final dynamic authController;
 
   @override
   Widget build(BuildContext context) {
-    final loginController = Get.find<LoginController>();
     return Obx(
       () => Container(
         alignment: Alignment.center,
@@ -23,7 +27,7 @@ class UserTypeSelect extends StatelessWidget {
           title,
           style: TextStyle(
             color:
-                loginController.indexUserType.value == index
+                authController.indexUserType.value == index
                     ? ColorPalette().primary.withValues(alpha: 0.8)
                     : HexColor('#1A1A1A'),
             fontWeight: FontWeight.w700,
