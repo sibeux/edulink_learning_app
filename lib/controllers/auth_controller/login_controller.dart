@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
 import 'package:edulink_learning_app/screens/home_screen.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -124,20 +124,18 @@ class LoginController extends GetxController {
           token: jsonResponse['token'],
           email: email,
         );
-        if (kDebugMode) {
-          print('Login successful, token: ${jsonResponse['token']}');
-        }
+        logSuccess('Login successful, token: ${response.body}');
         Get.offAll(
           () => const HomeScreen(),
           transition: Transition.rightToLeftWithFade,
         );
       } else {
         isLoginSuccess.value = false;
+
+        logError('Login failed: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('error: $e');
-      }
+      logError('error from generateJwtLogin: $e');
     } finally {
       isLoading.value = false;
       isRedirecting.value = false;

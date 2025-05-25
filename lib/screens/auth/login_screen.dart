@@ -150,14 +150,32 @@ class _LoginScreenState extends State<LoginScreen>
                     SizedBox(height: 22.h),
                     SizedBox(
                       width: double.infinity,
-                      child: Text(
-                        'Forgot Password?',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: ColorPalette().primary,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      child: Row(
+                        children: [
+                          Obx(
+                            () =>
+                                !loginController.isLoginSuccess.value
+                                    ? Text(
+                                      '*Email or Password is incorrect',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Colors.red.withValues(alpha: 1),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                    : const SizedBox(),
+                          ),
+                          Spacer(),
+                          Text(
+                            'Forgot Password?',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              color: ColorPalette().primary,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

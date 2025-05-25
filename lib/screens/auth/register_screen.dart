@@ -146,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                               ? Container(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  '*Nama tidak boleh mengandung angka atau simbol',
+                                  '*Name cannot contain numbers or special characters',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.red.withValues(alpha: 1),
@@ -197,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                               ? Container(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  '*Format nomor telepon: 08xx-xxxx-xxxx',
+                                  '*Phone number format: 08xx-xxxx-xxxx',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.red.withValues(alpha: 1),

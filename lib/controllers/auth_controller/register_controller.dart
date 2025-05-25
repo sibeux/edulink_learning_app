@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -161,19 +160,13 @@ class RegisterController extends GetxController {
         if (emailExists || phoneExists) {
           isEmailRegistered.value = emailExists;
           isPhoneRegistered.value = phoneExists;
-          if (kDebugMode) {
-            print(
-              logError(
-                'Email or Phone already registered. Email: $emailExists, Phone: $phoneExists',
-              ),
-            );
-          }
+          logError(
+            'Email or Phone already registered. Email: $emailExists, Phone: $phoneExists',
+          );
         } else {
           isEmailRegistered.value = false;
           isPhoneRegistered.value = false;
-          if (kDebugMode) {
-            print(logSuccess('Email & Phone is available for registration.'));
-          }
+          logSuccess('Email & Phone is available for registration.');
 
           // createNewUserData(
           //   email: formData['emailRegister']!['text'].toString().trim(),
@@ -184,14 +177,10 @@ class RegisterController extends GetxController {
           // );
         }
       } else {
-        if (kDebugMode) {
-          print(logError('Failed checking. Error: ${response.body}'));
-        }
+        logError('Failed checking. Error: ${response.body}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(logError('error from getCheckEmailPhone: $e'));
-      }
+      logError('error from getCheckEmailPhone: $e');
     } finally {
       isLoading.value = false;
     }
@@ -229,19 +218,13 @@ class RegisterController extends GetxController {
         if (success) {
           await generateJwtRegister(email: email, password: password);
         } else {
-          if (kDebugMode) {
-            print(logError('Failed registering. Error: ${response.body}'));
-          }
+          logError('Failed registering. Error: ${response.body}');
         }
       } else {
-        if (kDebugMode) {
-          print(logError('Failed registering. Error: ${response.body}'));
-        }
+        logError('Failed registering. Error: ${response.body}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(logError('error from createNewUserData: $e'));
-      }
+      logError('error from createNewUserData: $e');
     } finally {
       isLoading.value = false;
     }
@@ -270,18 +253,12 @@ class RegisterController extends GetxController {
           token: jsonResponse['token'],
           email: email,
         );
-        if (kDebugMode) {
-          print('register success');
-        }
+        logSuccess('register success: ${response.body}');
       } else {
-        if (kDebugMode) {
-          print('Failed generating JWT. Error: ${response.statusCode}');
-        }
+        logError('Failed generating JWT. Error: ${response.statusCode}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('error: $e');
-      }
+      logError('error from generateJwtRegister: $e');
     } finally {
       isLoading.value = false;
       isRedirecting.value = false;
