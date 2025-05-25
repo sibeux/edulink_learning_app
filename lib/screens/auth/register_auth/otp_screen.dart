@@ -1,11 +1,9 @@
-import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/otp_button/otp_submit.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:pinput/pinput.dart';
 
 import '../../../components/color_palette.dart';
 import '../../../widgets/auth_widget/auth_button/otp_button/otp_input.dart';
