@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ class RegisterController extends GetxController {
   var isObscure = true.obs;
   var isLoading = false.obs;
   var isEmailRegistered = false.obs;
+  var isPhoneRegistered = false.obs;
   var isRedirecting = false.obs;
   var isCheckboxChecked = false.obs;
 
@@ -99,6 +101,18 @@ class RegisterController extends GetxController {
     return EmailValidator.validate(emailValue);
   }
 
+  bool getIsPhoneValid() {
+    final phoneValue = formData['numberRegister']!['text'].toString();
+    final phoneRegExp = RegExp(r'^(?:0)8[1-9][0-9]{6,15}$');
+
+    return phoneRegExp.hasMatch(phoneValue) && phoneValue.isNotEmpty;
+  }
+
+  bool getIsPhoneEmpty() {
+    final phoneValue = formData['numberRegister']!['text'].toString();
+    return phoneValue.isEmpty;
+  }
+
   bool getIsDataLoginValid() {
     final emailValue = formData['emailLogin']!['text'].toString();
     return EmailValidator.validate(emailValue) &&
@@ -108,7 +122,11 @@ class RegisterController extends GetxController {
 
   bool getIsDataRegisterValid() {
     return formData['nameRegister']!['text'].toString().isNotEmpty &&
-        formData['passwordRegister']!['text'].toString().isNotEmpty;
+        formData['passwordRegister']!['text'].toString().isNotEmpty &&
+        formData['numberRegister']!['text'].toString().isNotEmpty &&
+        getIsEmailValid('emailRegister') &&
+        !getIsNameValid() &&
+        getIsPhoneValid();
   }
 
   bool getIsNameValid() {
@@ -120,7 +138,10 @@ class RegisterController extends GetxController {
 
   get isObscureValue => isObscure.value;
 
-  Future<void> getCheckEmail({required String email}) async {
+  Future<void> getCheckEmailPhone({
+    required String email,
+    required String phone,
+  }) async {
     isLoading.value = true;
 
     const String url = 'https://sibeux.my.id/project/edulink-php-jwt/api/auth';
@@ -129,37 +150,47 @@ class RegisterController extends GetxController {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: {'method': 'email_check', 'email': email},
+        body: {'method': 'email_phone_check', 'email': email, 'phone': phone},
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         bool emailExists = jsonResponse['email_exists'] == 'true';
+        bool phoneExists = jsonResponse['phone_exists'] == 'true';
 
-        if (emailExists) {
-          isEmailRegistered.value = true;
+        if (emailExists || phoneExists) {
+          isEmailRegistered.value = emailExists;
+          isPhoneRegistered.value = phoneExists;
+          if (kDebugMode) {
+            print(
+              logError(
+                'Email or Phone already registered. Email: $emailExists, Phone: $phoneExists',
+              ),
+            );
+          }
         } else {
           isEmailRegistered.value = false;
+          isPhoneRegistered.value = false;
           if (kDebugMode) {
-            print('Email is available for registration.');
+            print(logSuccess('Email & Phone is available for registration.'));
           }
 
-          createNewUserData(
-            email: formData['emailRegister']!['text'].toString().trim(),
-            name: formData['nameRegister']!['text'].toString().trim(),
-            password: formData['passwordRegister']!['text'].toString(),
-            phoneNumber: formData['numberRegister']!['text'].toString(),
-            actor: indexUserType.value == 0 ? 'student' : 'tutor',
-          );
+          // createNewUserData(
+          //   email: formData['emailRegister']!['text'].toString().trim(),
+          //   name: formData['nameRegister']!['text'].toString().trim(),
+          //   password: formData['passwordRegister']!['text'].toString(),
+          //   phoneNumber: formData['numberRegister']!['text'].toString(),
+          //   actor: indexUserType.value == 0 ? 'student' : 'tutor',
+          // );
         }
       } else {
         if (kDebugMode) {
-          print('Failed checking. Error: ${response.body}');
+          print(logError('Failed checking. Error: ${response.body}'));
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('error: $e');
+        print(logError('error from getCheckEmailPhone: $e'));
       }
     } finally {
       isLoading.value = false;
@@ -199,17 +230,17 @@ class RegisterController extends GetxController {
           await generateJwtRegister(email: email, password: password);
         } else {
           if (kDebugMode) {
-            print('Failed registering. Error: ${response.body}');
+            print(logError('Failed registering. Error: ${response.body}'));
           }
         }
       } else {
         if (kDebugMode) {
-          print('Failed registering. Error: ${response.body}');
+          print(logError('Failed registering. Error: ${response.body}'));
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('error: $e');
+        print(logError('error from createNewUserData: $e'));
       }
     } finally {
       isLoading.value = false;

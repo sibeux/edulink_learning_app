@@ -102,6 +102,7 @@ UnderlineInputBorder underlineInputBorder(
   final isCurrentType = authController.currentType.value == formType;
 
   bool isEmailNotValid = false;
+  bool isPhoneNotValid = false;
   bool isCannotLogin = false;
   if (formType.toLowerCase().contains('login')) {
     final loginController = Get.find<LoginController>();
@@ -115,6 +116,9 @@ UnderlineInputBorder underlineInputBorder(
     isEmailNotValid =
         (!authController.getIsEmailValid(formType) && textValue!.isNotEmpty) ||
         registerController.isEmailRegistered.value;
+    isPhoneNotValid =
+        (!registerController.getIsPhoneValid() && textValue!.isNotEmpty) ||
+        registerController.isPhoneRegistered.value;
   }
 
   return UnderlineInputBorder(
@@ -135,6 +139,10 @@ UnderlineInputBorder underlineInputBorder(
                       ? HexColor('#ff0000').withValues(alpha: 0.5)
                       : ColorPalette().primary.withValues(alpha: 0.5)
                   // Cek apakah form saat ini adalah dari login dan login tidak berhasil
+                  : formType.toLowerCase().contains('number')
+                  ? isPhoneNotValid
+                      ? HexColor('#ff0000').withValues(alpha: 0.5)
+                      : ColorPalette().primary.withValues(alpha: 0.5)
                   : isCannotLogin
                   ? HexColor('#ff0000').withValues(alpha: 0.5)
                   : ColorPalette().primary.withValues(alpha: 0.5)

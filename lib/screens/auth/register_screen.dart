@@ -139,6 +139,23 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                     SizedBox(height: 7.h),
                     NameRegisterForm(),
+                    SizedBox(height: 5.h),
+                    Obx(
+                      () =>
+                          registerController.getIsNameValid()
+                              ? Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '*Nama tidak boleh mengandung angka atau simbol',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.red.withValues(alpha: 1),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )
+                              : SizedBox(),
+                    ),
                     SizedBox(height: 25.h),
                     Text(
                       "Email",
@@ -172,6 +189,24 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                     SizedBox(height: 7.h),
                     NumberRegisterForm(),
+                    SizedBox(height: 5.h),
+                    Obx(
+                      () =>
+                          !registerController.getIsPhoneValid() &&
+                                  !registerController.getIsPhoneEmpty()
+                              ? Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '*Format nomor telepon: 08xx-xxxx-xxxx',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.red.withValues(alpha: 1),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )
+                              : SizedBox(),
+                    ),
                   ],
                 ),
               ),
@@ -210,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           text: 'I agree to the ',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -219,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           style: TextStyle(
                             color: Colors.black,
                             decoration: TextDecoration.underline,
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () {},
@@ -228,7 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           text: '\nand conditions by ',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -237,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           style: TextStyle(
                             color: Colors.black,
                             decoration: TextDecoration.underline,
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () {},
@@ -251,14 +286,11 @@ class _RegisterScreenState extends State<RegisterScreen>
               Obx(
                 () =>
                     registerController.getIsDataRegisterValid() &&
-                            !registerController.getIsNameValid() &&
                             registerController.isCheckboxChecked.value
                         ? registerController.isLoading.value
-                            ? const AbsorbPointer(child: AuthButtonLoading())
+                            ? AbsorbPointer(child: AuthButtonLoading())
                             : RegisterSubmitButtonEnable()
-                        : const AbsorbPointer(
-                          child: RegisterSubmitButtonDisable(),
-                        ),
+                        : AbsorbPointer(child: RegisterSubmitButtonDisable()),
               ),
               SizedBox(height: 20.h),
               Row(

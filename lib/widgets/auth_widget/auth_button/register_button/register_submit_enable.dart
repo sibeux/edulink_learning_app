@@ -19,9 +19,13 @@ class RegisterSubmitButtonEnable extends StatelessWidget {
       background: ColorPalette().primary,
       isEnable: true,
       onPressed: () {
-        registerController.getCheckEmail(
+        registerController.getCheckEmailPhone(
           email:
               registerController.formData['emailRegister']!['text']
+                  .toString()
+                  .trim(),
+          phone:
+              registerController.formData['numberRegister']!['text']
                   .toString()
                   .trim(),
         );

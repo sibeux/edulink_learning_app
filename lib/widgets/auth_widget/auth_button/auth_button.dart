@@ -57,8 +57,9 @@ class AuthButtonLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+    return SizedBox(
+      width: 248.w,
+      height: 47.h,
       child: ElevatedButton(
         onPressed: () {
           // Do nothing
@@ -70,12 +71,11 @@ class AuthButtonLoading extends StatelessWidget {
           side: BorderSide(
             color: ColorPalette().primary,
             strokeAlign: BorderSide.strokeAlignCenter,
-            width: 2,
+            width: 2.w,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
-          minimumSize: const Size(double.infinity, 40),
         ),
         child: Center(
           child: Transform.scale(
