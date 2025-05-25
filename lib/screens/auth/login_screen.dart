@@ -1,6 +1,6 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/login_controller.dart';
-import 'package:edulink_learning_app/screens/auth/register_screen.dart';
+import 'package:edulink_learning_app/screens/auth/register_auth/register_screen.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/login_button/login_submit_disable.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/login_button/login_submit_enable.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_form/login_form/email_login_form.dart';

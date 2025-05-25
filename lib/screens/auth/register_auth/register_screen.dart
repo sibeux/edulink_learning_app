@@ -12,9 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import '../../widgets/auth_widget/auth_button/auth_button.dart';
-import '../../widgets/auth_widget/auth_button/register_button/register_submit_disable.dart';
-import '../../widgets/auth_widget/auth_button/register_button/register_submit_enable.dart';
+import '../../../widgets/auth_widget/auth_button/auth_button.dart';
+import '../../../widgets/auth_widget/auth_button/register_button/register_submit_disable.dart';
+import '../../../widgets/auth_widget/auth_button/register_button/register_submit_enable.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -167,6 +167,23 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                     SizedBox(height: 7.h),
                     EmailRegisterForm(),
+                    SizedBox(height: 5.h),
+                    Obx(
+                      () =>
+                          registerController.isEmailRegistered()
+                              ? Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '*Email has already been registered',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.red.withValues(alpha: 1),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )
+                              : SizedBox(),
+                    ),
                     SizedBox(height: 25.h),
                     Text(
                       "Password",
@@ -189,6 +206,23 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                     SizedBox(height: 7.h),
                     NumberRegisterForm(),
+                    SizedBox(height: 5.h),
+                    Obx(
+                      () =>
+                          registerController.isPhoneRegistered()
+                              ? Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '*Number has already been registered',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.red.withValues(alpha: 1),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )
+                              : SizedBox(),
+                    ),
                     SizedBox(height: 5.h),
                     Obx(
                       () =>

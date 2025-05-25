@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
+import 'package:edulink_learning_app/controllers/auth_controller/otp_controller.dart';
+import 'package:edulink_learning_app/screens/auth/register_auth/otp_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -167,6 +169,19 @@ class RegisterController extends GetxController {
           isEmailRegistered.value = false;
           isPhoneRegistered.value = false;
           logSuccess('Email & Phone is available for registration.');
+
+          final otpController = Get.put(OtpController());
+          otpController.sendOTP(
+            email: formData['emailRegister']!['text'].toString().trim(),
+            name: formData['nameRegister']!['text'].toString().trim(),
+          );
+
+          Get.to(
+            () => const OtpScreen(),
+            transition: Transition.native,
+            fullscreenDialog: true,
+            popGesture: false,
+          );
 
           // createNewUserData(
           //   email: formData['emailRegister']!['text'].toString().trim(),
