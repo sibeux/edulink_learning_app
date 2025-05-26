@@ -1,3 +1,6 @@
+import 'package:edulink_learning_app/controllers/auth_controller/otp_controller.dart';
+import 'package:edulink_learning_app/controllers/auth_controller/register_controller.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_button/auth_button.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/otp_button/otp_submit.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,18 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final otpController = Get.put(OtpController());
+    final registerController = Get.find<RegisterController>();
+    otpController.sendOTP(
+      email:
+          registerController.formData['emailRegister']!['text']
+              .toString()
+              .trim(),
+      name:
+          registerController.formData['nameRegister']!['text']
+              .toString()
+              .trim(),
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -52,7 +67,24 @@ class OtpScreen extends StatelessWidget {
           ),
           SizedBox(height: 50.h),
           OtpInput(),
-          SizedBox(height: 50.h),
+          Container(
+            height: 50.h,
+            width: 250.w,
+            alignment: Alignment.topLeft,
+            child: Obx(
+              () =>
+                  !otpController.isOtpValid.value
+                      ? Text(
+                        '*OTP is not valid',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.red.withValues(alpha: 1),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                      : SizedBox(),
+            ),
+          ),
           RichText(
             text: TextSpan(
               children: [
@@ -77,7 +109,14 @@ class OtpScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 50.h),
-          OtpSubmit(),
+          Obx(
+            () =>
+                otpController.otpInput.value.length == 4
+                    ? otpController.isLoading.value
+                        ? AbsorbPointer(child: AuthButtonLoading())
+                        : OtpSubmitEnable()
+                    : AbsorbPointer(child: OtpSubmitDisable()),
+          ),
         ],
       ),
     );

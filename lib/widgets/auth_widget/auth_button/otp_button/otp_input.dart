@@ -1,6 +1,8 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
+import 'package:edulink_learning_app/controllers/auth_controller/otp_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:pinput/pinput.dart';
 
@@ -49,7 +51,13 @@ class OtpInput extends StatelessWidget {
         submittedPinTheme: submittedPinTheme,
         pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
         showCursor: true,
-        onCompleted: (pin) => logInfo(pin),
+        onCompleted: (pin) {
+          logInfo('OTP entered: $pin');
+          Get.find<OtpController>().otpInput.value = pin;
+        },
+        onChanged: (value) {
+          Get.find<OtpController>().otpInput.value = value;
+        },
       ),
     );
   }
