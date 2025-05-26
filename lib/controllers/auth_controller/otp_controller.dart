@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
+import 'package:edulink_learning_app/controllers/auth_controller/register_controller.dart';
+import 'package:edulink_learning_app/screens/auth/register_auth/verifsuccess_screen.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -54,6 +56,17 @@ class OtpController extends GetxController {
           logSuccess('OTP verified successfully.');
           isOtpValid.value = true;
           // Handle successful OTP verification
+          final registerController = Get.find<RegisterController>();
+          
+          await registerController.createNewUserData(
+            email: registerController.formData['emailRegister']!['text'].toString().trim(),
+            name: registerController.formData['nameRegister']!['text'].toString().trim(),
+            password: registerController.formData['passwordRegister']!['text'].toString(),
+            phoneNumber: registerController.formData['numberRegister']!['text'].toString(),
+            actor: registerController.indexUserType.value == 0 ? 'student' : 'tutor',
+          );
+          
+          Get.offAll(() => VerifsuccessScreen());
         } else {
           logError('Failed to verify OTP. Error: ${response.body}');
           isOtpValid.value = false;

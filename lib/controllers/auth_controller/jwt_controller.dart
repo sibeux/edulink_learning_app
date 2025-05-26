@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:get/get.dart';
@@ -63,9 +63,7 @@ class JwtController extends GetxController {
       }
     } catch (e) {
       await storage.write(key: 'login', value: 'false');
-      if (kDebugMode) {
-        print('Error occurred while sending token: $e');
-      }
+      logError('Error occurred while sending token: $e');
     }
   }
 }

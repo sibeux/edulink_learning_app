@@ -175,14 +175,6 @@ class RegisterController extends GetxController {
             fullscreenDialog: true,
             popGesture: false,
           );
-
-          // createNewUserData(
-          //   email: formData['emailRegister']!['text'].toString().trim(),
-          //   name: formData['nameRegister']!['text'].toString().trim(),
-          //   password: formData['passwordRegister']!['text'].toString(),
-          //   phoneNumber: formData['numberRegister']!['text'].toString(),
-          //   actor: indexUserType.value == 0 ? 'student' : 'tutor',
-          // );
         }
       } else {
         logError('Failed checking. Error: ${response.body}');
@@ -224,7 +216,7 @@ class RegisterController extends GetxController {
         bool success = jsonResponse['status'] == 'success';
 
         if (success) {
-          await generateJwtRegister(email: email, password: password);
+          await generateJwtRegister(email: email, password: password, actor: actor);
         } else {
           logError('Failed registering. Error: ${response.body}');
         }
@@ -241,6 +233,7 @@ class RegisterController extends GetxController {
   Future<void> generateJwtRegister({
     required String email,
     required String password,
+    required String actor, // 'student' or 'tutor'
   }) async {
     const String url = 'https://sibeux.my.id/project/edulink-php-jwt/login';
     final jwtController = Get.put(JwtController());
@@ -250,7 +243,7 @@ class RegisterController extends GetxController {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: {'email': email, 'password': password},
+        body: {'email': email, 'password': password, 'user_actor': actor},
       );
 
       if (response.statusCode == 200) {
@@ -263,7 +256,7 @@ class RegisterController extends GetxController {
         );
         logSuccess('register success: ${response.body}');
       } else {
-        logError('Failed generating JWT. Error: ${response.statusCode}');
+        logError('Failed generating JWT. Error: ${response.body}');
       }
     } catch (e) {
       logError('error from generateJwtRegister: $e');

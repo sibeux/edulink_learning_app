@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/models/user.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -25,8 +25,6 @@ class UserProfileController extends GetxController {
     final box = GetStorage();
     final email = box.read('email');
 
-    // final orderController = Get.put(OrderController());
-
     final String url =
         'https://sibeux.my.id/project/edulink-php-jwt/api/user?method=get_user_data&email=$email';
 
@@ -34,10 +32,6 @@ class UserProfileController extends GetxController {
       final response = await http.get(Uri.parse(url));
 
       final List<dynamic> listData = json.decode(response.body);
-
-      if (kDebugMode) {
-        print(json.decode(response.body));
-      }
 
       if (listData.isNotEmpty) {
         final list =
@@ -62,9 +56,7 @@ class UserProfileController extends GetxController {
         userData.value = [];
       }
     } catch (e) {
-      if (kDebugMode) {
-        print("error in userProfileController: $e");
-      }
+      logError("error in userProfileController: $e");
     } finally {
       isLoading.value = false;
     }
