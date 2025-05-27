@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../components/color_palette.dart';
+import 'package:flutter/services.dart';
 
 const titleString = [
   'Welcome to EduLink',
