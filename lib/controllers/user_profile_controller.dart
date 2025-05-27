@@ -14,12 +14,6 @@ class UserProfileController extends GetxController {
   var unescape = HtmlUnescape();
   var idUser = '';
 
-  @override
-  void onInit() async {
-    super.onInit();
-    await getUserData();
-  }
-
   Future<void> getUserData() async {
     isLoading.value = true;
     final box = GetStorage();
@@ -49,11 +43,13 @@ class UserProfileController extends GetxController {
 
         idUser = list[0].userId;
 
-        // await orderController.getOrderHistoryCount(idUser);
-
         userData.value = list;
+        logSuccess(
+          'User data fetched successfully.',
+        );
       } else {
         userData.value = [];
+        logError('No user data found for the given email.');
       }
     } catch (e) {
       logError("error in userProfileController: $e");

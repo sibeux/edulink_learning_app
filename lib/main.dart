@@ -1,6 +1,6 @@
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
-import 'package:edulink_learning_app/screens/splash_screen.dart';
+import 'package:edulink_learning_app/screens/splash/splash_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         showPerformanceOverlay: false,
         initialRoute: '/',
         initialBinding: HomeBinding(),
-        getPages: [GetPage(name: '/', page: () => SplashScreen())],
+        getPages: [GetPage(name: '/', page: () => SplashHandler())],
       ),
     );
   }

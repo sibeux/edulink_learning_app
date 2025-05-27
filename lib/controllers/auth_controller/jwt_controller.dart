@@ -16,19 +16,24 @@ class JwtController extends GetxController {
   final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   final box = GetStorage();
 
-  Future<void> setToken({required String token, email}) async {
-    await storage.write(key: 'token', value: token);
-    box.write('login', true);
-    box.write('email', email);
-
-    Get.find<UserProfileController>();
-  }
-
   Future<void> checkToken() async {
     final token = await storage.read(key: 'token');
     if (token != null) {
+      logInfo('Token found: $token');
       await sendTokenToServer(token);
+    } else {
+      await deleteToken();
+      logInfo('No token found, user is not logged in.');
     }
+  }
+
+  Future<void> setToken({required String token, email}) async {
+    await storage.write(key: 'token', value: token);
+    box.write('email', email);
+    await Get.find<UserProfileController>().getUserData();
+
+    box.write('login', true);
+    logSuccess('Token set successfully.');
   }
 
   Future<void> deleteToken() async {
@@ -54,15 +59,20 @@ class JwtController extends GetxController {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
 
+        // Cek apakah token valid dan tidak expired
         if ((jsonResponse['login'] == 'sukses') &&
             (jsonResponse['exp'] == 'no')) {
+          logSuccess('Token is valid and not expired.');
           final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
           final email = decodedToken['data']['email'];
           await setToken(token: token, email: email);
+        } else {
+          await deleteToken();
+          logError('Token verification failed: ${jsonResponse.toString()}');
         }
       }
     } catch (e) {
-      await storage.write(key: 'login', value: 'false');
+      await deleteToken();
       logError('Error occurred while sending token: $e');
     }
   }
