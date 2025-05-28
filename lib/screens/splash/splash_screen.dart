@@ -1,6 +1,5 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

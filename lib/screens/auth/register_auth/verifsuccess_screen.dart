@@ -1,10 +1,14 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
+import 'package:edulink_learning_app/screens/auth/register_auth/complete_profile/complete_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class VerifsuccessScreen extends StatelessWidget {
-  const VerifsuccessScreen({super.key});
+  const VerifsuccessScreen({super.key, required this.actor});
+
+  final String actor;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,17 @@ class VerifsuccessScreen extends StatelessWidget {
                 width: 248.w,
                 height: 47.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.off(
+                      () => CompleteProfileScreen(
+                        actor: actor,
+                      ),
+                      transition: Transition.rightToLeft,
+                      duration: Duration(milliseconds: 500),
+                      popGesture: false,
+                      fullscreenDialog: true,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: ColorPalette().primary,

@@ -57,16 +57,39 @@ class OtpController extends GetxController {
           isOtpValid.value = true;
           // Handle successful OTP verification
           final registerController = Get.find<RegisterController>();
-          
+
           await registerController.createNewUserData(
-            email: registerController.formData['emailRegister']!['text'].toString().trim(),
-            name: registerController.formData['nameRegister']!['text'].toString().trim(),
-            password: registerController.formData['passwordRegister']!['text'].toString(),
-            phoneNumber: registerController.formData['numberRegister']!['text'].toString(),
-            actor: registerController.indexUserType.value == 0 ? 'student' : 'tutor',
+            email:
+                registerController.formData['emailRegister']!['text']
+                    .toString()
+                    .trim(),
+            name:
+                registerController.formData['nameRegister']!['text']
+                    .toString()
+                    .trim(),
+            password:
+                registerController.formData['passwordRegister']!['text']
+                    .toString(),
+            phoneNumber:
+                registerController.formData['numberRegister']!['text']
+                    .toString(),
+            actor:
+                registerController.indexUserType.value == 0
+                    ? 'student'
+                    : 'tutor',
           );
-          
-          Get.offAll(() => VerifsuccessScreen());
+
+          Get.offAll(
+            () => VerifsuccessScreen(
+              actor:
+                  registerController.indexUserType.value == 0
+                      ? 'student'
+                      : 'tutor',
+            ),
+            transition: Transition.native,
+            fullscreenDialog: true,
+            popGesture: false,
+          );
         } else {
           logError('Failed to verify OTP. Error: ${response.body}');
           isOtpValid.value = false;
