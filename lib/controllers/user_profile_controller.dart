@@ -17,7 +17,7 @@ class UserProfileController extends GetxController {
   Future<void> getUserData() async {
     isLoading.value = true;
     final box = GetStorage();
-    final email = box.read('email');
+    final email = box.read('email') ?? '';
 
     final String url =
         'https://sibeux.my.id/project/edulink-php-jwt/api/user?method=get_user_data&email=$email';

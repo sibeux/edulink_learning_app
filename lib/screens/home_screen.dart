@@ -18,9 +18,8 @@ class HomeScreen extends StatelessWidget {
               'Welcome to the Home Screen! ${userProfileController.userData.first.nameUser}',
             ),
             ElevatedButton(
-              onPressed: () {
-                // Action when button is pressed
-                Get.put(LogoutController()).logout();
+              onPressed: ()async {
+                await Get.put(LogoutController()).logout();
               },
               child: const Text('Logout'),
             ),

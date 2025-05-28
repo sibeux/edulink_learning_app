@@ -15,7 +15,12 @@ class LogoutController extends GetxController {
     isLoggingOut.value = true;
     final jwtController = Get.find<JwtController>();
     await jwtController.deleteToken();
-    Get.offAll(() => FirstScreen(), transition: Transition.rightToLeftWithFade);
+    Get.offAll(
+      () => FirstScreen(),
+      transition: Transition.native,
+      fullscreenDialog: true,
+      popGesture: false,
+    );
     isLoggingOut.value = false;
   }
 }

@@ -67,7 +67,6 @@ class VerifsuccessScreen extends StatelessWidget {
                         actor: actor,
                       ),
                       transition: Transition.rightToLeft,
-                      duration: Duration(milliseconds: 500),
                       popGesture: false,
                       fullscreenDialog: true,
                     );

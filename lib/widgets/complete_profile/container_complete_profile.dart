@@ -1,6 +1,8 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
+import 'package:edulink_learning_app/screens/auth/register_auth/complete_profile/profile_insert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 const List<String> titleStudent = ['Profile', 'Courses'];
@@ -37,7 +39,18 @@ class ContainerCompleteProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        index == 0
+            ? Get.to(
+              () => ProfileInsertScreen(actor: actor),
+              transition: Transition.rightToLeft,
+              fullscreenDialog: true,
+              popGesture: false,
+            )
+            : actor == 'student'
+            ? null
+            : null;
+      },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
