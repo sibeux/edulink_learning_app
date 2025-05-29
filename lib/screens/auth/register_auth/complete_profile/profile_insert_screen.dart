@@ -1,11 +1,15 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_button/auth_button.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/button_save.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/birthday_picker/modal_birthday.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/user_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+
+import '../../../../widgets/complete_profile/form/form_container.dart';
 
 class ProfileInsertScreen extends StatelessWidget {
   const ProfileInsertScreen({super.key, required this.actor});
@@ -14,8 +18,11 @@ class ProfileInsertScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final completeProfileController = Get.find<CompleteProfileController>();
+    completeProfileController.assignCurrentDataForm();
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
@@ -39,6 +46,7 @@ class ProfileInsertScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 20.h),
             Center(
               child: Stack(
                 children: [
@@ -57,14 +65,14 @@ class ProfileInsertScreen extends StatelessWidget {
                           vertical: 5.h,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.9),
+                          color: ColorPalette().primary,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2.w),
+                          border: Border.all(color: Colors.white, width: 3.w),
                         ),
                         child: Icon(
-                          Icons.camera_alt,
+                          Icons.edit,
                           color: Colors.white,
-                          size: 20.sp,
+                          size: 16.sp,
                         ),
                       ),
                     ),
@@ -72,8 +80,66 @@ class ProfileInsertScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 30.h),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 40.w),
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FormContainer(
+                    isHasInvalid: true,
+                    fomrType: 'nameProfile',
+                    formtext: 'full name',
+                    completeProfileController: completeProfileController,
+                  ),
+                  AbsorbPointer(
+                    absorbing: true,
+                    child: FormContainer(
+                      isHasInvalid: true,
+                      isImmutable: true,
+                      fomrType: 'emailProfile',
+                      formtext: 'email',
+                      completeProfileController: completeProfileController,
+                    ),
+                  ),
+                  AbsorbPointer(
+                    absorbing: true,
+                    child: FormContainer(
+                      isHasInvalid: true,
+                      isImmutable: true,
+                      fomrType: 'numberProfile',
+                      formtext: 'phone number',
+                      completeProfileController: completeProfileController,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      birthdayPickModal(
+                        context,
+                        controller: completeProfileController,
+                      );
+                    },
+                    child: AbsorbPointer(
+                      absorbing: true,
+                      child: FormContainer(
+                        isHasInvalid: true,
+                        fomrType: 'birthdayProfile',
+                        formtext: 'birth date',
+                        completeProfileController: completeProfileController,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 20.h),
-            SaveEnable(),
+            Obx(
+              () =>
+                  completeProfileController.isSendingDataLoading.value
+                      ? AuthButtonLoading()
+                      : SaveEnable(),
+            ),
           ],
         ),
       ),

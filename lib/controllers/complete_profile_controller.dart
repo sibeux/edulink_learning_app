@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -10,12 +10,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http_parser/http_parser.dart';
 
+List<String> genderList = ['male', 'female', 'other'];
+
 class CompleteProfileController extends GetxController {
   final box = GetStorage();
 
   var email = ''.obs;
   var photoUri = ''.obs;
+  var gender = ''.obs;
   var oldPhotoUri = '';
+  var currentType = ''.obs;
 
   var profileStudentCompleted = false.obs;
   var courseStudentCompleted = false.obs;
@@ -24,10 +28,158 @@ class CompleteProfileController extends GetxController {
   var isImageFileTooLarge = false.obs;
   var isImageChanged = false.obs;
 
+  late FixedExtentScrollController dayController;
+  late FixedExtentScrollController monthController;
+  late FixedExtentScrollController yearController;
+
+  var selectedDay = 0.obs;
+  var selectedMonth = 0.obs;
+  var selectedYear = 0.obs;
+
+  final List<int> years = List.generate(70, (i) => 1960 + i);
+  final List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  var formData = RxMap({
+    'nameProfile': {
+      'text': '',
+      'type': 'nameProfile',
+      'controller': TextEditingController(),
+    },
+    'emailProfile': {
+      'text': '',
+      'type': 'emailProfile',
+      'controller': TextEditingController(),
+    },
+    'numberProfile': {
+      'text': '',
+      'type': 'numberProfile',
+      'controller': TextEditingController(),
+    },
+    'birthdayProfile': {
+      'text': '',
+      'type': 'birthdayProfile',
+      'controller': TextEditingController(),
+    },
+    'cityProfile': {
+      'text': '',
+      'type': 'cityProfile',
+      'controller': TextEditingController(),
+    },
+    'countryProfile': {
+      'text': '',
+      'type': 'countryProfile',
+      'controller': TextEditingController(),
+    },
+    'addressProfile': {
+      'text': '',
+      'type': 'addressProfile',
+      'controller': TextEditingController(),
+    },
+  });
+
   @override
   void onInit() {
     email.value = box.read('email') ?? '';
     super.onInit();
+  }
+
+  void setUpBirthDatePickerController() {
+    final TextEditingController birthdayController =
+        formData['birthdayProfile']?['controller'] as TextEditingController;
+        
+    final int day = int.parse(birthdayController.text.split('-')[0]);
+    final int month = int.parse(birthdayController.text.split('-')[1]);
+    final int year = int.parse(birthdayController.text.split('-')[2]);
+
+    dayController = FixedExtentScrollController(initialItem: day - 1);
+    monthController = FixedExtentScrollController(initialItem: month - 1);
+    yearController = FixedExtentScrollController(
+      initialItem: years.indexOf(year),
+    );
+
+    selectedDay.value = day;
+    selectedMonth.value = month;
+    selectedYear.value = year;
+
+    logInfo('Birth date picker controllers initialized: $day, $month, $year');
+  }
+
+  void assignCurrentDataForm() {
+    final userProfileController = Get.find<UserProfileController>();
+    photoUri.value = userProfileController.userData[0].userPhoto;
+    final userData = userProfileController.userData[0];
+
+    final TextEditingController nameController =
+        formData['nameProfile']?['controller'] as TextEditingController;
+    final TextEditingController emailController =
+        formData['emailProfile']?['controller'] as TextEditingController;
+    final TextEditingController numberController =
+        formData['numberProfile']?['controller'] as TextEditingController;
+    final TextEditingController birthdayController =
+        formData['birthdayProfile']?['controller'] as TextEditingController;
+
+    formData['nameProfile'] = {
+      'text': userData.nameUser,
+      'type': 'nameProfile',
+      'controller': nameController,
+    };
+    formData['emailProfile'] = {
+      'text': userData.emailuser,
+      'type': 'emailProfile',
+      'controller': emailController,
+    };
+    formData['numberProfile'] = {
+      'text': userData.userPhone,
+      'type': 'numberProfile',
+      'controller': numberController,
+    };
+    formData['birthdayProfile'] = {
+      'text': userData.userBirthday,
+      'type': 'birthdayProfile',
+      'controller': birthdayController,
+    };
+
+    nameController.text = userData.nameUser;
+    emailController.text = userData.emailuser;
+    numberController.text = userData.userPhone;
+    birthdayController.text = userData.userBirthday;
+    update();
+  }
+
+  void onChanged(String value, String type) {
+    final currentController = formData[type]?['controller'];
+    // Memperbarui referensi map
+    formData[type] = {
+      'text': value.trim(),
+      'type': type,
+      'controller': currentController!,
+    };
+    update();
+  }
+
+  void onTap(String type, bool isFocus) {
+    final currentController = formData[type]?['controller'];
+    final currentText = formData[type]?['text'];
+    formData[type] = {
+      'text': currentText!,
+      'type': type,
+      'controller': currentController!,
+    };
+    currentType.value = isFocus ? type : '';
+    update();
   }
 
   Future<void> insertImage() async {
@@ -52,6 +204,13 @@ class CompleteProfileController extends GetxController {
       }
     }
     isInsertImageLoading.value = false;
+  }
+
+  bool getIsNameValid() {
+    final nameValue = formData['nameProfile']!['text'].toString();
+    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+
+    return !nameRegExp.hasMatch(nameValue) && nameValue.isNotEmpty;
   }
 
   String generateImageName(String idUser) {
@@ -112,8 +271,9 @@ class CompleteProfileController extends GetxController {
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           body: {
             'method': 'change_user_data',
+            'name': formData['nameProfile']?['text'] ?? '',
             'email': email.value,
-            'name': userProfileController.userData[0].nameUser,
+            'birthday': formData['birthdayProfile']?['text'] ?? '',
             'photo':
                 isImageChanged.value &&
                         !photoUri.value.contains('http') &&

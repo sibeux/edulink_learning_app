@@ -13,60 +13,124 @@ class UserPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final completeProfileController = Get.find<CompleteProfileController>();
-    return Obx(
-      () => Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: HexColor('#a0a2a0').withValues(alpha: 0.3),
-            width: 1,
-          ),
-        ),
-        child:
-            completeProfileController.isInsertImageLoading.value
-                ? const SizedBox(
-                  height: 90,
-                  width: 90,
-                  child: CupertinoActivityIndicator(),
-                )
-                : (completeProfileController.photoUri.value.contains('http') &&
-                        completeProfileController.photoUri.value.contains(
-                          '://',
-                        )) ||
-                    completeProfileController.photoUri.value.isEmpty
-                ? ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: CachedNetworkImage(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(55.r),
+      child: Container(
+        height: 110.h,
+        width: 110.w,
+        decoration: BoxDecoration(color: HexColor('#ffdb99')),
+        child: Obx(
+          () =>
+              completeProfileController.isInsertImageLoading.value
+                  ? CupertinoActivityIndicator()
+                  : (completeProfileController.photoUri.value.contains(
+                            'http',
+                          ) &&
+                          completeProfileController.photoUri.value.contains(
+                            '://',
+                          )) ||
+                      completeProfileController.photoUri.value.isEmpty
+                  ? CachedNetworkImage(
                     imageUrl: completeProfileController.photoUri.value,
                     fit: BoxFit.cover,
-                    height: 90.h,
-                    width: 90.w,
+                    height: 110.h,
+                    width: 110.w,
                     maxHeightDiskCache: 300,
                     maxWidthDiskCache: 300,
                     filterQuality: FilterQuality.medium,
                     placeholder:
-                        (context, url) => Image.asset(
-                          'assets/images/screens/document.png',
-                          fit: BoxFit.cover,
+                        (context, url) => Center(
+                          child: SizedBox(
+                            height: 95.h,
+                            width: 95.w,
+                            child: Image.asset(
+                              'assets/images/screens/Edit Profile.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
                     errorWidget:
-                        (context, url, error) => Image.asset(
-                          'assets/images/screens/document.png',
-                          fit: BoxFit.cover,
+                        (context, url, error) => Center(
+                          child: SizedBox(
+                            height: 95.h,
+                            width: 95.w,
+                            child: Image.asset(
+                              'assets/images/screens/Edit Profile.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
-                  ),
-                )
-                : ClipRRect(
-                  borderRadius: BorderRadius.circular(50.r),
-                  child: Image.file(
+                  )
+                  : Image.file(
                     File(completeProfileController.photoUri.value),
-                    height: 90,
-                    width: 90,
+                    height: 110.h,
+                    width: 110.w,
                     fit: BoxFit.cover,
                     filterQuality: FilterQuality.medium,
                   ),
-                ),
+        ),
       ),
     );
+    // return Obx(
+    //   () => Container(
+    //     height: 110.h,
+    //     width: 110.w,
+    //     decoration: BoxDecoration(
+    //       color: HexColor('#ffdb99'),
+    //       shape: BoxShape.circle,
+    //     ),
+    //     child:
+    //         completeProfileController.isInsertImageLoading.value
+    //             ? CupertinoActivityIndicator()
+    //             : (completeProfileController.photoUri.value.contains('http') &&
+    //                     completeProfileController.photoUri.value.contains(
+    //                       '://',
+    //                     )) ||
+    //                 completeProfileController.photoUri.value.isEmpty
+    //             ? ClipOval(
+    //               child: CachedNetworkImage(
+    //                 imageUrl: completeProfileController.photoUri.value,
+    //                 fit: BoxFit.cover,
+    //                 height: 110.h,
+    //                 width: 110.w,
+    //                 maxHeightDiskCache: 300,
+    //                 maxWidthDiskCache: 300,
+    //                 filterQuality: FilterQuality.medium,
+    //                 placeholder:
+    //                     (context, url) => Center(
+    //                       child: Container(
+    //                         color: Colors.white,
+    //                         height: 95.h,
+    //                         width: 95.w,
+    //                         child: Image.asset(
+    //                           'assets/images/screens/Edit Profile.png',
+    //                           fit: BoxFit.contain,
+    //                         ),
+    //                       ),
+    //                     ),
+    //                 errorWidget:
+    //                     (context, url, error) => Center(
+    //                       child: SizedBox(
+    //                         height: 95.h,
+    //                         width: 95.w,
+    //                         child: Image.asset(
+    //                           'assets/images/screens/Edit Profile.png',
+    //                           fit: BoxFit.contain,
+    //                         ),
+    //                       ),
+    //                     ),
+    //               ),
+    //             )
+    //             : ClipOval(
+    //               child: Image.file(
+    //                 File(completeProfileController.photoUri.value),
+    //                 height: 110.h,
+    //                 width: 110.w,
+    //                 fit: BoxFit.cover,
+    //                 filterQuality: FilterQuality.medium,
+    //               ),
+    //             ),
+    //   ),
+    // );
   }
 }
