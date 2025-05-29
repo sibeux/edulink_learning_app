@@ -190,7 +190,7 @@ class CompleteProfileController extends GetxController {
     addressController.text = userData.userAddress;
     selectedGender.value = userData.userGender;
     selectedEducationLevel.value =
-        userData.userEducation == ''
+        userData.userEducation.isEmpty
             ? ''
             : educationTypes.entries
                 .firstWhere(
