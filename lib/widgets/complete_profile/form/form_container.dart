@@ -27,6 +27,11 @@ const Map<String, dynamic> formAttributes = {
     'autoFillHints': AutofillHints.birthdayDay,
     'invalidMessage': '*Invalid date format',
   },
+  'cityProfile': {
+    'keyboardType': TextInputType.text,
+    'autoFillHints': AutofillHints.addressCity,
+    'invalidMessage': '*City cannot contain numbers or special characters',
+  },
 };
 
 class FormContainer extends StatelessWidget {
@@ -67,22 +72,24 @@ class FormContainer extends StatelessWidget {
           autoFillHints: formAttributes[fomrType]['autoFillHints'] as String,
         ),
         SizedBox(height: 5.h),
-        Obx(
-          () =>
-              isHasInvalid && (completeProfileController.getIsNameValid())
-                  ? Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      formAttributes[fomrType]['invalidMessage'] as String,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.red.withValues(alpha: 1),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                  : SizedBox(),
-        ),
+        isHasInvalid
+            ? Obx(
+              () =>
+                  (completeProfileController.getIsNameValid())
+                      ? Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          formAttributes[fomrType]['invalidMessage'] as String,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.red.withValues(alpha: 1),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
+                      : SizedBox(),
+            )
+            : SizedBox(),
         SizedBox(height: 15.h),
       ],
     );

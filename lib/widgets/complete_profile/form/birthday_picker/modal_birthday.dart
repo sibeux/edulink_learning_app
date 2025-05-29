@@ -36,7 +36,7 @@ void birthdayPickModal(
       final day = controller.selectedDay.value.toString().padLeft(2, '0');
       final month = controller.selectedMonth.value.toString().padLeft(2, '0');
       final year = controller.selectedYear.value.toString();
-      final String birthday = "$day-$month-$year";
+      final String birthday = "$day/$month/$year";
       controller.formData['birthdayProfile'] = {
         'text': birthday,
         'type': 'birthdayProfile',

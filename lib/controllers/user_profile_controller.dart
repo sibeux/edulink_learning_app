@@ -39,7 +39,7 @@ class UserProfileController extends GetxController {
                 userPhoto: user['user_photo'] ?? '',
                 userActor: user['user_actor'],
                 userGender: user['gender'] ?? '',
-                userBirthday: user['birth_date'] ?? '01-01-2000',
+                userBirthday: user['birth_date'] ?? '01/01/2000',
                 userCity: user['city'] ?? '',
                 userCountry: user['country'] ?? '',
                 userAddres: user['address'] ?? '',

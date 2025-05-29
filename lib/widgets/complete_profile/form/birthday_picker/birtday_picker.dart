@@ -67,7 +67,7 @@ class BirthdayPicker extends StatelessWidget {
                 (index) => Center(
                   child: Text(
                     controller.months[index].toString(),
-                    style: TextStyle(fontSize: 20.sp),
+                    style: TextStyle(fontSize: 16.sp),
                   ),
                 ),
               ),

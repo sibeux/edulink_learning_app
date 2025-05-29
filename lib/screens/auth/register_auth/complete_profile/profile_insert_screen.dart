@@ -3,6 +3,7 @@ import 'package:edulink_learning_app/controllers/complete_profile_controller.dar
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/auth_button.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/button_save.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/birthday_picker/modal_birthday.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/gender_pick.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/user_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -113,6 +114,7 @@ class ProfileInsertScreen extends StatelessWidget {
                       completeProfileController: completeProfileController,
                     ),
                   ),
+                  GenderPick(controller: completeProfileController),
                   GestureDetector(
                     onTap: () {
                       birthdayPickModal(
@@ -130,6 +132,12 @@ class ProfileInsertScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  FormContainer(
+                    isHasInvalid: false,
+                    fomrType: 'cityProfile',
+                    formtext: 'city',
+                    completeProfileController: completeProfileController,
+                  ),
                 ],
               ),
             ),
@@ -138,7 +146,9 @@ class ProfileInsertScreen extends StatelessWidget {
               () =>
                   completeProfileController.isSendingDataLoading.value
                       ? AuthButtonLoading()
-                      : SaveEnable(),
+                      : completeProfileController.getIsAllDataValid()
+                      ? SaveEnable()
+                      : AbsorbPointer(absorbing: true, child: SaveDisable()),
             ),
           ],
         ),
