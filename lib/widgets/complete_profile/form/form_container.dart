@@ -32,6 +32,16 @@ const Map<String, dynamic> formAttributes = {
     'autoFillHints': AutofillHints.addressCity,
     'invalidMessage': '*City cannot contain numbers or special characters',
   },
+  'countryProfile': {
+    'keyboardType': TextInputType.text,
+    'autoFillHints': AutofillHints.addressState,
+    'invalidMessage': '*Country cannot contain numbers or special characters',
+  },
+  'addressProfile': {
+    'keyboardType': TextInputType.streetAddress,
+    'autoFillHints': AutofillHints.streetAddressLine1,
+    'invalidMessage': '*Address cannot contain numbers or special characters',
+  },
 };
 
 class FormContainer extends StatelessWidget {
@@ -39,47 +49,63 @@ class FormContainer extends StatelessWidget {
     super.key,
     required this.completeProfileController,
     required this.isHasInvalid,
-    required this.fomrType,
+    required this.formType,
     required this.formtext,
     this.isImmutable = false,
   });
 
   final CompleteProfileController completeProfileController;
   final bool isHasInvalid, isImmutable;
-  final String fomrType, formtext;
+  final String formType, formtext;
 
   @override
   Widget build(BuildContext context) {
+    final isCurrentType =
+        completeProfileController.currentType.value == formType;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          formtext.capitalize!,
-          style: TextStyle(
-            color: ColorPalette().primary,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-          ),
+        Row(
+          children: [
+            Text(
+              formtext.capitalize!,
+              style: TextStyle(
+                color: ColorPalette().primary,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            isHasInvalid
+                ? Text(
+                  ' *',
+                  style: TextStyle(
+                    color: Colors.red.withValues(alpha: 1),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+                : SizedBox(),
+          ],
         ),
         SizedBox(height: 7.h),
         CompleteProfileFormBlueprint(
           completeProfileController: Get.find<CompleteProfileController>(),
           isImmutable: isImmutable,
-          formType: fomrType,
+          formType: formType,
           formText: formtext,
           keyboardType:
-              formAttributes[fomrType]['keyboardType'] as TextInputType,
-          autoFillHints: formAttributes[fomrType]['autoFillHints'] as String,
+              formAttributes[formType]['keyboardType'] as TextInputType,
+          autoFillHints: formAttributes[formType]['autoFillHints'] as String,
         ),
         SizedBox(height: 5.h),
-        isHasInvalid
+        isHasInvalid && isCurrentType
             ? Obx(
               () =>
                   (completeProfileController.getIsNameValid())
                       ? Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          formAttributes[fomrType]['invalidMessage'] as String,
+                          formAttributes[formType]['invalidMessage'] as String,
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.red.withValues(alpha: 1),

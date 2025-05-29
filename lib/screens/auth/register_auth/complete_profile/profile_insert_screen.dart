@@ -3,6 +3,7 @@ import 'package:edulink_learning_app/controllers/complete_profile_controller.dar
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/auth_button.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/button_save.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/birthday_picker/modal_birthday.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/education_pick.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/gender_pick.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/user_photo.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,9 @@ class ProfileInsertScreen extends StatelessWidget {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
-            Get.back();
+            completeProfileController.isSendingDataLoading.value
+                ? null
+                : Get.back();
           },
           child: Icon(Icons.arrow_back_ios_new, color: ColorPalette().primary),
         ),
@@ -90,7 +93,7 @@ class ProfileInsertScreen extends StatelessWidget {
                 children: [
                   FormContainer(
                     isHasInvalid: true,
-                    fomrType: 'nameProfile',
+                    formType: 'nameProfile',
                     formtext: 'full name',
                     completeProfileController: completeProfileController,
                   ),
@@ -99,7 +102,7 @@ class ProfileInsertScreen extends StatelessWidget {
                     child: FormContainer(
                       isHasInvalid: true,
                       isImmutable: true,
-                      fomrType: 'emailProfile',
+                      formType: 'emailProfile',
                       formtext: 'email',
                       completeProfileController: completeProfileController,
                     ),
@@ -109,7 +112,7 @@ class ProfileInsertScreen extends StatelessWidget {
                     child: FormContainer(
                       isHasInvalid: true,
                       isImmutable: true,
-                      fomrType: 'numberProfile',
+                      formType: 'numberProfile',
                       formtext: 'phone number',
                       completeProfileController: completeProfileController,
                     ),
@@ -125,17 +128,30 @@ class ProfileInsertScreen extends StatelessWidget {
                     child: AbsorbPointer(
                       absorbing: true,
                       child: FormContainer(
-                        isHasInvalid: true,
-                        fomrType: 'birthdayProfile',
+                        isHasInvalid: false,
+                        formType: 'birthdayProfile',
                         formtext: 'birth date',
                         completeProfileController: completeProfileController,
                       ),
                     ),
                   ),
+                  EducationPick(controller: completeProfileController),
+                  FormContainer(
+                    isHasInvalid: true,
+                    formType: 'cityProfile',
+                    formtext: 'city',
+                    completeProfileController: completeProfileController,
+                  ),
                   FormContainer(
                     isHasInvalid: false,
-                    fomrType: 'cityProfile',
-                    formtext: 'city',
+                    formType: 'countryProfile',
+                    formtext: 'country',
+                    completeProfileController: completeProfileController,
+                  ),
+                  FormContainer(
+                    isHasInvalid: false,
+                    formType: 'addressProfile',
+                    formtext: 'address line',
                     completeProfileController: completeProfileController,
                   ),
                 ],
@@ -150,6 +166,7 @@ class ProfileInsertScreen extends StatelessWidget {
                       ? SaveEnable()
                       : AbsorbPointer(absorbing: true, child: SaveDisable()),
             ),
+            SizedBox(height: 20.h),
           ],
         ),
       ),

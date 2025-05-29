@@ -17,13 +17,25 @@ class GenderPick extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Gender',
-          style: TextStyle(
-            color: ColorPalette().primary,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-          ),
+        Row(
+          children: [
+            Text(
+              'Gender',
+              style: TextStyle(
+                color: ColorPalette().primary,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              ' *',
+              style: TextStyle(
+                color: Colors.red.withValues(alpha: 1),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 15.h),
         Row(
@@ -65,7 +77,7 @@ class GenderContainerType extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Text(
-            genderType[index],
+            genderType[index].capitalize!,
             style: TextStyle(
               color:
                   controller.selectedGender.value == genderType[index]

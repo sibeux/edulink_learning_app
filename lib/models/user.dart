@@ -1,6 +1,18 @@
 class User {
-  final String userId, emailuser, passUser, nameUser, userPhoto, userPhone, userActor;
-  final String userBirthday, userGender, userAddres, userCity, userCountry, userEducation ,userCourses;
+  final String userId,
+      emailuser,
+      passUser,
+      nameUser,
+      userPhoto,
+      userPhone,
+      userActor;
+  final String userBirthday,
+      userGender,
+      userAddress,
+      userCity,
+      userCountry,
+      userEducation,
+      userCourses;
 
   User({
     required this.userId,
@@ -12,7 +24,7 @@ class User {
     required this.userActor,
     required this.userGender,
     required this.userBirthday,
-    required this.userAddres,
+    required this.userAddress,
     required this.userCity,
     required this.userCountry,
     required this.userEducation,

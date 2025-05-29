@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/education_pick.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -35,6 +36,8 @@ class CompleteProfileController extends GetxController {
   var selectedMonth = 0.obs;
   var selectedYear = 0.obs;
   var selectedGender = ''.obs;
+  var selectedEducationLevel = ''.obs;
+  var selectedEducationType = ''.obs;
 
   final List<int> years = List.generate(70, (i) => 1960 + i);
   final List<String> months = [
@@ -88,6 +91,11 @@ class CompleteProfileController extends GetxController {
       'type': 'addressProfile',
       'controller': TextEditingController(),
     },
+    'coursesProfile': {
+      'text': '',
+      'type': 'coursesProfile',
+      'controller': TextEditingController(),
+    },
   });
 
   @override
@@ -132,6 +140,10 @@ class CompleteProfileController extends GetxController {
         formData['birthdayProfile']?['controller'] as TextEditingController;
     final TextEditingController cityController =
         formData['cityProfile']?['controller'] as TextEditingController;
+    final TextEditingController countryController =
+        formData['countryProfile']?['controller'] as TextEditingController;
+    final TextEditingController addressController =
+        formData['addressProfile']?['controller'] as TextEditingController;
 
     formData['nameProfile'] = {
       'text': userData.nameUser,
@@ -158,14 +170,37 @@ class CompleteProfileController extends GetxController {
       'type': 'cityProfile',
       'controller': cityController,
     };
+    formData['countryProfile'] = {
+      'text': userData.userCountry,
+      'type': 'countryProfile',
+      'controller': countryController,
+    };
+    formData['addressProfile'] = {
+      'text': userData.userAddress,
+      'type': 'addressProfile',
+      'controller': addressController,
+    };
 
     nameController.text = userData.nameUser;
     emailController.text = userData.emailuser;
     numberController.text = userData.userPhone;
     birthdayController.text = userData.userBirthday;
     cityController.text = userData.userCity;
+    countryController.text = userData.userCountry;
+    addressController.text = userData.userAddress;
     selectedGender.value = userData.userGender;
+    selectedEducationLevel.value =
+        userData.userEducation == ''
+            ? ''
+            : educationTypes.entries
+                .firstWhere(
+                  (entry) => entry.value.contains(userData.userEducation),
+                  orElse: () => const MapEntry('', []),
+                )
+                .key;
+    selectedEducationType.value = userData.userEducation;
     isImageChanged.value = false;
+    currentType.value = '';
     update();
   }
 
@@ -226,6 +261,8 @@ class CompleteProfileController extends GetxController {
   bool getIsAllDataValid() {
     return !getIsNameValid() &&
         selectedGender.value.isNotEmpty &&
+        selectedEducationType.value.isNotEmpty &&
+        formData['nameProfile']!['text']!.toString().isNotEmpty &&
         formData['cityProfile']!['text']!.toString().isNotEmpty;
   }
 
@@ -298,6 +335,9 @@ class CompleteProfileController extends GetxController {
             'birthday': formData['birthdayProfile']?['text'] ?? '',
             'gender': selectedGender.value,
             'city': formData['cityProfile']?['text'] ?? '',
+            'country': formData['countryProfile']?['text'] ?? '',
+            'address': formData['addressProfile']?['text'] ?? '',
+            'education': selectedEducationType.value,
           },
         );
 
@@ -317,6 +357,7 @@ class CompleteProfileController extends GetxController {
             deleteImageFromAzure();
           }
 
+          profileStudentCompleted.value = true;
           Get.back();
         } else {
           logError('Error send data: ${response.body}');

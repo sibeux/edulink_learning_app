@@ -53,12 +53,16 @@ class CompleteProfileScreen extends StatelessWidget {
               SizedBox(height: 15.h),
               ContainerCompleteProfile(index: 1, actor: actor),
               SizedBox(height: 50.h),
-              actor == 'student'
-                  ? completeProfileController.profileStudentCompleted.value &&
-                          completeProfileController.courseStudentCompleted.value
-                      ? const GetStartedEnable()
-                      : AbsorbPointer(child: const GetStartedDisable())
-                  : const SizedBox(),
+              Obx(
+                () =>
+                    actor == 'student'
+                        ? completeProfileController
+                                .profileStudentCompleted
+                                .value
+                            ? const GetStartedEnable()
+                            : AbsorbPointer(child: const GetStartedDisable())
+                        : const SizedBox(),
+              ),
               SizedBox(height: 15.h),
               RichText(
                 text: TextSpan(
