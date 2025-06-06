@@ -5,6 +5,7 @@ import 'package:edulink_learning_app/widgets/complete_profile/button_save.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/birthday_picker/modal_birthday.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/education_pick.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/gender_pick.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/teacher/courses_picker.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/user_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -117,6 +118,10 @@ class ProfileInsertScreen extends StatelessWidget {
                       completeProfileController: completeProfileController,
                     ),
                   ),
+                  if (actor == 'tutor')
+                    CoursesPicker(
+                      completeProfileController: completeProfileController,
+                    ),
                   GenderPick(controller: completeProfileController),
                   GestureDetector(
                     onTap: () {
@@ -135,7 +140,8 @@ class ProfileInsertScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  EducationPick(controller: completeProfileController),
+                  if (actor == 'student')
+                    EducationPick(controller: completeProfileController),
                   FormContainer(
                     isHasInvalid: true,
                     formType: 'cityProfile',

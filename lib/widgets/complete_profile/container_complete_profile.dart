@@ -110,7 +110,10 @@ class ContainerCompleteProfile extends StatelessWidget {
                         width: 50.w,
                         height: 50.h,
                         decoration: BoxDecoration(
-                          color: HexColor('#FFF3DC'),
+                          color:
+                              actor == 'tutor' && index == 1
+                                  ? HexColor('#FFD27F')
+                                  : HexColor('#FFF3DC'),
                           shape: BoxShape.circle,
                         ),
                         child: Align(

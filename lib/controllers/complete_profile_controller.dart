@@ -267,7 +267,7 @@ class CompleteProfileController extends GetxController {
   bool getIsAllDataValid() {
     return !getIsNameValid() &&
         selectedGender.value.isNotEmpty &&
-        selectedEducationType.value.isNotEmpty &&
+        (selectedEducationType.value.isNotEmpty || coursesList.isNotEmpty) &&
         formData['nameProfile']!['text']!.toString().isNotEmpty &&
         formData['cityProfile']!['text']!.toString().isNotEmpty;
   }
@@ -344,9 +344,7 @@ class CompleteProfileController extends GetxController {
             'country': formData['countryProfile']?['text'] ?? '',
             'address': formData['addressProfile']?['text'] ?? '',
             'education': selectedEducationType.value,
-            'courses': coursesList.isEmpty
-                ? ''
-                : coursesList.join(','),
+            'courses': coursesList.isEmpty ? '' : coursesList.join(','),
           },
         );
 

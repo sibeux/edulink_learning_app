@@ -1,5 +1,6 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
+import 'package:edulink_learning_app/screens/home_screen.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/button_get_started.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/container_complete_profile.dart';
 import 'package:flutter/gestures.dart';
@@ -53,16 +54,14 @@ class CompleteProfileScreen extends StatelessWidget {
               SizedBox(height: 15.h),
               ContainerCompleteProfile(index: 1, actor: actor),
               SizedBox(height: 50.h),
-              Obx(
-                () =>
-                    actor == 'student'
-                        ? completeProfileController
-                                .profileStudentCompleted
-                                .value
+              actor == 'student'
+                  ? Obx(
+                    () =>
+                        completeProfileController.profileStudentCompleted.value
                             ? const GetStartedEnable()
-                            : AbsorbPointer(child: const GetStartedDisable())
-                        : const SizedBox(),
-              ),
+                            : AbsorbPointer(child: const GetStartedDisable()),
+                  )
+                  : const SizedBox(),
               SizedBox(height: 15.h),
               RichText(
                 text: TextSpan(
@@ -83,7 +82,18 @@ class CompleteProfileScreen extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         decoration: TextDecoration.underline,
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer:
+                          TapGestureRecognizer()
+                            ..onTap = () {
+                              if (actor == 'student') {
+                                Get.off(
+                                  () => HomeScreen(),
+                                  transition: Transition.native,
+                                  fullscreenDialog: true,
+                                  popGesture: false,
+                                );
+                              }
+                            },
                     ),
                   ],
                 ),
