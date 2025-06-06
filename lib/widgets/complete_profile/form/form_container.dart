@@ -60,8 +60,6 @@ class FormContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCurrentType =
-        completeProfileController.currentType.value == formType;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,21 +96,34 @@ class FormContainer extends StatelessWidget {
           autoFillHints: formAttributes[formType]['autoFillHints'] as String,
         ),
         SizedBox(height: 5.h),
-        isHasInvalid && isCurrentType
+        isHasInvalid
             ? Obx(
               () =>
-                  (completeProfileController.getIsNameValid())
-                      ? Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          formAttributes[formType]['invalidMessage'] as String,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.red.withValues(alpha: 1),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )
+                  completeProfileController.formData[formType]!['text']
+                              .toString()
+                              .isNotEmpty ||
+                          completeProfileController.currentType.value ==
+                              formType
+                      ? formType.toLowerCase().contains('name')
+                          ? completeProfileController.getIsNameValid() &&
+                                  completeProfileController
+                                      .formData[formType]!['text']
+                                      .toString()
+                                      .isNotEmpty
+                              ? Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  formAttributes[formType]['invalidMessage']
+                                      as String,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.red.withValues(alpha: 1),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )
+                              : SizedBox()
+                          : SizedBox()
                       : SizedBox(),
             )
             : SizedBox(),
