@@ -21,6 +21,8 @@ class CompleteProfileController extends GetxController {
   var oldPhotoUri = '';
   var currentType = ''.obs;
 
+  RxList<String> coursesList = <String>[].obs;
+
   var profileStudentCompleted = false.obs;
   var courseStudentCompleted = false.obs;
   var isInsertImageLoading = false.obs;
@@ -198,6 +200,10 @@ class CompleteProfileController extends GetxController {
                   orElse: () => const MapEntry('', []),
                 )
                 .key;
+    coursesList.value =
+        userData.userCourses.isEmpty
+            ? []
+            : userData.userCourses.split(',').map((e) => e.trim()).toList();
     selectedEducationType.value = userData.userEducation;
     isImageChanged.value = false;
     currentType.value = '';
@@ -338,6 +344,9 @@ class CompleteProfileController extends GetxController {
             'country': formData['countryProfile']?['text'] ?? '',
             'address': formData['addressProfile']?['text'] ?? '',
             'education': selectedEducationType.value,
+            'courses': coursesList.isEmpty
+                ? ''
+                : coursesList.join(','),
           },
         );
 
@@ -358,6 +367,9 @@ class CompleteProfileController extends GetxController {
           }
 
           profileStudentCompleted.value = true;
+          coursesList.isEmpty
+              ? courseStudentCompleted.value = false
+              : courseStudentCompleted.value = true;
           Get.back();
         } else {
           logError('Error send data: ${response.body}');

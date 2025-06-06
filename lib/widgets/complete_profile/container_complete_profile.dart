@@ -1,5 +1,6 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
+import 'package:edulink_learning_app/screens/auth/register_auth/complete_profile/courses_insert_screen.dart';
 import 'package:edulink_learning_app/screens/auth/register_auth/complete_profile/profile_insert_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,8 +43,10 @@ class ContainerCompleteProfile extends StatelessWidget {
     final completeProfileController = Get.find<CompleteProfileController>();
     return Obx(
       () =>
-          completeProfileController.profileStudentCompleted.value ||
-                  !completeProfileController.profileStudentCompleted.value
+          (completeProfileController.profileStudentCompleted.value ||
+                  !completeProfileController.profileStudentCompleted.value ||
+                  completeProfileController.courseStudentCompleted.value ||
+                  !completeProfileController.courseStudentCompleted.value)
               ? GestureDetector(
                 onTap: () {
                   (actor == 'student' &&
@@ -60,7 +63,12 @@ class ContainerCompleteProfile extends StatelessWidget {
                         popGesture: false,
                       )
                       : actor == 'student'
-                      ? null
+                      ? Get.to(
+                        () => CoursesInsertScreen(actor: actor),
+                        transition: Transition.rightToLeft,
+                        fullscreenDialog: true,
+                        popGesture: false,
+                      )
                       : null;
                 },
                 child: Container(
@@ -168,10 +176,15 @@ class ContainerCompleteProfile extends StatelessWidget {
                         size: 30.sp,
                         color:
                             (actor == 'student' &&
-                                    index == 1 &&
-                                    !completeProfileController
-                                        .profileStudentCompleted
-                                        .value)
+                                        (index == 1 || index == 0) &&
+                                        !completeProfileController
+                                            .profileStudentCompleted
+                                            .value) ||
+                                    (actor == 'student' &&
+                                        index == 1 &&
+                                        !completeProfileController
+                                            .courseStudentCompleted
+                                            .value)
                                 ? HexColor('#BABABA')
                                 : ColorPalette().primary,
                       ),
