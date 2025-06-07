@@ -1,7 +1,7 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/logout_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
-import 'package:edulink_learning_app/widgets/user_profile/PhotoUserProfile.dart';
+import 'package:edulink_learning_app/widgets/user_profile/photo_user_profile.dart';
 import 'package:edulink_learning_app/widgets/user_profile/button_logout.dart';
 import 'package:edulink_learning_app/widgets/user_profile/profile_options.dart';
 import 'package:flutter/material.dart';

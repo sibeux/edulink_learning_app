@@ -1,6 +1,5 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/components/toast.dart';
-import 'package:edulink_learning_app/controllers/auth_controller/logout_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/widgets/home_widget/student/banner_slider.dart';
 import 'package:edulink_learning_app/widgets/home_widget/student/guidance_rated_tutor.dart';
@@ -17,7 +16,7 @@ class HomeStudentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userProfileController = Get.find<UserProfileController>();
+    Get.find<UserProfileController>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

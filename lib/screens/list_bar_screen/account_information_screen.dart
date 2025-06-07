@@ -5,7 +5,7 @@ import 'package:edulink_learning_app/widgets/account_information/account_editing
 import 'package:edulink_learning_app/widgets/account_information/account_editing/listile_account_editing.dart';
 import 'package:edulink_learning_app/widgets/account_information/listile_information.dart';
 import 'package:edulink_learning_app/widgets/account_information/top_radius_container.dart';
-import 'package:edulink_learning_app/widgets/user_profile/PhotoUserProfile.dart';
+import 'package:edulink_learning_app/widgets/user_profile/photo_user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

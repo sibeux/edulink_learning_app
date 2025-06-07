@@ -3,8 +3,6 @@ import 'package:edulink_learning_app/controllers/complete_profile_controller.dar
 import 'package:edulink_learning_app/widgets/complete_profile/courses_pick_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 const List<String> genderType = ['male', 'female', 'other'];
 
