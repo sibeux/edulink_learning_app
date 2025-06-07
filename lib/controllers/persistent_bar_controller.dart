@@ -1,6 +1,10 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
-import 'package:edulink_learning_app/screens/home/home_student_screen.dart';
-import 'package:edulink_learning_app/screens/home/home_teacher_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/student/home_student_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/student/booking_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/student/chat_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/student/mentor_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/teacher/home_teacher_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -39,37 +43,52 @@ class PersistentBarController extends GetxController {
 
   // Item navigasi untuk tiap tab
   List<PersistentTabConfig> navBarsItems({required String actor}) {
-    return [
-      buttonNavBar(
-        screen: actor == 'student' ? HomeStudentScreen() : HomeTeacherScreen(),
-        title: 'Home',
-        iconActive: Icons.home,
-        iconInactive: Icons.home_outlined,
-      ),
-      buttonNavBar(
-        screen: HomeStudentScreen(),
-        title: 'Booking',
-        iconActive: Icons.description_rounded,
-        iconInactive: Icons.description_outlined,
-      ),
-      buttonNavBar(
-        screen: HomeStudentScreen(),
-        title: 'Mentor',
-        iconActive: Icons.search,
-        iconInactive: Icons.search_off,
-      ),
-      buttonNavBar(
-        screen: HomeStudentScreen(),
-        title: 'Chat',
-        iconActive: Icons.chat_rounded,
-        iconInactive: Icons.chat_outlined,
-      ),
-      buttonNavBar(
-        screen: HomeStudentScreen(),
-        title: 'Profile',
-        iconActive: Icons.person_2_rounded,
-        iconInactive: Icons.person_2_outlined,
-      ),
-    ];
+    return actor == 'student'
+        ? [
+          buttonNavBar(
+            screen: HomeStudentScreen(),
+            title: 'Home',
+            iconActive: Icons.home,
+            iconInactive: Icons.home_outlined,
+          ),
+          buttonNavBar(
+            screen: BookingScreen(),
+            title: 'Booking',
+            iconActive: Icons.description_rounded,
+            iconInactive: Icons.description_outlined,
+          ),
+          buttonNavBar(
+            screen: MentorScreen(),
+            title: 'Mentor',
+            iconActive: Icons.search,
+            iconInactive: Icons.search_outlined,
+          ),
+          buttonNavBar(
+            screen: ChatScreen(),
+            title: 'Chat',
+            iconActive: Icons.chat_rounded,
+            iconInactive: Icons.chat_outlined,
+          ),
+          buttonNavBar(
+            screen: UserProfileScreen(),
+            title: 'Profile',
+            iconActive: Icons.person_2_rounded,
+            iconInactive: Icons.person_2_outlined,
+          ),
+        ]
+        : [
+          buttonNavBar(
+            screen: HomeTeacherScreen(),
+            title: 'Home',
+            iconActive: Icons.home,
+            iconInactive: Icons.home_outlined,
+          ),
+          buttonNavBar(
+            screen: UserProfileScreen(),
+            title: 'Profile',
+            iconActive: Icons.person_2_rounded,
+            iconInactive: Icons.person_2_outlined,
+          ),
+        ];
   }
 }
