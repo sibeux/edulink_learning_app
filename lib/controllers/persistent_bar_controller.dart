@@ -1,8 +1,10 @@
+import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/screens/home/home_student_screen.dart';
 import 'package:edulink_learning_app/screens/home/home_teacher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class PersistentBarController extends GetxController {
@@ -27,9 +29,10 @@ class PersistentBarController extends GetxController {
         icon: Icon(iconActive),
         inactiveIcon: Icon(iconInactive),
         title: title,
+        textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
         iconSize: 20.sp,
-        activeForegroundColor: Color.fromARGB(255, 69, 214, 149),
-        inactiveForegroundColor: Colors.black.withAlpha(100),
+        activeForegroundColor: ColorPalette().primary,
+        inactiveForegroundColor: HexColor('#bfbfbf'),
       ),
     );
   }
@@ -38,23 +41,34 @@ class PersistentBarController extends GetxController {
   List<PersistentTabConfig> navBarsItems({required String actor}) {
     return [
       buttonNavBar(
-        screen: 
-        actor == 'student' ? HomeStudentScreen() : HomeTeacherScreen(),
+        screen: actor == 'student' ? HomeStudentScreen() : HomeTeacherScreen(),
         title: 'Home',
         iconActive: Icons.home,
         iconInactive: Icons.home_outlined,
       ),
       buttonNavBar(
         screen: HomeStudentScreen(),
-        title: 'Water',
-        iconActive: Icons.grass_rounded,
-        iconInactive: Icons.grass_outlined,
+        title: 'Booking',
+        iconActive: Icons.description_rounded,
+        iconInactive: Icons.description_outlined,
       ),
       buttonNavBar(
         screen: HomeStudentScreen(),
-        title: 'Refill',
-        iconActive: Icons.water_drop_rounded,
-        iconInactive: Icons.water_drop_outlined,
+        title: 'Mentor',
+        iconActive: Icons.search,
+        iconInactive: Icons.search_off,
+      ),
+      buttonNavBar(
+        screen: HomeStudentScreen(),
+        title: 'Chat',
+        iconActive: Icons.chat_rounded,
+        iconInactive: Icons.chat_outlined,
+      ),
+      buttonNavBar(
+        screen: HomeStudentScreen(),
+        title: 'Profile',
+        iconActive: Icons.person_2_rounded,
+        iconInactive: Icons.person_2_outlined,
       ),
     ];
   }
