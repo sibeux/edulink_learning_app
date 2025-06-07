@@ -1,6 +1,9 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
+import 'package:edulink_learning_app/components/toast.dart';
+import 'package:edulink_learning_app/controllers/persistent_bar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 List<String> _logoAssets = [
@@ -18,6 +21,29 @@ List<String> _titles = [
   'Change Password',
   'FAQ',
   'About Us',
+];
+List<Function> _functions = [
+  () {},
+  () {
+    // Navigate to Bookings screen
+    Get.find<PersistentBarController>().controller.jumpToTab(1);
+  },
+  () {
+    // Navigate to favorite tutor screen
+    showToast('Feature coming soon!');
+  },
+  () {
+    // Navigate to change password screen
+    showToast('Feature coming soon!');
+  },
+  () {
+    // Navigate to FAQ screen
+    showToast('Feature coming soon!');
+  },
+  () {
+    // Navigate to about us screen
+    showToast('Feature coming soon!');
+  },
 ];
 
 class ProfileOptions extends StatelessWidget {
@@ -44,7 +70,9 @@ class ContainerProfileOptions extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 20.h),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          _functions[index]();
+        },
         child: Row(
           children: [
             Container(
