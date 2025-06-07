@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
-import 'package:edulink_learning_app/screens/home_screen.dart';
+import 'package:edulink_learning_app/screens/persistent_bar_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -126,8 +126,10 @@ class LoginController extends GetxController {
         );
         logSuccess('Login successful, token: ${response.body}');
         Get.offAll(
-          () => const HomeScreen(),
+          () => PersistentBarScreen(actor: actor),
           transition: Transition.rightToLeftWithFade,
+          fullscreenDialog: true,
+          popGesture: false,
         );
       } else {
         isLoginSuccess.value = false;
