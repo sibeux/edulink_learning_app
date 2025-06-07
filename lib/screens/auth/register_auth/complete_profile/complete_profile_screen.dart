@@ -1,6 +1,6 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
-import 'package:edulink_learning_app/screens/persistent_bar_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/persistent_bar_screen.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/button_get_started.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/container_complete_profile.dart';
 import 'package:flutter/gestures.dart';

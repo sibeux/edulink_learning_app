@@ -20,24 +20,21 @@ class PersistentBarScreen extends StatelessWidget {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
       },
       child: PersistentTabView(
-        tabs: persistentBarController.navBarsItems(
-          actor: actor
-        ),
+        tabs: persistentBarController.navBarsItems(actor: actor),
         controller: persistentBarController.controller,
         navBarBuilder: (p0) {
           return Style4BottomNavBar(
             navBarDecoration: NavBarDecoration(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey,
-                  spreadRadius: 0.2.r,
-                  // blurRadius: 0.1,
-                  offset: Offset(0, 0),
+                  color: Colors.black.withValues(alpha: 0.24),
+                  spreadRadius: 1.r,
+                  blurRadius: 19.r,
+                  offset: Offset(0, 1),
                 ),
               ],
-              borderRadius: BorderRadius.circular(0.r),
             ),
             navBarConfig: p0,
           );

@@ -1,5 +1,5 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
-import 'package:edulink_learning_app/screens/persistent_bar_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/persistent_bar_screen.dart';
 import 'package:edulink_learning_app/widgets/auth_widget/auth_button/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

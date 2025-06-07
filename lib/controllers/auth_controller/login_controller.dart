@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
-import 'package:edulink_learning_app/screens/persistent_bar_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/persistent_bar_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

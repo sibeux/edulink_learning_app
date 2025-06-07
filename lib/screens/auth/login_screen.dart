@@ -238,6 +238,15 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           Obx(
             () =>
+                loginController.isLoading.value
+                    ? ModalBarrier(
+                      dismissible: false,
+                      color: Colors.transparent,
+                    )
+                    : const SizedBox(),
+          ),
+          Obx(
+            () =>
                 loginController.isRedirecting.value
                     ? const Opacity(
                       opacity: 0.8,
