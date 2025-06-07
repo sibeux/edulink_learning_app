@@ -9,23 +9,27 @@ class HomeStudentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProfileController = Get.find<UserProfileController>();
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home Student Screen')),
-      body: Center(
-        child: Column(
-          children: [
-            Text(
-              'Welcome to the Home Screen! ${userProfileController.userData.first.nameUser}',
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(title: const Text('Home Student Screen')),
+          body: Center(
+            child: Column(
+              children: [
+                Text(
+                  'Welcome to the Home Screen! ${userProfileController.userData.first.nameUser}',
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Get.put(LogoutController()).logout();
+                  },
+                  child: const Text('Logout'),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await Get.put(LogoutController()).logout();
-              },
-              child: const Text('Logout'),
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
