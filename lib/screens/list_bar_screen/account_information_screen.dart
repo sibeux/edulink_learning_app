@@ -4,8 +4,8 @@ import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/widgets/account_information/account_editing/button_done_account_edit.dart';
 import 'package:edulink_learning_app/widgets/account_information/account_editing/listile_account_editing.dart';
 import 'package:edulink_learning_app/widgets/account_information/listile_information.dart';
+import 'package:edulink_learning_app/widgets/account_information/photo_account_information.dart';
 import 'package:edulink_learning_app/widgets/account_information/top_radius_container.dart';
-import 'package:edulink_learning_app/widgets/user_profile/photo_user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -52,7 +52,49 @@ class AccountInformationScreen extends StatelessWidget {
                   color: ColorPalette().primary,
                   child: Column(
                     children: [
-                      Center(child: Photouserprofile()),
+                      Center(
+                        child: Stack(
+                          children: [
+                            PhotoAccountInformation(),
+                            Obx(
+                              () =>
+                                  completeProfileController.isNeedEditing.value
+                                      ? Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            await Get.find<
+                                                  CompleteProfileController
+                                                >()
+                                                .insertImage();
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 5.w,
+                                              vertical: 5.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: ColorPalette().primary,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.white,
+                                                width: 3.w,
+                                              ),
+                                            ),
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: Colors.white,
+                                              size: 16.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      : const SizedBox.shrink(),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 15.h),
                       Obx(
                         () => Text(
@@ -60,6 +102,8 @@ class AccountInformationScreen extends StatelessWidget {
                               .userData[0]
                               .nameUser
                               .capitalize!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w700,

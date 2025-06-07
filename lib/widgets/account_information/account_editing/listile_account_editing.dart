@@ -25,21 +25,25 @@ class ListileAccountEditing extends StatelessWidget {
           formType: 'nameProfile',
           formtext: 'Full Name',
         ),
-        ContainertileUserData(
-          completeProfileController: completeProfileController,
-          isHasInvalid: true,
-          isImmutable: true,
-          needEditing: true,
-          formType: 'emailProfile',
-          formtext: 'Email',
+        AbsorbPointer(
+          child: ContainertileUserData(
+            completeProfileController: completeProfileController,
+            isHasInvalid: true,
+            isImmutable: true,
+            needEditing: true,
+            formType: 'emailProfile',
+            formtext: 'Email',
+          ),
         ),
-        ContainertileUserData(
-          completeProfileController: completeProfileController,
-          isHasInvalid: true,
-          isImmutable: true,
-          needEditing: true,
-          formType: 'numberProfile',
-          formtext: 'Phone Number',
+        AbsorbPointer(
+          child: ContainertileUserData(
+            completeProfileController: completeProfileController,
+            isHasInvalid: true,
+            isImmutable: true,
+            needEditing: true,
+            formType: 'numberProfile',
+            formtext: 'Phone Number',
+          ),
         ),
         GenderPickerAccountInfo(
           controller: completeProfileController,

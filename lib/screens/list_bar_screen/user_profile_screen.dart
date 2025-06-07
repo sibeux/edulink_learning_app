@@ -34,6 +34,8 @@ class UserProfileScreen extends StatelessWidget {
                 Obx(
                   () => Text(
                     userProfileController.userData[0].nameUser.capitalize!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w700,
