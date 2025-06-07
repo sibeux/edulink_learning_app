@@ -1,7 +1,8 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
-import 'package:edulink_learning_app/widgets/account_information/listile_account_editing.dart';
+import 'package:edulink_learning_app/widgets/account_information/account_editing/button_done_account_edit.dart';
+import 'package:edulink_learning_app/widgets/account_information/account_editing/listile_account_editing.dart';
 import 'package:edulink_learning_app/widgets/account_information/listile_information.dart';
 import 'package:edulink_learning_app/widgets/account_information/top_radius_container.dart';
 import 'package:edulink_learning_app/widgets/user_profile/PhotoUserProfile.dart';
@@ -130,28 +131,9 @@ class AccountInformationScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   TopRadiusContainer(),
-                                  Container(
-                                    width: double.infinity,
-                                    alignment: Alignment.centerRight,
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await completeProfileController
-                                            .sendChangeProfileData(
-                                              needBack: false,
-                                            );
-                                        completeProfileController
-                                            .isNeedEditing
-                                            .value = false;
-                                      },
-                                      child: Text(
-                                        'Done',
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: HexColor('#535353'),
-                                        ),
-                                      ),
-                                    ),
+                                  ButtonDoneAccountEdit(
+                                    completeProfileController:
+                                        completeProfileController,
                                   ),
                                   SizedBox(height: 25.h),
                                   ListileAccountEditing(

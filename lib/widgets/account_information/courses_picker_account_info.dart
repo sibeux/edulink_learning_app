@@ -23,26 +23,13 @@ class CoursesPickerAccountInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              'Interest',
-              style: TextStyle(
-                color: ColorPalette().primary,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            if (needEditing)
-              Text(
-                ' *',
-                style: TextStyle(
-                  color: Colors.red.withValues(alpha: 1),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-          ],
+        Text(
+          'Interest',
+          style: TextStyle(
+            color: ColorPalette().primary,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         SizedBox(height: controller.coursesList.isEmpty ? 10.h : 15.h),
         Row(
