@@ -57,31 +57,34 @@ class AuthButtonLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 248.w,
-      height: 47.h,
-      child: ElevatedButton(
-        onPressed: () {
-          // Do nothing
-        },
-        style: ElevatedButton.styleFrom(
-          elevation: 0, // Menghilangkan shadow
-          backgroundColor: HexColor('#fefffe'),
-          splashFactory: InkRipple.splashFactory,
-          side: BorderSide(
-            color: ColorPalette().primary,
-            strokeAlign: BorderSide.strokeAlignCenter,
-            width: 2.w,
+    return AbsorbPointer(
+      absorbing: true,
+      child: SizedBox(
+        width: 248.w,
+        height: 47.h,
+        child: ElevatedButton(
+          onPressed: () {
+            // Do nothing
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 0, // Menghilangkan shadow
+            backgroundColor: HexColor('#fefffe'),
+            splashFactory: InkRipple.splashFactory,
+            side: BorderSide(
+              color: ColorPalette().primary,
+              strokeAlign: BorderSide.strokeAlignCenter,
+              width: 2.w,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-        child: Center(
-          child: Transform.scale(
-            scale: 0.7,
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(ColorPalette().primary),
+          child: Center(
+            child: Transform.scale(
+              scale: 0.7,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(ColorPalette().primary),
+              ),
             ),
           ),
         ),

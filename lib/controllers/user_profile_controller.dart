@@ -17,7 +17,7 @@ class UserProfileController extends GetxController {
   Future<void> getUserData() async {
     isLoading.value = true;
     final box = GetStorage();
-    final email = box.read('email');
+    final email = box.read('email') ?? '';
 
     final String url =
         'https://sibeux.my.id/project/edulink-php-jwt/api/user?method=get_user_data&email=$email';
@@ -38,15 +38,20 @@ class UserProfileController extends GetxController {
                 userPhone: user['phone_number'],
                 userPhoto: user['user_photo'] ?? '',
                 userActor: user['user_actor'],
+                userGender: user['gender'] ?? '',
+                userBirthday: user['birth_date'] ?? '01/01/2000',
+                userCity: user['city'] ?? '',
+                userCountry: user['country'] ?? '',
+                userAddress: user['address'] ?? '',
+                userEducation: user['education_level'] ?? '',
+                userCourses: user['courses'] ?? '',
               );
             }).toList();
 
         idUser = list[0].userId;
 
         userData.value = list;
-        logSuccess(
-          'User data fetched successfully.',
-        );
+        logSuccess('User data fetched successfully.');
       } else {
         userData.value = [];
         logError('No user data found for the given email.');

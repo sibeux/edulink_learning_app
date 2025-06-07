@@ -1,6 +1,7 @@
 import 'package:edulink_learning_app/controllers/auth_controller/jwt_controller.dart';
-import 'package:edulink_learning_app/screens/home_screen.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/screens/onboarding/first_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/persistent_bar_screen.dart';
 import 'package:edulink_learning_app/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -16,7 +17,9 @@ class SplashHandler extends StatelessWidget {
 
     if (box.read('login') == true) {
       // Validasi token jika perlu (misalnya cek expiry)
-      return const HomeScreen();
+      return PersistentBarScreen(
+        actor: Get.find<UserProfileController>().userData[0].userActor,
+      );
     } else {
       return const FirstScreen();
     }

@@ -43,10 +43,11 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<JwtController>(() => JwtController(), fenix: true);
-    Get.lazyPut<UserProfileController>(
-      () => UserProfileController(),
-      fenix: true,
-    );
+    // Get.lazyPut<UserProfileController>(
+    //   () => UserProfileController(),
+    //   fenix: true,
+    // );
+    Get.put(UserProfileController(), permanent: true);
   }
 }
 

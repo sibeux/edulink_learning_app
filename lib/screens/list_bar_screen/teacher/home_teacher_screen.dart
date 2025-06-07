@@ -3,14 +3,14 @@ import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeTeacherScreen extends StatelessWidget {
+  const HomeTeacherScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final userProfileController = Get.find<UserProfileController>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Screen')),
+      appBar: AppBar(title: const Text('Home Teacher Screen')),
       body: Center(
         child: Column(
           children: [
@@ -18,9 +18,8 @@ class HomeScreen extends StatelessWidget {
               'Welcome to the Home Screen! ${userProfileController.userData.first.nameUser}',
             ),
             ElevatedButton(
-              onPressed: () {
-                // Action when button is pressed
-                Get.put(LogoutController()).logout();
+              onPressed: () async {
+                await Get.put(LogoutController()).logout();
               },
               child: const Text('Logout'),
             ),
