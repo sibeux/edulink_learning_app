@@ -76,9 +76,11 @@ class ListileInformation extends StatelessWidget {
           formType: 'addressProfile',
           formtext: 'Address Line',
         ),
-        CoursesPickerAccountInfo(
-          controller: completeProfileController,
-          needEditing: false,
+        AbsorbPointer(
+          child: CoursesPickerAccountInfo(
+            completeProfileController: completeProfileController,
+            needEditing: false,
+          ),
         ),
       ],
     );

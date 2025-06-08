@@ -90,7 +90,7 @@ class ListileAccountEditing extends StatelessWidget {
           formtext: 'Address Line',
         ),
         CoursesPickerAccountInfo(
-          controller: completeProfileController,
+          completeProfileController: completeProfileController,
           needEditing: true,
         ),
       ],
