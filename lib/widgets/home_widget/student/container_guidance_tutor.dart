@@ -8,13 +8,14 @@ import 'package:hexcolor/hexcolor.dart';
 class ContainerGuidanceTutor extends StatelessWidget {
   const ContainerGuidanceTutor({
     super.key,
+    required this.image,
     required this.name,
     required this.courses,
     required this.rating,
     required this.index,
   });
 
-  final String name, courses, rating;
+  final String image, name, courses, rating;
   final int index;
 
   @override
@@ -38,16 +39,37 @@ class ContainerGuidanceTutor extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
-            width: double.infinity,
-            height: 120.h,
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(17.r),
-                bottomLeft: Radius.circular(17.r),
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 120.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(17.r),
+                    bottomLeft: Radius.circular(17.r),
+                  ),
+                ),
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                ),
               ),
-            ),
+              if (index % 2 == 0)
+                Positioned(
+                  top: 15.h,
+                  right: 20.w,
+                  child: Container(
+                    width: 10.w,
+                    height: 10.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: HexColor('#36D72A'),
+                    ),
+                  ),
+                ),
+            ],
           ),
           SizedBox(height: 12.h),
           Padding(
