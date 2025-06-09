@@ -20,7 +20,11 @@ class ButtonDoneAccountEdit extends StatelessWidget {
       child: Obx(
         () => InkWell(
           onTap: () async {
-            if (!completeProfileController.getIsAllDataValid()) {
+            if (!completeProfileController.getIsAllDataValid() ||
+                !completeProfileController
+                    .selectedEducationType
+                    .value
+                    .isNotEmpty) {
               return;
             }
             await completeProfileController.sendChangeProfileData(
@@ -34,7 +38,11 @@ class ButtonDoneAccountEdit extends StatelessWidget {
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color:
-                  completeProfileController.getIsAllDataValid()
+                  completeProfileController.getIsAllDataValid() &&
+                          completeProfileController
+                              .selectedEducationType
+                              .value
+                              .isNotEmpty
                       ? ColorPalette().primary
                       : Colors.grey,
             ),

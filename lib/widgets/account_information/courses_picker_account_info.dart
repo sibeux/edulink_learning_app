@@ -1,6 +1,9 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
+import 'package:edulink_learning_app/components/toast.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/models/student_courses.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/teacher/courses_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -208,7 +211,20 @@ class _CoursesPickerAccountInfoState extends State<CoursesPickerAccountInfo> {
               SizedBox(height: 10.h),
               if (widget.needEditing)
                 GestureDetector(
-                  onTap: _toggleOverlay,
+                  onTap: () {
+                    if (widget
+                            .completeProfileController
+                            .selectedEducationType
+                            .isNotEmpty &&
+                        Get.find<UserProfileController>()
+                                .userData[0]
+                                .userActor ==
+                            'student') {
+                      _toggleOverlay();
+                    } else {
+                      showToast('Please select education type first');
+                    }
+                  },
                   child: Icon(
                     Icons.add_circle,
                     color: ColorPalette().primary,
@@ -260,13 +276,18 @@ class _CoursesPickerAccountInfoState extends State<CoursesPickerAccountInfo> {
                     coursesFilterChip(
                       dropdownSetState: dropdownSetState,
                       coursesList:
-                          studentCourses[widget
-                                  .completeProfileController
-                                  .selectedEducationType
-                                  .value
-                                  .toUpperCase()]!
-                              .toSet()
-                              .toList(),
+                          Get.find<UserProfileController>()
+                                      .userData[0]
+                                      .userActor ==
+                                  'student'
+                              ? studentCourses[widget
+                                      .completeProfileController
+                                      .selectedEducationType
+                                      .value
+                                      .toUpperCase()]!
+                                  .toSet()
+                                  .toList()
+                              : teacherAllCourses.toSet().toList(),
                       runSpacing: 15.h,
                     ),
                   ],

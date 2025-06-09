@@ -15,6 +15,46 @@ class CoursesPicker extends StatefulWidget {
   State<CoursesPicker> createState() => _CoursesPickerState();
 }
 
+// Daftar data untuk dropdown
+final List<String> topCourses = ['math', 'science', 'english'];
+final List<String> teacherAllCourses = [
+  "english",
+  "indonesian language",
+  "traditional language",
+  "biology",
+  "physics",
+  "geography",
+  "history",
+  "social sciences",
+  "math",
+  'automotive',
+  'science',
+  'engineering',
+  'agriculture',
+  'health',
+  'hospitality',
+  'tourism',
+  'media and broadcasting',
+  'business and marketing',
+  'entrepreneurship',
+  "information technology and computer",
+  "sports",
+  "art and culture",
+  "religious education",
+  'pancasila education',
+  "physical education",
+  "sociology",
+  "economics",
+  "chemistry",
+  "computer science",
+  "civics",
+  "psychology",
+  'fiqh',
+  'aqidah akhlak',
+  'quran hadith',
+  'arabic language',
+];
+
 class _CoursesPickerState extends State<CoursesPicker> {
   // 'Tali' penghubung antara widget anchor dan dropdown
   final LayerLink _layerLink = LayerLink();
@@ -22,46 +62,6 @@ class _CoursesPickerState extends State<CoursesPicker> {
   // Controller untuk overlay
   OverlayEntry? _overlayEntry;
   bool _isOverlayVisible = false;
-
-  // Daftar data untuk dropdown
-  final List<String> topCourses = ['math', 'science', 'english'];
-  final List<String> _allCourses = [
-    "english",
-    "indonesian language",
-    "traditional language",
-    "biology",
-    "physics",
-    "geography",
-    "history",
-    "social sciences",
-    "math",
-    'automotive',
-    'science',
-    'engineering',
-    'agriculture',
-    'health',
-    'hospitality',
-    'tourism',
-    'media and broadcasting',
-    'business and marketing',
-    'entrepreneurship',
-    "information technology and computer",
-    "sports",
-    "art and culture",
-    "religious education",
-    'pancasila education',
-    "physical education",
-    "sociology",
-    "economics",
-    "chemistry",
-    "computer science",
-    "civics",
-    "psychology",
-    'fiqh',
-    'aqidah akhlak',
-    'quran hadith',
-    'arabic language',
-  ];
 
   final ScrollController _dropdownScrollController = ScrollController();
   final ScrollController _selectedCoursesScrollController = ScrollController();
@@ -340,7 +340,7 @@ class _CoursesPickerState extends State<CoursesPicker> {
                     SizedBox(height: 8.h),
                     coursesFilterChip(
                       dropdownSetState: dropdownSetState,
-                      coursesList: _allCourses.toSet().toList(),
+                      coursesList: teacherAllCourses.toSet().toList(),
                       runSpacing: 15.h,
                     ),
                   ],

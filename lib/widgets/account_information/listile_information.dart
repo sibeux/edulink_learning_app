@@ -2,15 +2,18 @@ import 'package:edulink_learning_app/controllers/complete_profile_controller.dar
 import 'package:edulink_learning_app/widgets/account_information/container_user_data.dart';
 import 'package:edulink_learning_app/widgets/account_information/courses_picker_account_info.dart';
 import 'package:edulink_learning_app/widgets/account_information/gender_picker_account_info.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/education_pick.dart';
 import 'package:flutter/material.dart';
 
 class ListileInformation extends StatelessWidget {
   const ListileInformation({
     super.key,
     required this.completeProfileController,
+    required this.actor,
   });
 
   final CompleteProfileController completeProfileController;
+  final String actor;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,10 @@ class ListileInformation extends StatelessWidget {
           controller: completeProfileController,
           needEditing: false,
         ),
+        if (actor == 'student')
+          AbsorbPointer(
+            child: EducationPick(controller: completeProfileController),
+          ),
         ContainertileUserData(
           completeProfileController: completeProfileController,
           isHasInvalid: false,

@@ -19,6 +19,7 @@ class AccountInformationScreen extends StatelessWidget {
     final userProfileController = Get.find<UserProfileController>();
     final completeProfileController = Get.put(CompleteProfileController());
     completeProfileController.assignCurrentDataForm();
+    completeProfileController.isNeedEditing.value = false;
     return Stack(
       children: [
         Scaffold(
@@ -183,6 +184,10 @@ class AccountInformationScreen extends StatelessWidget {
                                   ListileAccountEditing(
                                     completeProfileController:
                                         completeProfileController,
+                                    actor:
+                                        userProfileController
+                                            .userData[0]
+                                            .userActor,
                                   ),
                                 ],
                               ),
@@ -217,6 +222,10 @@ class AccountInformationScreen extends StatelessWidget {
                                   ListileInformation(
                                     completeProfileController:
                                         completeProfileController,
+                                    actor:
+                                        userProfileController
+                                            .userData[0]
+                                            .userActor,
                                   ),
                                 ],
                               ),

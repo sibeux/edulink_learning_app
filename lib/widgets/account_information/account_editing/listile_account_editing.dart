@@ -3,15 +3,17 @@ import 'package:edulink_learning_app/widgets/account_information/container_user_
 import 'package:edulink_learning_app/widgets/account_information/courses_picker_account_info.dart';
 import 'package:edulink_learning_app/widgets/account_information/gender_picker_account_info.dart';
 import 'package:edulink_learning_app/widgets/complete_profile/form/birthday_picker/modal_birthday.dart';
+import 'package:edulink_learning_app/widgets/complete_profile/form/education_pick.dart';
 import 'package:flutter/material.dart';
 
 class ListileAccountEditing extends StatelessWidget {
   const ListileAccountEditing({
     super.key,
-    required this.completeProfileController,
+    required this.completeProfileController, required this.actor,
   });
 
   final CompleteProfileController completeProfileController;
+  final String actor;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,8 @@ class ListileAccountEditing extends StatelessWidget {
           controller: completeProfileController,
           needEditing: true,
         ),
+        if (actor == 'student')
+        EducationPick(controller: completeProfileController),
         GestureDetector(
           onTap: () {
             birthdayPickModal(context, controller: completeProfileController);
