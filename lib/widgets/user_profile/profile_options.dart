@@ -1,6 +1,7 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/components/toast.dart';
 import 'package:edulink_learning_app/controllers/persistent_bar_controller.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/account_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 List<String> _logoAssets = [
   'assets/images/screens/user-profile/user.png',
+  'assets/images/screens/user-profile/profile.png',
   'assets/images/screens/user-profile/list.png',
   'assets/images/screens/user-profile/love.png',
   'assets/images/screens/user-profile/check.png',
@@ -17,6 +19,7 @@ List<String> _logoAssets = [
 ];
 List<String> _titles = [
   'Account Information',
+  'Profile',
   'My Bookings',
   'Favorite Tutor',
   'Change Password',
@@ -32,6 +35,10 @@ List<Function> _functions = [
       popGesture: false,
       fullscreenDialog: true,
     );
+  },
+  () {
+    // Navigate to Profile screen
+    Get.find<PersistentBarController>().controller.jumpToTab(0);
   },
   () {
     // Navigate to Bookings screen
@@ -63,7 +70,12 @@ class ProfileOptions extends StatelessWidget {
     return Column(
       children: [
         for (int i = 0; i < _titles.length; i++)
-          ContainerProfileOptions(index: i),
+          if ((Get.find<UserProfileController>().userData[0].userActor ==
+                      'student' &&
+                  i != 1) ||
+              (Get.find<UserProfileController>().userData[0].userActor ==
+                  'tutor')) // Exclude 'Profile' for non-tutors
+            ContainerProfileOptions(index: i),
       ],
     );
   }
