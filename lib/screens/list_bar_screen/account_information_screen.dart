@@ -99,10 +99,7 @@ class AccountInformationScreen extends StatelessWidget {
                       SizedBox(height: 15.h),
                       Obx(
                         () => Text(
-                          userProfileController
-                              .userData[0]
-                              .nameUser
-                              .capitalize!,
+                          userProfileController.userData[0].nameUser,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -122,6 +119,64 @@ class AccountInformationScreen extends StatelessWidget {
                             color: HexColor('#FFD27F'),
                           ),
                         ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Obx(
+                        () =>
+                            completeProfileController.isNeedEditing.value
+                                ? Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 5.h,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    left: 50.w,
+                                    right: 50.w,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        completeProfileController
+                                                .isImageFileTooLarge
+                                                .value
+                                            ? const Color.fromARGB(
+                                              255,
+                                              254,
+                                              231,
+                                              234,
+                                            )
+                                            : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(5.r),
+                                  ),
+                                  child:
+                                      completeProfileController
+                                              .isImageFileTooLarge
+                                              .value
+                                          ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.info_outline,
+                                                color: HexColor('#cd7a7d'),
+                                                size: 15.sp,
+                                              ),
+                                              SizedBox(width: 5.h),
+                                              Text(
+                                                'Maksimal ukuran gambar 2 MB',
+                                                textAlign: TextAlign.center,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: HexColor('#cd7a7d'),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                          : const SizedBox(),
+                                )
+                                : const SizedBox(),
                       ),
                     ],
                   ),

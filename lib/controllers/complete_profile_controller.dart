@@ -207,6 +207,7 @@ class CompleteProfileController extends GetxController {
             : userData.userCourses.split(',').map((e) => e.trim()).toList();
     selectedEducationType.value = userData.userEducation;
     isImageChanged.value = false;
+    isImageFileTooLarge.value = false;
     currentType.value = '';
     update();
   }
@@ -332,7 +333,7 @@ class CompleteProfileController extends GetxController {
           body: {
             'method': 'change_user_data',
             'name': formData['nameProfile']?['text'] ?? '',
-            'email': email.value,
+            'email': formData['emailProfile']?['text'] ?? '',
             'photo':
                 isImageChanged.value &&
                         !photoUri.value.contains('http') &&

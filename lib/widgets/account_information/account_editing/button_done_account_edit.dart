@@ -1,5 +1,6 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,10 +22,13 @@ class ButtonDoneAccountEdit extends StatelessWidget {
         () => InkWell(
           onTap: () async {
             if (!completeProfileController.getIsAllDataValid() ||
-                !completeProfileController
-                    .selectedEducationType
-                    .value
-                    .isNotEmpty) {
+                (!completeProfileController
+                        .selectedEducationType
+                        .value
+                        .isNotEmpty &&
+                    !completeProfileController.coursesList.isNotEmpty &&
+                    Get.find<UserProfileController>().userData[0].userActor ==
+                        'student')) {
               return;
             }
             await completeProfileController.sendChangeProfileData(
@@ -39,10 +43,16 @@ class ButtonDoneAccountEdit extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color:
                   completeProfileController.getIsAllDataValid() &&
-                          completeProfileController
-                              .selectedEducationType
-                              .value
-                              .isNotEmpty
+                          ((completeProfileController
+                                      .selectedEducationType
+                                      .isNotEmpty &&
+                                  completeProfileController
+                                      .coursesList
+                                      .isNotEmpty) ||
+                              Get.find<UserProfileController>()
+                                      .userData[0]
+                                      .userActor !=
+                                  'student')
                       ? ColorPalette().primary
                       : Colors.grey,
             ),

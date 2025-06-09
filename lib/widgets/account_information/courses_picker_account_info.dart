@@ -14,10 +14,11 @@ class CoursesPickerAccountInfo extends StatefulWidget {
     super.key,
     required this.completeProfileController,
     required this.needEditing,
+    required this.isHasInvalid,
   });
 
   final CompleteProfileController completeProfileController;
-  final bool needEditing;
+  final bool needEditing, isHasInvalid;
 
   @override
   State<CoursesPickerAccountInfo> createState() =>
@@ -52,7 +53,6 @@ class _CoursesPickerAccountInfoState extends State<CoursesPickerAccountInfo> {
 
   void _showOverlay() {
     _overlayEntry = _createOverlayEntry(
-      completeProfileController: widget.completeProfileController,
     );
     Overlay.of(context).insert(_overlayEntry!);
     setState(() {
@@ -70,9 +70,7 @@ class _CoursesPickerAccountInfoState extends State<CoursesPickerAccountInfo> {
     }
   }
 
-  OverlayEntry _createOverlayEntry({
-    required CompleteProfileController completeProfileController,
-  }) {
+  OverlayEntry _createOverlayEntry() {
     // Kita tidak lagi memerlukan RenderBox untuk mendapatkan ukuran anchor
     // final renderBox = context.findRenderObject() as RenderBox;
     // final size = renderBox.size;
@@ -113,13 +111,27 @@ class _CoursesPickerAccountInfoState extends State<CoursesPickerAccountInfo> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Interest',
-          style: TextStyle(
-            color: ColorPalette().primary,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-          ),
+        Row(
+          children: [
+            Text(
+              'Interest',
+              style: TextStyle(
+                color: ColorPalette().primary,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            widget.isHasInvalid
+                ? Text(
+                  ' *',
+                  style: TextStyle(
+                    color: Colors.red.withValues(alpha: 1),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+                : SizedBox(),
+          ],
         ),
         SizedBox(
           height:
@@ -212,14 +224,14 @@ class _CoursesPickerAccountInfoState extends State<CoursesPickerAccountInfo> {
               if (widget.needEditing)
                 GestureDetector(
                   onTap: () {
-                    if (widget
+                    if ((widget
                             .completeProfileController
                             .selectedEducationType
-                            .isNotEmpty &&
+                            .isNotEmpty ||
                         Get.find<UserProfileController>()
                                 .userData[0]
-                                .userActor ==
-                            'student') {
+                                .userActor !=
+                            'student')) {
                       _toggleOverlay();
                     } else {
                       showToast('Please select education type first');

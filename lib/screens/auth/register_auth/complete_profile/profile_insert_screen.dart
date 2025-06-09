@@ -53,39 +53,91 @@ class ProfileInsertScreen extends StatelessWidget {
           children: [
             SizedBox(height: 20.h),
             Center(
-              child: Stack(
+              child: Column(
                 children: [
-                  UserPhoto(),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () async {
-                        await Get.find<CompleteProfileController>()
-                            .insertImage();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 5.w,
-                          vertical: 5.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: ColorPalette().primary,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 3.w),
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 16.sp,
+                  Stack(
+                    children: [
+                      UserPhoto(),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await Get.find<CompleteProfileController>()
+                                .insertImage();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.w,
+                              vertical: 5.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: ColorPalette().primary,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 3.w,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 16.sp,
+                            ),
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                  Obx(
+                    () => Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 5.h,
+                      ),
+                      margin: EdgeInsets.only(
+                        top: 10.h,
+                        bottom: 30.h,
+                        left: 50.w,
+                        right: 50.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            completeProfileController.isImageFileTooLarge.value
+                                ? const Color.fromARGB(255, 254, 231, 234)
+                                : Colors.transparent,
+                        borderRadius: BorderRadius.circular(5.r),
+                      ),
+                      child:
+                          completeProfileController.isImageFileTooLarge.value
+                              ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.info_outline,
+                                    color: HexColor('#cd7a7d'),
+                                    size: 15.sp,
+                                  ),
+                                  SizedBox(width: 5.h),
+                                  Text(
+                                    'Maksimal ukuran gambar 2 MB',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: HexColor('#cd7a7d'),
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              )
+                              : const SizedBox(),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 30.h),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 40.w),
               alignment: Alignment.centerLeft,

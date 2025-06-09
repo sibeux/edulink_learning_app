@@ -96,6 +96,7 @@ class ListileAccountEditing extends StatelessWidget {
         CoursesPickerAccountInfo(
           completeProfileController: completeProfileController,
           needEditing: true,
+          isHasInvalid: true,
         ),
       ],
     );

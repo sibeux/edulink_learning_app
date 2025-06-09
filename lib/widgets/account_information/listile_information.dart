@@ -87,6 +87,7 @@ class ListileInformation extends StatelessWidget {
           child: CoursesPickerAccountInfo(
             completeProfileController: completeProfileController,
             needEditing: false,
+            isHasInvalid: false,
           ),
         ),
       ],
