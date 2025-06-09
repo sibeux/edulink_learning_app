@@ -264,7 +264,7 @@ class AccountInformationScreen extends StatelessWidget {
                                             .value = true;
                                       },
                                       child: Text(
-                                        'Edit Information',
+                                        'Edit',
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
