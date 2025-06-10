@@ -39,7 +39,7 @@ class AccountInformationScreen extends StatelessWidget {
               'Account Information',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -48,7 +48,7 @@ class AccountInformationScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(25),
+                  padding: EdgeInsets.all(25.w),
                   width: double.infinity,
                   color: ColorPalette().primary,
                   child: Column(

@@ -59,6 +59,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   fluttertoast: ^8.2.12
   persistent_bottom_nav_bar_v2: ^6.0.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

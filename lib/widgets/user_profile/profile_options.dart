@@ -3,6 +3,7 @@ import 'package:edulink_learning_app/components/toast.dart';
 import 'package:edulink_learning_app/controllers/persistent_bar_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/account_information_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/teacher/profile_teacher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,12 @@ List<Function> _functions = [
   },
   () {
     // Navigate to Profile screen
-    Get.find<PersistentBarController>().controller.jumpToTab(0);
+    Get.to(
+      () => const ProfileTeacherScreen(),
+      transition: Transition.rightToLeft,
+      popGesture: false,
+      fullscreenDialog: true,
+    );
   },
   () {
     // Navigate to Bookings screen
