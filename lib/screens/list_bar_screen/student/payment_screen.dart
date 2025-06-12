@@ -17,63 +17,73 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BookingController bookingController = Get.find<BookingController>();
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        leading: GestureDetector(
-          onTap: () {
-            Get.back();
-          },
-          child: Icon(Icons.arrow_back_ios_new, color: ColorPalette().primary),
-        ),
-        centerTitle: true,
-        title: Text(
-          'Payment',
-          style: TextStyle(
-            color: HexColor('#1A1A1A'),
-            fontSize: 28.sp,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 60.w,
-                      vertical: 20.h,
-                    ),
-                    child: Image.asset(
-                      'assets/images/screens/dummy_progress_bar.png',
-                    ),
-                  ),
-                  Divider(color: Colors.grey.shade300, thickness: 2),
-                  SizedBox(height: 30.h),
-                  ContainerMentorPaymentInfo(
-                    mentor: mentor,
-                    bookingController: bookingController,
-                  ),
-                  SizedBox(height: 25.h),
-                  ContainerOrderDetailPayment(
-                    bookingController: bookingController,
-                  ),
-                ],
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Colors.white,
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            leading: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Icon(Icons.arrow_back_ios_new, color: ColorPalette().primary),
+            ),
+            centerTitle: true,
+            title: Text(
+              'Payment',
+              style: TextStyle(
+                color: HexColor('#1A1A1A'),
+                fontSize: 28.sp,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
-          ContainerTotalButton(
-            bookingController: bookingController,
-            mentor: mentor,
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 60.w,
+                          vertical: 20.h,
+                        ),
+                        child: Image.asset(
+                          'assets/images/screens/dummy_progress_bar.png',
+                        ),
+                      ),
+                      Divider(color: Colors.grey.shade300, thickness: 2),
+                      SizedBox(height: 30.h),
+                      ContainerMentorPaymentInfo(
+                        mentor: mentor,
+                        bookingController: bookingController,
+                      ),
+                      SizedBox(height: 25.h),
+                      ContainerOrderDetailPayment(
+                        bookingController: bookingController,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ContainerTotalButton(
+                bookingController: bookingController,
+                mentor: mentor,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Obx(
+          () =>
+              bookingController.isLoadingSendBooking.value
+                  ? ModalBarrier(dismissible: false, color: Colors.transparent)
+                  : const SizedBox(),
+        ),
+      ],
     );
   }
 }

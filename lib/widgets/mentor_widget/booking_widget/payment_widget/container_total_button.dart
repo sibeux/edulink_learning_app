@@ -1,9 +1,11 @@
 import 'package:edulink_learning_app/components/string_formatter.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
 import 'package:edulink_learning_app/models/explore_mentor.dart';
+import 'package:edulink_learning_app/widgets/auth_widget/auth_button/auth_button.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/payment_widget/confirm_payment_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ContainerTotalButton extends StatelessWidget {
@@ -66,7 +68,18 @@ class ContainerTotalButton extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Flexible(flex: 2, child: ConfirmPaymentButton()),
+          Obx(
+            () => Flexible(
+              flex: 2,
+              child:
+                  bookingController.isLoadingSendBooking.value
+                      ? AbsorbPointer(child: AuthButtonLoading())
+                      : ConfirmPaymentButton(
+                          bookingController: bookingController,
+                          mentor: mentor,
+                      ),
+            ),
+          ),
         ],
       ),
     );
