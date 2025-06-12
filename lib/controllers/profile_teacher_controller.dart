@@ -6,11 +6,13 @@ import 'package:edulink_learning_app/models/teacher.dart';
 import 'package:edulink_learning_app/models/teacher_availabilty.dart';
 import 'package:get/get.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:http/http.dart' as http;
 
 var unescape = HtmlUnescape();
 
 class ProfileTeacherController extends GetxController {
   RxBool isLoadingFetchData = false.obs;
+  RxBool isLoadingUpdateData = false.obs;
   RxBool updateRefreshSetAvailableDay = false.obs;
 
   RxList<Teacher> teacherData = RxList<Teacher>([]);
@@ -43,6 +45,7 @@ class ProfileTeacherController extends GetxController {
 
       teacherData.value = [teacher];
       availabilityData.value = _generateFullAvailability(teacher.availability);
+
       teacherData[0].availability =
           availabilityData
               .map(
@@ -56,7 +59,6 @@ class ProfileTeacherController extends GetxController {
                 ),
               )
               .toList();
-      
 
       logSuccess('Teacher data fetched successfully.');
     } catch (e) {
@@ -66,6 +68,46 @@ class ProfileTeacherController extends GetxController {
       }
     } finally {
       isLoadingFetchData.value = false;
+    }
+  }
+
+  Future<void> updateTeacherProfile() async {
+    isLoadingUpdateData.value = true;
+    try {
+      final url = 'https://sibeux.my.id/project/edulink-php-jwt/api/teacher';
+
+      final body = {
+        'method': 'update_teacher_profile',
+        'teacher_id': Get.find<UserProfileController>().idUser,
+        'availability': availabilityData.toList(),
+        'price': teacherData[0].price,
+      };
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result['status'] == 'success') {
+          logSuccess(
+            'Teacher availability updated successfully. respnse: $result',
+          );
+        } else {
+          throw Exception(result['message'] ?? 'Unknown error from server');
+        }
+      } else {
+        throw Exception('HTTP error ${response.statusCode}');
+      }
+    } catch (e) {
+      logError("Error in updateTeacherAvailability: $e");
+      if (e is Error) {
+        logError('Stack trace: ${e.stackTrace}');
+      }
+    } finally {
+      isLoadingUpdateData.value = false;
     }
   }
 
@@ -141,7 +183,7 @@ class ProfileTeacherController extends GetxController {
     }).toList();
   }
 
-  Future<void> toggleSetAvailableDay(String day, bool value) async {
+  void toggleSetAvailableDay(String day, bool value) {
     int index = availabilityData.indexWhere(
       (item) => item['availableDay'] == day,
     );

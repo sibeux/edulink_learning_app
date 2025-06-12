@@ -72,11 +72,13 @@ class AvailableDateSection extends StatelessWidget {
                     text: 'this is loading shimmer\ndsfs\n',
                     size: 14,
                   )
-                  : controller.teacherData[0].availability!.isEmpty
+                  : controller.teacherData[0].availability!
+                      .where((item) => item.isAvailable.value)
+                      .isEmpty
                   ? Container(
                     margin: EdgeInsets.only(bottom: 12.h),
                     child: Text(
-                      'No date available',
+                      'No day available',
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 14.sp,

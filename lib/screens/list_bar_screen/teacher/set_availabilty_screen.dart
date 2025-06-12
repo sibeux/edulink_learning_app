@@ -35,7 +35,9 @@ class SetAvailabiltyScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.back();
+            },
             child: Text(
               'Save',
               textAlign: TextAlign.right,

@@ -4,7 +4,7 @@ class Teacher {
   final String teacherId;
   final String? about;
   final String? skills;
-  final double? price;
+  double? price;
   List<TeacherAvailabilty>? availability;
 
   Teacher({
