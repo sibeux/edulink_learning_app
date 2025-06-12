@@ -2,11 +2,11 @@ import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/components/shimmer.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
 import 'package:edulink_learning_app/controllers/profile_teacher_controller.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/teacher/set_availabilty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:intl/intl.dart';
 
 class AvailableDateSection extends StatelessWidget {
   const AvailableDateSection({super.key, required this.controller});
@@ -37,7 +37,14 @@ class AvailableDateSection extends StatelessWidget {
                     completeProfileController.isNeedEditing.value ? 1.0 : 0.0,
                 child: GestureDetector(
                   onTap: () {
-                    completeProfileController.isNeedEditing.value ? null : null;
+                    completeProfileController.isNeedEditing.value
+                        ? Get.to(
+                          () => const SetAvailabiltyScreen(),
+                          transition: Transition.rightToLeft,
+                          popGesture: false,
+                          fullscreenDialog: true,
+                        )
+                        : null;
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
@@ -97,7 +104,7 @@ class AvailableDateSection extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              formatDate(date?.availableDate),
+                              formatDate(date?.availableDay),
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,
@@ -133,7 +140,5 @@ class AvailableDateSection extends StatelessWidget {
 
 String formatDate(String? date) {
   if (date == null || date.isEmpty) return '';
-
-  DateTime parsedDate = DateTime.parse(date).toLocal();
-  return DateFormat('EEEE, dd MMMM yyyy').format(parsedDate);
+  return date;
 }

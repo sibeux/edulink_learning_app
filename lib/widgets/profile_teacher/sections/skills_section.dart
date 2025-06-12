@@ -33,7 +33,7 @@ class SkillsSection extends StatelessWidget {
             Obx(
               () => Opacity(
                 opacity:
-                    completeProfileController.isNeedEditing.value ? 1.0 : 0.0,
+                    completeProfileController.isNeedEditing.value ? 0.0 : 0.0,
                 child: GestureDetector(
                   onTap: () {
                     completeProfileController.isNeedEditing.value ? null : null;
