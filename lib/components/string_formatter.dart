@@ -11,3 +11,15 @@ String formatTimeHhMm(String? time) {
     return time;
   }
 }
+
+String formatPrice(double price) {
+  if (price == 0) {
+    return 'No Price Set';
+  }
+  final formatter = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp. ',
+    decimalDigits: 0,
+  );
+  return formatter.format(price);
+}
