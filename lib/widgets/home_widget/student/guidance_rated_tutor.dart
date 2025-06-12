@@ -4,6 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+List<String> _dummyTutorNames = [
+  'Arya Stark',
+  'Adinda Putri',
+  'Felicia Wijaya',
+  'Steven Lim',
+];
+List<String> _dummyCourses = [
+  'Mathematics',
+  'Physics, Chemistry',
+  'Computer Science',
+  'Biology, English',
+];
+List<String> _dummyProfilePictures = [
+  "assets/images/screens/dummy/tutor-home/1.jpg",
+  "assets/images/screens/dummy/tutor-home/2.jpg",
+  "assets/images/screens/dummy/tutor-home/3.jpg",
+  "assets/images/screens/dummy/tutor-home/4.jpg",
+];
+
 class GuidanceRatedTutor extends StatelessWidget {
   const GuidanceRatedTutor({super.key});
 
@@ -54,8 +73,9 @@ class GuidanceRatedTutor extends StatelessWidget {
                 for (int i = 0; i < 4; i++)
                   ContainerGuidanceTutor(
                     index: i,
-                    name: 'Tutor ${i + 1}',
-                    courses: 'Course ${i + 1}',
+                    image: _dummyProfilePictures[i],
+                    name: _dummyTutorNames[i],
+                    courses: _dummyCourses[i],
                     rating: '${4.5 + (i * 0.1)}',
                   ),
               ],

@@ -130,6 +130,8 @@ class EducationContainerType extends StatelessWidget {
                       value: item,
                       child: Text(
                         index == 0 ? item.capitalize! : item,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 14.sp),
                       ),
                     ),

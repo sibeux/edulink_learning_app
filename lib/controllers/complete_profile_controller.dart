@@ -29,6 +29,7 @@ class CompleteProfileController extends GetxController {
   var isSendingDataLoading = false.obs;
   var isImageFileTooLarge = false.obs;
   var isImageChanged = false.obs;
+  var isNeedEditing = false.obs;
 
   late FixedExtentScrollController dayController;
   late FixedExtentScrollController monthController;
@@ -206,6 +207,7 @@ class CompleteProfileController extends GetxController {
             : userData.userCourses.split(',').map((e) => e.trim()).toList();
     selectedEducationType.value = userData.userEducation;
     isImageChanged.value = false;
+    isImageFileTooLarge.value = false;
     currentType.value = '';
     update();
   }
@@ -278,7 +280,7 @@ class CompleteProfileController extends GetxController {
     return "profile_${uuid.v4()}.jpg";
   }
 
-  Future<void> sendChangeProfileData() async {
+  Future<void> sendChangeProfileData({bool needBack = true}) async {
     isSendingDataLoading.value = true;
 
     const String url = "https://sibeux.my.id/project/edulink-php-jwt/api/user";
@@ -331,7 +333,7 @@ class CompleteProfileController extends GetxController {
           body: {
             'method': 'change_user_data',
             'name': formData['nameProfile']?['text'] ?? '',
-            'email': email.value,
+            'email': formData['emailProfile']?['text'] ?? '',
             'photo':
                 isImageChanged.value &&
                         !photoUri.value.contains('http') &&
@@ -368,7 +370,9 @@ class CompleteProfileController extends GetxController {
           coursesList.isEmpty
               ? courseStudentCompleted.value = false
               : courseStudentCompleted.value = true;
-          Get.back();
+          if (needBack) {
+            Get.back();
+          }
         } else {
           logError('Error send data: ${response.body}');
         }
