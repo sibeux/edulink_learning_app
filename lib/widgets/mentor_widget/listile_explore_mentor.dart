@@ -4,8 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:edulink_learning_app/components/string_formatter.dart';
 import 'package:edulink_learning_app/components/toast.dart';
 import 'package:edulink_learning_app/models/explore_mentor.dart';
-import 'package:edulink_learning_app/widgets/mentor/button_book.dart';
-import 'package:edulink_learning_app/widgets/mentor/rating_container_explore_mentor.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/button_book.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/rating_container_explore_mentor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -177,7 +177,9 @@ class ListileExploreMentor extends StatelessWidget {
                 ),
                 Spacer(),
                 mentor.schedule!.contains('true')
-                    ? Expanded(child: ButtonBookEnable())
+                    ? Expanded(child: ButtonBookEnable(
+                        mentor: mentor,
+                    ))
                     : Expanded(
                       child: AbsorbPointer(child: ButtonBookDisable()),
                     ),

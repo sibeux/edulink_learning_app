@@ -9,6 +9,10 @@ class BookingController extends GetxController {
   var indexBookingType = 0.obs;
   var isLoadingFetchExploreMentors = false.obs;
 
+  RxInt durationBooking = 1.obs;
+  RxString dayBooking = ''.obs;
+  RxString hourBooking = ''.obs;
+
   RxList<ExploreMentor> exploreMentorList = <ExploreMentor>[].obs;
 
   @override
@@ -60,5 +64,24 @@ class BookingController extends GetxController {
     } finally {
       isLoadingFetchExploreMentors.value = false;
     }
+  }
+
+  List<String> getAvailableDays(String schedule) {
+    List<String> availableDays = [];
+
+    // Pisahkan berdasarkan koma untuk dapatkan tiap hari
+    List<String> dayEntries = schedule.split(',');
+
+    for (var entry in dayEntries) {
+      entry = entry.trim(); // Hilangkan spasi depan-belakang
+
+      if (entry.contains('true')) {
+        // Ambil nama hari sebelum jam (misal: "Saturday 09:00:00-17:00:00 true")
+        String day = entry.split(' ')[0];
+        availableDays.add(day);
+      }
+    }
+
+    return availableDays;
   }
 }

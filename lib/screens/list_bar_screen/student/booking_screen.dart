@@ -1,7 +1,7 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
-import 'package:edulink_learning_app/widgets/booking_widget/booking_type_select.dart';
-import 'package:edulink_learning_app/widgets/booking_widget/explore_tutor_button.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/booking_type_select.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/explore_tutor_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

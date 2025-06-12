@@ -1,6 +1,6 @@
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
 import 'package:edulink_learning_app/widgets/home_widget/student/home_search_bar.dart';
-import 'package:edulink_learning_app/widgets/mentor/listile_explore_mentor.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/listile_explore_mentor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
