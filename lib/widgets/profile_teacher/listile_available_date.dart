@@ -100,7 +100,7 @@ class ListileAvailableDate extends StatelessWidget {
                       // Kalau ada return di atas, maka tidak akan lanjut ke bawah.
                       teacherAvailabilty.isAvailable.value = value;
                       profileTeacherController.toggleSetAvailableDay(
-                        teacherAvailabilty.id.toString(),
+                        teacherAvailabilty.availableDay.toString(),
                         value,
                       );
                     },

@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 
 class TeacherAvailabilty {
-  final String? id;
-  final String? teacherId;
-  final String? availableDay;
-  final String? startTime;
-  final String? endTime;
+  String? id;
+  String? teacherId;
+  String? availableDay;
+  String? startTime;
+  String? endTime;
   RxBool isAvailable;
 
   TeacherAvailabilty({

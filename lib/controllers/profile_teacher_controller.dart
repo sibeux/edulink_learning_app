@@ -42,8 +42,21 @@ class ProfileTeacherController extends GetxController {
       final teacher = Teacher.fromJson(jsonData);
 
       teacherData.value = [teacher];
-
       availabilityData.value = _generateFullAvailability(teacher.availability);
+      teacherData[0].availability =
+          availabilityData
+              .map(
+                (item) => TeacherAvailabilty(
+                  id: item['id'],
+                  teacherId: item['teacherId'],
+                  availableDay: item['availableDay'],
+                  startTime: item['startTime'],
+                  endTime: item['endTime'],
+                  isAvailable: item['isAvailable'],
+                ),
+              )
+              .toList();
+      
 
       logSuccess('Teacher data fetched successfully.');
     } catch (e) {
@@ -73,15 +86,18 @@ class ProfileTeacherController extends GetxController {
 
     // Jika kosong, isi semua hari dengan default
     if (availability == null || availability.isEmpty) {
-      return allDays.map((day) => {
-        'id':
-            '${DateTime.now().day.toString().padLeft(2, '0')}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().year}${DateTime.now().millisecondsSinceEpoch}',
-        'availableDay': day,
-        'teacherId': Get.find<UserProfileController>().idUser,
-        'startTime': defaultTime['start'],
-        'endTime': defaultTime['end'],
-        'isAvailable': false, // Default tidak tersedia
-      }).toList();
+      return allDays
+          .map(
+            (day) => {
+              'id': "",
+              'availableDay': day,
+              'teacherId': Get.find<UserProfileController>().idUser,
+              'startTime': defaultTime['start'],
+              'endTime': defaultTime['end'],
+              'isAvailable': false, // Default tidak tersedia
+            },
+          )
+          .toList();
     }
 
     // Map hari yang sudah ada
@@ -101,10 +117,9 @@ class ProfileTeacherController extends GetxController {
     // Gabungkan hari yang belum ada dengan default
     return allDays.map<Map<String, dynamic>>((day) {
       if (existing.containsKey(day)) {
+        // Ini digunakan untuk mengupdate data yang sudah ada.
         return {
-          'id':
-              existing[day]['id'] ??
-              '${DateTime.now().day.toString().padLeft(2, '0')}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().year}${DateTime.now().millisecondsSinceEpoch}',
+          'id': existing[day]['id'] ?? '',
           'teacherId': Get.find<UserProfileController>().idUser,
           'availableDay': day,
           'startTime': existing[day]['startTime'] ?? defaultTime['start'],
@@ -113,9 +128,10 @@ class ProfileTeacherController extends GetxController {
         };
       } else {
         return {
-          'id':
-              '${DateTime.now().day.toString().padLeft(2, '0')}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().year}${DateTime.now().millisecondsSinceEpoch}', // id unik
-          'teacherId': Get.find<UserProfileController>().idUser, // ID guru bisa diisi nanti
+          'id': '',
+          'teacherId':
+              Get.find<UserProfileController>()
+                  .idUser, // ID guru bisa diisi nanti
           'availableDay': day,
           'startTime': defaultTime['start'],
           'endTime': defaultTime['end'],
@@ -125,13 +141,20 @@ class ProfileTeacherController extends GetxController {
     }).toList();
   }
 
-  Future<void> toggleSetAvailableDay(String id, bool value) async {
-    int index = availabilityData.indexWhere((item) => item['day'] == id);
+  Future<void> toggleSetAvailableDay(String day, bool value) async {
+    int index = availabilityData.indexWhere(
+      (item) => item['availableDay'] == day,
+    );
     if (index != -1) {
       // Update isAvailable pada hari tersebut
       availabilityData[index]['isAvailable'] = value;
+
+      teacherData[0].availability![index].isAvailable.value = value;
+      teacherData[0].availability![index].teacherId =
+          Get.find<UserProfileController>().idUser;
       // Trigger update RxList
       availabilityData.refresh();
     }
+    updateRefreshSetAvailableDay.value = !updateRefreshSetAvailableDay.value;
   }
 }

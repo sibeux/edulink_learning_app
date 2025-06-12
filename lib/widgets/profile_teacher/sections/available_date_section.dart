@@ -1,5 +1,6 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/components/shimmer.dart';
+import 'package:edulink_learning_app/components/string_formatter.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
 import 'package:edulink_learning_app/controllers/profile_teacher_controller.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/teacher/set_availabilty_screen.dart';
@@ -24,7 +25,7 @@ class AvailableDateSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Available Date',
+              'Available Day',
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
@@ -85,52 +86,71 @@ class AvailableDateSection extends StatelessWidget {
                       ),
                     ),
                   )
-                  : ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final date =
-                          controller.teacherData[0].availability?[index];
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 12.h),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 15.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: HexColor('#E5ECFF'),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              formatDate(date?.availableDay),
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 5.w,
-                                vertical: 5.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: ColorPalette().primary,
-                                size: 13.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: controller.teacherData[0].availability?.length,
+                  : Obx(
+                    () =>
+                        controller.updateRefreshSetAvailableDay.value ||
+                                !controller.updateRefreshSetAvailableDay.value
+                            ? ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                final date =
+                                    controller.teacherData[0].availability
+                                        ?.where(
+                                          (item) => item.isAvailable.value,
+                                        )
+                                        .toList()[index];
+                                final startTime = formatTimeHhMm(
+                                  date?.startTime,
+                                );
+                                final endTime = formatTimeHhMm(date?.endTime);
+                                return Container(
+                                  margin: EdgeInsets.only(bottom: 12.h),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20.w,
+                                    vertical: 15.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: HexColor('#E5ECFF'),
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${formatDate(date?.availableDay)}, $startTime - $endTime WIB',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 5.w,
+                                          vertical: 5.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                          color: ColorPalette().primary,
+                                          size: 13.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              itemCount:
+                                  controller.teacherData[0].availability
+                                      ?.where((item) => item.isAvailable.value)
+                                      .toList()
+                                      .length,
+                            )
+                            : SizedBox(),
                   ),
         ),
       ],

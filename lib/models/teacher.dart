@@ -5,7 +5,7 @@ class Teacher {
   final String? about;
   final String? skills;
   final double? price;
-  final List<TeacherAvailabilty>? availability;
+  List<TeacherAvailabilty>? availability;
 
   Teacher({
     required this.teacherId,
