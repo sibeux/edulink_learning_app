@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:intl/intl.dart';
 
 class PriceSection extends StatelessWidget {
   const PriceSection({super.key, required this.controller});

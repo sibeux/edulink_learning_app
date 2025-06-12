@@ -71,7 +71,7 @@ class _BookingScreenState extends State<BookingScreen>
               style: TextStyle(
                 color: HexColor(
                   '#6E6E6E',
-                ).withOpacity(0.93), // Using withOpacity for clarity
+                ).withValues(alpha: 0.93), // Using withOpacity for clarity
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w700,
               ),
