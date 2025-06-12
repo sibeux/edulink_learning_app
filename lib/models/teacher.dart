@@ -18,7 +18,8 @@ class Teacher {
   factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
       // For demonstration purposes, we are using a static about text.
-      about: 'As an experienced tutor, I am dedicated to helping students achieve their academic potential. I have strong knowledge in the subject of Maths and extensive teaching experience at various levels of education.',
+      about:
+          'As an experienced tutor, I am dedicated to helping students achieve their academic potential. I have strong knowledge in the subject of Maths and extensive teaching experience at various levels of education.',
       skills: 'algebra,calculus,geometry,statistics,trigonometry',
       teacherId: json['teacher_id'].toString(),
       // about: json['about'],
@@ -26,12 +27,12 @@ class Teacher {
       price:
           json['price'] != null
               ? double.tryParse(json['price'].toString())
-              : null,
+              // : null,
+              : 10000,
       availability:
           (json['availabilities'] as List<dynamic>?)
               ?.map((data) => TeacherAvailabilty.fromJson(data))
               .toList(),
     );
   }
-
 }

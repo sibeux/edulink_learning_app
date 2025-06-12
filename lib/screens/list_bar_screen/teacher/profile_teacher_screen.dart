@@ -44,17 +44,20 @@ class ProfileTeacherScreen extends StatelessWidget {
               ),
             ),
             actions: [
-              TextButton(
-                onPressed: () async {
-                  if (completeProfileController.isNeedEditing.value) {
-                    completeProfileController.isNeedEditing.value = false;
-                    await profileTeacherController.updateTeacherProfile();
-                  } else {
-                    completeProfileController.isNeedEditing.value = true;
-                  }
-                },
-                child: Obx(
-                  () => Text(
+              Obx(
+                () => TextButton(
+                  onPressed: () async {
+                    if (profileTeacherController.isLoadingUpdateData.value) {
+                      return;
+                    }
+                    if (completeProfileController.isNeedEditing.value) {
+                      completeProfileController.isNeedEditing.value = false;
+                      await profileTeacherController.updateTeacherProfile();
+                    } else {
+                      completeProfileController.isNeedEditing.value = true;
+                    }
+                  },
+                  child: Text(
                     completeProfileController.isNeedEditing.value
                         ? 'Done'
                         : 'Edit',
@@ -90,6 +93,7 @@ class ProfileTeacherScreen extends StatelessWidget {
                     ),
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Photouserprofile(),
                       SizedBox(height: 15.h),

@@ -21,25 +21,20 @@ class WrapCoursesProfileTeacher extends StatelessWidget {
       children:
           completeProfileController.coursesList
               .map(
-                (course) => Padding(
-                  padding: EdgeInsets.only(
-                    right: 6.w,
-                  ), // Memberi jarak antar Chip
-                  child: Chip(
-                    label: Text(course.capitalize!),
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                    backgroundColor: HexColor('#FFC04D'),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    side: BorderSide(color: Colors.transparent),
+                (course) => Chip(
+                  label: Text(course.capitalize!),
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
                   ),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                  backgroundColor: HexColor('#FFC04D'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  side: BorderSide(color: Colors.transparent),
                 ),
               )
               .toList(),
