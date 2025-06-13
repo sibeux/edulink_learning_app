@@ -26,7 +26,8 @@ class ChatController extends GetxController {
   Future<void> sendPromptAnswerBot({
     required bool needResetSession,
     required String message,
-    required Booking booking, // Booking model yang berisi informasi mentor dan student
+    required Booking
+    booking, // Booking model yang berisi informasi mentor dan student
   }) async {
     isLoadingSendBotAPI.value = true;
 
@@ -53,22 +54,21 @@ class ChatController extends GetxController {
       'https://chatbot-edulink-production.up.railway.app/chat',
     );
 
+    final String sessionId = "${senderID}_$receiverID";
+
     if (needResetSession) {
       // Reset session token untuk user
       await http.post(
         urlResetToken,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'user_id': Get.find<UserProfileController>().idUser}),
+        body: jsonEncode({'user_id': sessionId}),
       );
     }
 
     final responseSendPrompt = await http.post(
       urlSendPrompt,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'user_id': Get.find<UserProfileController>().idUser,
-        'message': message,
-      }),
+      body: jsonEncode({'user_id': sessionId, 'message': message}),
     );
 
     if (responseSendPrompt.statusCode == 200) {
@@ -76,7 +76,7 @@ class ChatController extends GetxController {
       logSuccess('Message sent to bot successfully');
       logInfo('Bot response: ${data['response']}');
       final botMessage = data['response'] as String;
-      
+
       // Bot created the message
       sendMessageToParticipants(
         message: botMessage,

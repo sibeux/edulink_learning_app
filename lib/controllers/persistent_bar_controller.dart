@@ -3,7 +3,6 @@ import 'package:edulink_learning_app/screens/list_bar_screen/student/home_studen
 import 'package:edulink_learning_app/screens/list_bar_screen/student/booking_screen.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/chat/chat_screen.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/student/mentor_screen.dart';
-import 'package:edulink_learning_app/screens/list_bar_screen/teacher/home_teacher_screen.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
