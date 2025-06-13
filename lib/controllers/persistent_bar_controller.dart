@@ -78,7 +78,8 @@ class PersistentBarController extends GetxController {
         ]
         : [
           buttonNavBar(
-            screen: HomeTeacherScreen(),
+            // screen: HomeTeacherScreen(),
+            screen: HomeStudentScreen(),
             title: 'Home',
             iconActive: Icons.home,
             iconInactive: Icons.home_outlined,

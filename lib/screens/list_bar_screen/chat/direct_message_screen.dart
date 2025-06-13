@@ -4,6 +4,7 @@ import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/chat_controller/chat_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/models/booking.dart';
+import 'package:edulink_learning_app/widgets/chat_bot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -104,13 +105,15 @@ class DirectMessageScreen extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0.w),
               child: StreamBuilder<QuerySnapshot>(
-                stream: Get.find<ChatController>().getMessagesFirebase(
-                  senderID: Get.find<UserProfileController>().idUser.toString(),
-                  receiverID:
-                      Get.find<UserProfileController>().userData[0].userActor ==
-                              'student'
-                          ? booking.mentorId
-                          : booking.studentId.toString(),
+                stream: Get.find<ChatController>().getMessagesGroupFirebase(
+                  participants: [
+                    Get.find<UserProfileController>().idUser.toString(),
+                    Get.find<UserProfileController>().userData[0].userActor ==
+                            'student'
+                        ? booking.mentorId
+                        : booking.studentId.toString(),
+                    'cybot', // tambahkan bot ke dalam peserta
+                  ],
                 ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -165,14 +168,47 @@ class DirectMessageScreen extends StatelessWidget {
               ),
             ),
           ),
-          ChatInputField(
-            chatController: Get.find<ChatController>(),
-            booking: booking,
+          Row(
+            children: [
+              Expanded(
+                child: ChatInputField(
+                  chatController: Get.find<ChatController>(),
+                  booking: booking,
+                ),
+              ),
+              // Icon AI for open  bottom sheet
+              GestureDetector(
+                onTap: () => _showFormInModalBottomSheet(context),
+                child: Container(
+                  margin: EdgeInsets.only(right: 15.0.w),
+                  child: Image.asset(
+                    'assets/images/screens/chat-bot-icon.png',
+                    height: 70.h,
+                    width: 70.w,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+}
+
+// Fungsi untuk menampilkan modal bottom sheet
+void _showFormInModalBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    // Membuat sheet bisa di-scroll dan ukurannya menyesuaikan konten
+    isScrollControlled: true,
+    // Membuat latar belakang di luar sheet menjadi transparan
+    backgroundColor: Colors.transparent,
+    builder: (builder) {
+      return const FormBottomSheet();
+    },
+  );
 }
 
 /// Widget untuk input chat
@@ -207,11 +243,13 @@ class ChatInputField extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Tombol Ikon Tambah (+)
-          IconButton(
-            icon: Icon(Icons.add_circle, color: Colors.blue, size: 28.sp),
-            onPressed: () {},
-          ),
+          // // Tombol Ikon Tambah (+)
+          // IconButton(
+          //   icon: Icon(Icons.add_circle, color: Colors.blue, size: 28.sp),
+          //   onPressed: () {
+
+          //   },
+          // ),
           SizedBox(width: 8.w), // Jarak kecil
           // Kolom Teks
           Expanded(
@@ -240,10 +278,14 @@ class ChatInputField extends StatelessWidget {
                           'student'
                       ? booking.mentorId
                       : booking.studentId;
-              chatController.sendMessageFirebase(
+              chatController.sendMessageToParticipants(
                 message: chatController.message.value,
                 senderID: senderID.toString(),
-                receiverID: receiverID.toString(),
+                participants: [
+                  senderID.toString(),
+                  receiverID.toString(),
+                  'cybot', // tambahkan bot ke dalam peserta
+                ],
               );
               chatController.textEditingController.clear();
               chatController.message.value = '';

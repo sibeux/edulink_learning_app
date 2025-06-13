@@ -48,6 +48,17 @@ class ChatScreen extends StatelessWidget {
                 child:
                     chatController.isLoadingFetchingRecentChats.value
                         ? Center(child: CircularProgressIndicator())
+                        : chatController.recentChats.isEmpty
+                        ? Center(
+                          child: Text(
+                            'No recent chats found.',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black.withValues(alpha: 0.5),
+                            ),
+                          ),
+                        )
                         : ListView.builder(
                           itemBuilder: (context, index) {
                             final recentChat =
@@ -59,12 +70,10 @@ class ChatScreen extends StatelessWidget {
                                 final bool isStudent =
                                     userController.userData[0].userActor ==
                                     'student';
-
                                 final studentId =
                                     isStudent
                                         ? userController.idUser
                                         : recentChat.peerId;
-
                                 final Booking data = Booking(
                                   mentorId: recentChat.peerId,
                                   studentId: studentId,

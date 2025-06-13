@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/models/recent_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,19 +17,85 @@ class ChatController extends GetxController {
 
   RxList<RecentChat> recentChats = <RecentChat>[].obs;
 
-  String generateChatRoomID(String senderID, String receiverID) {
-    if (senderID.compareTo(receiverID) < 0) {
-      return '${senderID}_$receiverID';
-    } else {
-      return '${receiverID}_$senderID';
-    }
+  String generateGroupChatRoomID(List<String> participants) {
+    final sorted = [...participants]..sort();
+    return 'chat_${sorted.join("_")}';
   }
 
-  Stream<QuerySnapshot> getMessagesFirebase({
+  Future<void> sendMessageToParticipants({
+    required String message,
     required String senderID,
-    required String receiverID,
+    required List<String> participants, // termasuk sender + receiver + bot
+  }) async {
+    final sortedParticipants = [...participants]..sort();
+    final firestore = FirebaseFirestore.instance;
+
+    // Cek apakah chatroom grup sudah ada
+    final querySnapshot =
+        await firestore
+            .collection('chatrooms')
+            .where('members', arrayContainsAny: sortedParticipants)
+            .get();
+
+    String? chatRoomID;
+
+    for (final doc in querySnapshot.docs) {
+      final members = List<String>.from(doc['members']);
+      members.sort();
+
+      if (members.length == sortedParticipants.length &&
+          const ListEquality().equals(members, sortedParticipants)) {
+        chatRoomID = doc.id;
+        break;
+      }
+    }
+
+    // Kalau belum ada → buat baru
+    if (chatRoomID == null) {
+      chatRoomID = 'chat_${sortedParticipants.join("_")}';
+
+      await firestore.collection('chatrooms').doc(chatRoomID).set({
+        'chatRoomID': chatRoomID,
+        'members': sortedParticipants,
+        'createdAt': Timestamp.now(),
+        'isGroup': sortedParticipants.length > 2,
+      });
+    }
+
+    // Kirim pesan ke chatroom tersebut
+    await firestore.collection('chat').add({
+      'messageID': const Uuid().v4(),
+      'chatRoomID': chatRoomID,
+      'senderID': senderID,
+      'receiverID': null, // biar netral, karena ini group
+      'text': message,
+      'createdAt': Timestamp.now(),
+    });
+    
+    // Tentukan 1 receiver utama (bukan bot)
+    final realReceiverID = participants.firstWhere(
+      (id) => id != senderID && id != 'cybot',
+    );
+
+    // Kirim ke SQL
+    sendRecentChat(
+      userId: senderID,
+      peerId: realReceiverID,
+      lastMessage: message,
+    );
+    sendRecentChat(
+      userId: realReceiverID,
+      peerId: senderID,
+      lastMessage: message,
+    );
+
+    fetchRecentChats(senderID);
+  }
+
+  Stream<QuerySnapshot> getMessagesGroupFirebase({
+    required List<String> participants,
   }) {
-    final chatRoomID = generateChatRoomID(senderID, receiverID);
+    final chatRoomID = generateGroupChatRoomID(participants);
 
     return FirebaseFirestore.instance
         .collection('chat')
@@ -37,25 +104,26 @@ class ChatController extends GetxController {
         .snapshots();
   }
 
-  void sendMessageFirebase({
-    required String message,
-    required String senderID,
-    required String receiverID,
-  }) {
-    final chatRoomID = generateChatRoomID(senderID, receiverID);
+  // void sendMessageFirebase({
+  //   required String message,
+  //   required String senderID,
+  //   required String receiverID,
+  // }) {
+  //   final chatRoomID = generateChatRoomID(senderID, receiverID);
 
-    FirebaseFirestore.instance.collection('chat').add({
-      'messageID': Uuid().v4(),
-      'chatRoomID': chatRoomID,
-      'senderID': senderID,
-      'receiverID': receiverID,
-      'text': message,
-      'createdAt': Timestamp.now(),
-    });
+  //   FirebaseFirestore.instance.collection('chat').add({
+  //     'messageID': Uuid().v4(),
+  //     'chatRoomID': chatRoomID,
+  //     'senderID': senderID,
+  //     'receiverID': receiverID,
+  //     'text': message,
+  //     'createdAt': Timestamp.now(),
+  //   });
 
-    sendRecentChat(userId: senderID, peerId: receiverID, lastMessage: message);
-    sendRecentChat(userId: receiverID, peerId: senderID, lastMessage: message);
-  }
+  //   sendRecentChat(userId: senderID, peerId: receiverID, lastMessage: message);
+  //   sendRecentChat(userId: receiverID, peerId: senderID, lastMessage: message);
+  //   fetchRecentChats(Get.find<UserProfileController>().idUser);
+  // }
 
   Future<void> sendRecentChat({
     required String userId,
@@ -77,7 +145,6 @@ class ChatController extends GetxController {
 
     if (response.statusCode == 200) {
       logSuccess('Recent chat sent successfully');
-      fetchRecentChats(userId);
     } else {
       logError('Failed to send recent chat: ${response.body}');
     }
