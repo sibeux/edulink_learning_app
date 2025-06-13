@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
+import 'package:edulink_learning_app/models/booking.dart';
 import 'package:edulink_learning_app/models/recent_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,15 +12,86 @@ import 'package:uuid/uuid.dart';
 
 class ChatController extends GetxController {
   var textEditingController = TextEditingController();
+  var botTextEditingController = TextEditingController();
   RxString message = ''.obs;
 
+  var idMessageBotToReply = ''.obs;
+
   var isLoadingFetchingRecentChats = false.obs;
+  var isLoadingSendBotAPI = false.obs;
+  var recentChatHasBeenFetched = false.obs;
 
   RxList<RecentChat> recentChats = <RecentChat>[].obs;
 
-  String generateGroupChatRoomID(List<String> participants) {
-    final sorted = [...participants]..sort();
-    return 'chat_${sorted.join("_")}';
+  Future<void> sendPromptAnswerBot({
+    required bool needResetSession,
+    required String message,
+    required Booking booking, // Booking model yang berisi informasi mentor dan student
+  }) async {
+    isLoadingSendBotAPI.value = true;
+
+    final senderID = Get.find<UserProfileController>().idUser;
+    final receiverID =
+        Get.find<UserProfileController>().userData[0].userActor == 'student'
+            ? booking.mentorId
+            : booking.studentId;
+
+    await sendMessageToParticipants(
+      message: message,
+      senderID: senderID.toString(),
+      participants: [
+        senderID.toString(),
+        receiverID.toString(),
+        'cybot', // tambahkan bot ke dalam peserta
+      ],
+    );
+
+    final urlResetToken = Uri.parse(
+      'https://chatbot-edulink-production.up.railway.app/reset_session',
+    );
+    final urlSendPrompt = Uri.parse(
+      'https://chatbot-edulink-production.up.railway.app/chat',
+    );
+
+    if (needResetSession) {
+      // Reset session token untuk user
+      await http.post(
+        urlResetToken,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'user_id': Get.find<UserProfileController>().idUser}),
+      );
+    }
+
+    final responseSendPrompt = await http.post(
+      urlSendPrompt,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'user_id': Get.find<UserProfileController>().idUser,
+        'message': message,
+      }),
+    );
+
+    if (responseSendPrompt.statusCode == 200) {
+      final data = jsonDecode(responseSendPrompt.body);
+      logSuccess('Message sent to bot successfully');
+      logInfo('Bot response: ${data['response']}');
+      final botMessage = data['response'] as String;
+      
+      // Bot created the message
+      sendMessageToParticipants(
+        message: botMessage,
+        senderID: 'cybot', // ID bot
+        participants: [
+          senderID.toString(),
+          receiverID.toString(),
+          'cybot', // tambahkan bot ke dalam peserta
+        ],
+      );
+    } else {
+      logError('Failed to send message to bot: ${responseSendPrompt.body}');
+    }
+
+    isLoadingSendBotAPI.value = false;
   }
 
   Future<void> sendMessageToParticipants({
@@ -71,25 +143,34 @@ class ChatController extends GetxController {
       'text': message,
       'createdAt': Timestamp.now(),
     });
-    
+
     // Tentukan 1 receiver utama (bukan bot)
     final realReceiverID = participants.firstWhere(
       (id) => id != senderID && id != 'cybot',
     );
 
+    final realSenderID = participants.firstWhere(
+      (id) => id != realReceiverID && id != 'cybot',
+    );
+
     // Kirim ke SQL
     sendRecentChat(
-      userId: senderID,
+      userId: realSenderID,
       peerId: realReceiverID,
       lastMessage: message,
     );
     sendRecentChat(
       userId: realReceiverID,
-      peerId: senderID,
+      peerId: realSenderID,
       lastMessage: message,
     );
 
-    fetchRecentChats(senderID);
+    fetchRecentChats(Get.find<UserProfileController>().idUser);
+  }
+
+  String generateGroupChatRoomID(List<String> participants) {
+    final sorted = [...participants]..sort();
+    return 'chat_${sorted.join("_")}';
   }
 
   Stream<QuerySnapshot> getMessagesGroupFirebase({
@@ -165,5 +246,6 @@ class ChatController extends GetxController {
       throw Exception('Failed to load recent chats');
     }
     isLoadingFetchingRecentChats.value = false;
+    recentChatHasBeenFetched.value != recentChatHasBeenFetched.value;
   }
 }

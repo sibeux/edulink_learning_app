@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edulink_learning_app/components/color_palette.dart';
+import 'package:edulink_learning_app/components/colorize_terminal.dart';
 import 'package:edulink_learning_app/controllers/chat_controller/chat_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/models/booking.dart';
 import 'package:edulink_learning_app/widgets/chat_bot.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+
+final ScrollController _scrollController = ScrollController();
 
 class DirectMessageScreen extends StatelessWidget {
   const DirectMessageScreen({super.key, required this.booking});
@@ -17,188 +21,269 @@ class DirectMessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ChatController());
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: ColorPalette().primary,
-        surfaceTintColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 40.h,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: ColorPalette().primary,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30.r),
-                bottomRight: Radius.circular(30.r),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
+    final ChatController chatController = Get.put(ChatController());
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: ColorPalette().primary,
+            surfaceTintColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            toolbarHeight: 40.h,
+            elevation: 0,
+          ),
+          body: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: ColorPalette().primary,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30.r),
+                    bottomRight: Radius.circular(30.r),
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100.r),
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(color: HexColor('#ffdb99')),
-                      child: CachedNetworkImage(
-                        imageUrl: booking.clientPhoto,
-                        fit: BoxFit.cover,
-                        height: 50,
-                        width: 50,
-                        maxHeightDiskCache: 300,
-                        maxWidthDiskCache: 300,
-                        filterQuality: FilterQuality.medium,
-                        placeholder:
-                            (context, url) => Center(
-                              child: SizedBox(
-                                height: 50.h,
-                                width: 50.w,
-                                child: Image.asset(
-                                  'assets/images/screens/Edit Profile.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                        errorWidget:
-                            (context, url, error) => Center(
-                              child: SizedBox(
-                                height: 50.h,
-                                width: 50.w,
-                                child: Image.asset(
-                                  'assets/images/screens/Edit Profile.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0.w,
+                    vertical: 10.h,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100.r),
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(color: HexColor('#ffdb99')),
+                          child: CachedNetworkImage(
+                            imageUrl: booking.clientPhoto,
+                            fit: BoxFit.cover,
+                            height: 50,
+                            width: 50,
+                            maxHeightDiskCache: 300,
+                            maxWidthDiskCache: 300,
+                            filterQuality: FilterQuality.medium,
+                            placeholder:
+                                (context, url) => Center(
+                                  child: SizedBox(
+                                    height: 50.h,
+                                    width: 50.w,
+                                    child: Image.asset(
+                                      'assets/images/screens/Edit Profile.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => Center(
+                                  child: SizedBox(
+                                    height: 50.h,
+                                    width: 50.w,
+                                    child: Image.asset(
+                                      'assets/images/screens/Edit Profile.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
+                      Text(
+                        booking.clientName,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.h),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: Get.find<ChatController>().getMessagesGroupFirebase(
+                      participants: [
+                        Get.find<UserProfileController>().idUser.toString(),
+                        Get.find<UserProfileController>()
+                                    .userData[0]
+                                    .userActor ==
+                                'student'
+                            ? booking.mentorId
+                            : booking.studentId.toString(),
+                        'cybot', // tambahkan bot ke dalam peserta
+                      ],
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const Center(child: Text("No messages yet."));
+                      }
+
+                      final messages = snapshot.data!.docs;
+
+                      return ListView.builder(
+                        controller: _scrollController,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          final msg = messages[index];
+                          final isSender =
+                              msg['senderID'].toString() ==
+                              Get.find<UserProfileController>().idUser
+                                  .toString();
+                          final isBot = msg['senderID'] == 'cybot';
+                          return isBot
+                              ? Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 4.h,
+                                    horizontal: 8.w,
+                                  ),
+                                  padding: EdgeInsets.all(10.h),
+                                  decoration: BoxDecoration(
+                                    color: HexColor('#32c4a7'),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/screens/chat-bot-icon.png',
+                                            height: 50.h,
+                                            width: 50.w,
+                                            fit: BoxFit.cover,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 5.w),
+                                          Text(
+                                            'EduBot',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Text(
+                                        msg['text'],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              : Align(
+                                alignment:
+                                    isSender
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 4.h,
+                                    horizontal: 8.w,
+                                  ),
+                                  padding: EdgeInsets.all(10.h),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        isSender
+                                            ? ColorPalette().primary
+                                            : HexColor('#E5ECFF'),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Text(
+                                    msg['text'],
+                                    style: TextStyle(
+                                      color:
+                                          isSender
+                                              ? Colors.white
+                                              : HexColor('#054BFF'),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ChatInputField(
+                      chatController: Get.find<ChatController>(),
+                      booking: booking,
                     ),
                   ),
-                  SizedBox(width: 20.w),
-                  Text(
-                    booking.clientName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
+                  // Icon AI for open  bottom sheet
+                  GestureDetector(
+                    onTap: () {
+                      chatController.botTextEditingController.clear();
+                      _showFormInModalBottomSheet(
+                        context,
+                        needResetSession: true,
+                        booking: booking,
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: 15.0.w),
+                      child: Image.asset(
+                        'assets/images/screens/chat-bot-icon.png',
+                        height: 70.h,
+                        width: 70.w,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-          SizedBox(height: 30.h),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-              child: StreamBuilder<QuerySnapshot>(
-                stream: Get.find<ChatController>().getMessagesGroupFirebase(
-                  participants: [
-                    Get.find<UserProfileController>().idUser.toString(),
-                    Get.find<UserProfileController>().userData[0].userActor ==
-                            'student'
-                        ? booking.mentorId
-                        : booking.studentId.toString(),
-                    'cybot', // tambahkan bot ke dalam peserta
-                  ],
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(child: Text("No messages yet."));
-                  }
-
-                  final messages = snapshot.data!.docs;
-
-                  return ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final msg = messages[index];
-                      final isSender =
-                          msg['senderID'].toString() ==
-                          Get.find<UserProfileController>().idUser.toString();
-                      return Align(
-                        alignment:
-                            isSender
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: 4.h,
-                            horizontal: 8.w,
-                          ),
-                          padding: EdgeInsets.all(10.h),
-                          decoration: BoxDecoration(
-                            color:
-                                isSender
-                                    ? ColorPalette().primary
-                                    : HexColor('#E5ECFF'),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Text(
-                            msg['text'],
-                            style: TextStyle(
-                              color:
-                                  isSender ? Colors.white : HexColor('#054BFF'),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: ChatInputField(
-                  chatController: Get.find<ChatController>(),
-                  booking: booking,
-                ),
-              ),
-              // Icon AI for open  bottom sheet
-              GestureDetector(
-                onTap: () => _showFormInModalBottomSheet(context),
-                child: Container(
-                  margin: EdgeInsets.only(right: 15.0.w),
-                  child: Image.asset(
-                    'assets/images/screens/chat-bot-icon.png',
-                    height: 70.h,
-                    width: 70.w,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
             ],
           ),
-        ],
-      ),
+        ),
+        Obx(
+          () =>
+              chatController.isLoadingSendBotAPI.value
+                  ? ModalBarrier(dismissible: false, color: Colors.transparent)
+                  : const SizedBox(),
+        ),
+      ],
     );
   }
 }
 
 // Fungsi untuk menampilkan modal bottom sheet
-void _showFormInModalBottomSheet(BuildContext context) {
+void _showFormInModalBottomSheet(
+  BuildContext context, {
+  required bool needResetSession,
+  required Booking booking,
+}) {
   showModalBottomSheet(
     context: context,
     // Membuat sheet bisa di-scroll dan ukurannya menyesuaikan konten
@@ -206,7 +291,11 @@ void _showFormInModalBottomSheet(BuildContext context) {
     // Membuat latar belakang di luar sheet menjadi transparan
     backgroundColor: Colors.transparent,
     builder: (builder) {
-      return const FormBottomSheet();
+      return ChatBot(
+        chatController: Get.find<ChatController>(),
+        needResetSession: needResetSession,
+        booking: booking,
+      );
     },
   );
 }
