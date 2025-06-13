@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class OngoingBookContainer extends StatelessWidget {
-  const OngoingBookContainer({
+class StudentOngoingBookContainer extends StatelessWidget {
+  const StudentOngoingBookContainer({
     super.key,
     required this.bookingController,
     required this.index,

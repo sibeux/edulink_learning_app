@@ -1,8 +1,10 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
+import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/booking_type_select.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/explore_tutor_button.dart';
-import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/ongoing_book_container.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/student_ongoing_book_container.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/teacher_ongoing_book_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -126,7 +128,8 @@ class _BookingScreenState extends State<BookingScreen>
                 // You can replace these with different widgets for each tab.
                 children: [
                   _buildEmptyBookingView(),
-                  bookingController.isLoadingGetBooking.value
+                  bookingController.isLoadingGetBooking.value ||
+                          bookingController.isLoadingSendBooking.value
                       ? Center(
                         child: CircularProgressIndicator(
                           color: ColorPalette().primary,
@@ -140,7 +143,15 @@ class _BookingScreenState extends State<BookingScreen>
                         itemBuilder: (context, index) {
                           return index == 0
                               ? SizedBox(height: 20.h)
-                              : OngoingBookContainer(
+                              : Get.find<UserProfileController>()
+                                      .userData[0]
+                                      .userActor ==
+                                  'student'
+                              ? StudentOngoingBookContainer(
+                                bookingController: bookingController,
+                                index: index - 1,
+                              )
+                              : TeacherOngoingBookContainer(
                                 bookingController: bookingController,
                                 index: index - 1,
                               );
@@ -180,7 +191,10 @@ class _BookingScreenState extends State<BookingScreen>
             ),
             SizedBox(height: 30.h),
             Text(
-              'Find a Tutor',
+              Get.find<UserProfileController>().userData[0].userActor ==
+                      'student'
+                  ? 'Find a Tutor'
+                  : 'Find a Student',
               style: TextStyle(
                 color: ColorPalette().primary,
                 fontSize: 28.sp,
@@ -189,7 +203,7 @@ class _BookingScreenState extends State<BookingScreen>
             ),
             SizedBox(height: 15.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 35.w),
               child: Text(
                 'No upcoming bookings yet, but don\'t worry! Start your mentoring journey today and benefit from personalized guidance',
                 maxLines: 4,
@@ -202,7 +216,9 @@ class _BookingScreenState extends State<BookingScreen>
               ),
             ),
             SizedBox(height: 65.h),
-            const ExploreTutorButton(),
+            if (Get.find<UserProfileController>().userData[0].userActor ==
+                'student')
+              const ExploreTutorButton(),
           ],
         ),
       ),

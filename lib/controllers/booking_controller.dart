@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:edulink_learning_app/components/colorize_terminal.dart';
+import 'package:edulink_learning_app/components/toast.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/models/booking.dart';
 import 'package:edulink_learning_app/models/explore_mentor.dart';
@@ -27,7 +28,7 @@ class BookingController extends GetxController {
   @override
   void onInit() {
     fetchExploreMentors();
-    getBookingsByStudent(
+    getBookingsData(
       actor: Get.find<UserProfileController>().userData[0].userActor,
     );
     super.onInit();
@@ -109,7 +110,7 @@ class BookingController extends GetxController {
 
       if (data['status'] == 'success') {
         logSuccess('Success Send Data: ${data['status']}');
-        getBookingsByStudent(
+        getBookingsData(
           actor: Get.find<UserProfileController>().userData[0].userActor,
         );
         Get.off(
@@ -128,13 +129,13 @@ class BookingController extends GetxController {
     }
   }
 
-  Future<void> getBookingsByStudent({required String actor}) async {
+  Future<void> getBookingsData({required String actor}) async {
     isLoadingGetBooking.value = true;
     final String userID = Get.find<UserProfileController>().idUser;
     final String url =
         actor == 'student'
             ? 'https://sibeux.my.id/project/edulink-php-jwt/api/booking?method=get_bookings_by_student&student_id=$userID'
-            : 'https://sibeux.my.id/project/edulink-php-jwt/api/booking?method=get_bookings_by_student&teacher_id=$userID';
+            : 'https://sibeux.my.id/project/edulink-php-jwt/api/booking?method=get_bookings_by_teacher&teacher_id=$userID';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -154,8 +155,8 @@ class BookingController extends GetxController {
               return Booking(
                 bookingId: booking['id_booking'].toString(),
                 studentId: booking['student_id'].toString(),
-                mentorName: booking['teacher_name'].toString(),
-                mentorPhoto: booking['teacher_photo'].toString(),
+                mentorName: booking['client_name'].toString(),
+                mentorPhoto: booking['client_photo'].toString(),
                 mentorId: booking['teacher_id'].toString(),
                 day: booking['booking_day'].toString(),
                 time: booking['booking_time'].toString(),
@@ -164,14 +165,16 @@ class BookingController extends GetxController {
                 status: booking['booking_status'].toString(),
               );
             }).toList();
-        
-        ongoingBookingList.value = allBookingList
-            .where((booking) => booking.status == 'ongoing')
-            .toList();
-        doneBookingList.value = allBookingList
-            .where((booking) => booking.status == 'done')
-            .toList();
-        
+
+        ongoingBookingList.value =
+            allBookingList
+                .where((booking) => booking.status == 'ongoing')
+                .toList();
+        doneBookingList.value =
+            allBookingList
+                .where((booking) => booking.status == 'done')
+                .toList();
+
         logSuccess('Success Get Booking: ${bookings.length} item(s)');
       } else {
         logError('Error Get Booking: ${data['message'] ?? data['error']}');
@@ -183,6 +186,48 @@ class BookingController extends GetxController {
       }
     } finally {
       isLoadingGetBooking.value = false;
+    }
+  }
+
+  Future<void> updateBookingStatus(
+    {required String bookingId,}
+  )async{
+    isLoadingSendBooking.value = true;
+    final String url = 
+        'https://sibeux.my.id/project/edulink-php-jwt/api/booking';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: {
+          'method': 'update_booking',
+          'id_booking': bookingId,
+          'booking_status': 'done',
+        },
+      );
+
+      if (response.body.isEmpty) {
+        logError('Error update booking status: Response Body is Empty');
+        return;
+      }
+
+      final data = json.decode(response.body);
+
+      if (data['status'] == 'success') {
+        logSuccess('Success Update booking status: ${data['status']}');
+
+        getBookingsData(
+          actor: Get.find<UserProfileController>().userData[0].userActor,
+        );
+
+        showToast('Booking status updated successfully');
+      } else {
+        logError('Error update booking status: ${data['error']}');
+      }
+    } catch (e) {
+      logError('Error updating booking status: $e');
+    }finally {
+      isLoadingSendBooking.value = false;
     }
   }
 

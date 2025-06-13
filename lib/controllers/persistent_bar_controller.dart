@@ -84,6 +84,18 @@ class PersistentBarController extends GetxController {
             iconInactive: Icons.home_outlined,
           ),
           buttonNavBar(
+            screen: BookingScreen(),
+            title: 'Booking',
+            iconActive: Icons.description_rounded,
+            iconInactive: Icons.description_outlined,
+          ),
+          buttonNavBar(
+            screen: ChatScreen(),
+            title: 'Chat',
+            iconActive: Icons.chat_rounded,
+            iconInactive: Icons.chat_outlined,
+          ),
+          buttonNavBar(
             screen: UserProfileScreen(),
             title: 'Profile',
             iconActive: Icons.person_2_rounded,
