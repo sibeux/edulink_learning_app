@@ -216,6 +216,7 @@ class DirectMessageScreen extends StatelessWidget {
                                       SizedBox(height: 5.h),
                                       Text(
                                         msg['text'],
+                                        maxLines: null,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 14.sp,
@@ -232,9 +233,11 @@ class DirectMessageScreen extends StatelessWidget {
                                         ? Alignment.centerRight
                                         : Alignment.centerLeft,
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: 4.h,
-                                    horizontal: 8.w,
+                                  margin: EdgeInsets.only(
+                                    top: 4.h,
+                                    bottom: 4.h,
+                                    left: isSender ? 70.w : 8.w,
+                                    right: isSender ? 8.w : 70.w,
                                   ),
                                   padding: EdgeInsets.all(10.h),
                                   decoration: BoxDecoration(
@@ -244,41 +247,96 @@ class DirectMessageScreen extends StatelessWidget {
                                             : HexColor('#E5ECFF'),
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      if (msg['isForBot'] == true)
-                                        Container(
-                                          padding: EdgeInsets.all(5.h),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(
-                                              6.r,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            '@EduBot',
-                                            style: TextStyle(
-                                              color: HexColor('#32c4a7'),
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      SizedBox(width: 5.w),
-                                      Text(
-                                        msg['text'],
-                                        style: TextStyle(
-                                          color:
-                                              isSender
-                                                  ? Colors.white
-                                                  : HexColor('#054BFF'),
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        height: 1.5.h,
                                       ),
-                                    ],
+                                      children: [
+                                        // 1. Sisipkan widget tag sebagai bagian dari teks
+                                        if (msg['isForBot'] == true)
+                                          WidgetSpan(
+                                            child: Container(
+                                              padding: EdgeInsets.all(5.h),
+                                              margin: EdgeInsets.only(
+                                                right: 5.w,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(6.r),
+                                              ),
+                                              child: Text(
+                                                '@EduBot',
+                                                style: TextStyle(
+                                                  color: HexColor('#32c4a7'),
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                            alignment:
+                                                PlaceholderAlignment
+                                                    .middle, // Posisikan agar rapi
+                                          ),
+                                        // 3. Tampilkan sisa teksnya
+                                        TextSpan(
+                                          text: msg['text'],
+                                          // Biar dia mengecil.
+                                          // softWrap: true,
+                                          style: TextStyle(
+                                            color:
+                                                isSender
+                                                    ? Colors.white
+                                                    : HexColor('#054BFF'),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
+                                  // child: Row(
+                                  //   mainAxisSize: MainAxisSize.min,
+                                  //   children: [
+                                  //     if (msg['isForBot'] == true)
+                                  //       Container(
+                                  //         padding: EdgeInsets.all(5.h),
+                                  //         decoration: BoxDecoration(
+                                  //           color: Colors.white,
+                                  //           borderRadius: BorderRadius.circular(
+                                  //             6.r,
+                                  //           ),
+                                  //         ),
+                                  //         child: Text(
+                                  //           '@EduBot',
+                                  //           style: TextStyle(
+                                  //             color: HexColor('#32c4a7'),
+                                  //             fontSize: 10.sp,
+                                  //             fontWeight: FontWeight.w700,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     SizedBox(width: 5.w),
+                                  //     Flexible(
+                                  //       child: Text(
+                                  //         msg['text'],
+                                  //         // Biar dia mengecil.
+                                  //         softWrap: true,
+                                  //         style: TextStyle(
+                                  //           color:
+                                  //               isSender
+                                  //                   ? Colors.white
+                                  //                   : HexColor('#054BFF'),
+                                  //           fontSize: 14.sp,
+                                  //           fontWeight: FontWeight.w500,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                 ),
                               );
                         },
