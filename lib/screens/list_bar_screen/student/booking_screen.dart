@@ -2,6 +2,7 @@ import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
 import 'package:edulink_learning_app/controllers/user_profile_controller.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/booking_type_select.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/done_book_container.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/explore_tutor_button.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/student_ongoing_book_container.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/teacher_ongoing_book_container.dart';
@@ -157,7 +158,26 @@ class _BookingScreenState extends State<BookingScreen>
                               );
                         },
                       ),
-                  _buildEmptyBookingView(),
+                  bookingController.isLoadingGetBooking.value ||
+                          bookingController.isLoadingSendBooking.value
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: ColorPalette().primary,
+                        ),
+                      )
+                      : bookingController.doneBookingList.isEmpty
+                      ? _buildEmptyBookingView()
+                      : ListView.builder(
+                        itemCount: bookingController.doneBookingList.length + 1,
+                        itemBuilder: (context, index) {
+                          return index == 0
+                              ? SizedBox(height: 20.h)
+                              : DoneBookContainer(
+                                bookingController: bookingController,
+                                index: index - 1,
+                              );
+                        },
+                      ),
                 ],
               ),
             ),

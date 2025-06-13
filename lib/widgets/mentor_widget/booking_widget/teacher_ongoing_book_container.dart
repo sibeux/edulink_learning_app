@@ -33,7 +33,7 @@ class TeacherOngoingBookContainer extends StatelessWidget {
           Row(
             children: [
               Text(
-                bookingController.ongoingBookingList[index].mentorName.contains(
+                bookingController.ongoingBookingList[index].clientName.contains(
                       'b',
                     )
                     ? 'Math'
@@ -45,7 +45,7 @@ class TeacherOngoingBookContainer extends StatelessWidget {
                 ),
               ),
               Text(
-                ' • ${bookingController.ongoingBookingList[index].mentorName.capitalize!}',
+                ' • ${bookingController.ongoingBookingList[index].clientName.capitalize!}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -118,7 +118,7 @@ class TeacherOngoingBookContainer extends StatelessWidget {
                   decoration: BoxDecoration(color: HexColor('#ffdb99')),
                   child: CachedNetworkImage(
                     imageUrl:
-                        bookingController.ongoingBookingList[index].mentorPhoto,
+                        bookingController.ongoingBookingList[index].clientPhoto,
                     fit: BoxFit.cover,
                     height: 30,
                     width: 30,
@@ -169,10 +169,13 @@ class TeacherOngoingBookContainer extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.w),
-              Flexible(flex: 1, child: ButtonFinishBooking(
-                bookingController: bookingController,
-                booking: bookingController.ongoingBookingList[index],
-              )),
+              Flexible(
+                flex: 1,
+                child: ButtonFinishBooking(
+                  bookingController: bookingController,
+                  booking: bookingController.ongoingBookingList[index],
+                ),
+              ),
             ],
           ),
         ],

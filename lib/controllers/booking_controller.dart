@@ -155,8 +155,8 @@ class BookingController extends GetxController {
               return Booking(
                 bookingId: booking['id_booking'].toString(),
                 studentId: booking['student_id'].toString(),
-                mentorName: booking['client_name'].toString(),
-                mentorPhoto: booking['client_photo'].toString(),
+                clientName: booking['client_name'].toString(),
+                clientPhoto: booking['client_photo'].toString(),
                 mentorId: booking['teacher_id'].toString(),
                 day: booking['booking_day'].toString(),
                 time: booking['booking_time'].toString(),
@@ -189,11 +189,9 @@ class BookingController extends GetxController {
     }
   }
 
-  Future<void> updateBookingStatus(
-    {required String bookingId,}
-  )async{
+  Future<void> updateBookingStatus({required String bookingId}) async {
     isLoadingSendBooking.value = true;
-    final String url = 
+    final String url =
         'https://sibeux.my.id/project/edulink-php-jwt/api/booking';
     try {
       final response = await http.post(
@@ -226,7 +224,7 @@ class BookingController extends GetxController {
       }
     } catch (e) {
       logError('Error updating booking status: $e');
-    }finally {
+    } finally {
       isLoadingSendBooking.value = false;
     }
   }

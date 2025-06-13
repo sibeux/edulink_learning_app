@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class StudentOngoingBookContainer extends StatelessWidget {
-  const StudentOngoingBookContainer({
+class DoneBookContainer extends StatelessWidget {
+  const DoneBookContainer({
     super.key,
     required this.bookingController,
     required this.index,
@@ -23,16 +22,8 @@ class StudentOngoingBookContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 51.r,
-            spreadRadius: -8.r,
-            offset: Offset(11, 13), // changes position of shadow
-          ),
-        ],
+        color: HexColor('#E5ECFF'),
+        borderRadius: BorderRadius.circular(17.r),
       ),
       child: Row(
         children: [
@@ -43,7 +34,7 @@ class StudentOngoingBookContainer extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    bookingController.ongoingBookingList[index].clientName
+                    bookingController.doneBookingList[index].clientName
                             .contains('b')
                         ? 'Math'
                         : 'Science',
@@ -54,7 +45,7 @@ class StudentOngoingBookContainer extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    ' • ${bookingController.ongoingBookingList[index].clientName.capitalize!}',
+                    ' • ${bookingController.doneBookingList[index].clientName.capitalize!}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -71,15 +62,15 @@ class StudentOngoingBookContainer extends StatelessWidget {
                   Icon(
                     Icons.access_time_filled_outlined,
                     size: 12.sp,
-                    color: HexColor('#054BFF'),
+                    color: HexColor('##545454'),
                   ),
                   SizedBox(width: 5.w),
                   Text(
-                    'Duration: ${bookingController.ongoingBookingList[index].duration} Hour(s)',
+                    'Duration: ${bookingController.doneBookingList[index].duration} Hour(s)',
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
-                      color: HexColor('#054BFF'),
+                      color: HexColor('##545454'),
                     ),
                   ),
                 ],
@@ -93,15 +84,15 @@ class StudentOngoingBookContainer extends StatelessWidget {
                       vertical: 5.h,
                     ),
                     decoration: BoxDecoration(
-                      color: HexColor('#E5ECFF'),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
-                      bookingController.ongoingBookingList[index].day,
+                      bookingController.doneBookingList[index].day,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: ColorPalette().primary,
+                        color: HexColor('#1A1A1A'),
                       ),
                     ),
                   ),
@@ -112,15 +103,15 @@ class StudentOngoingBookContainer extends StatelessWidget {
                       vertical: 5.h,
                     ),
                     decoration: BoxDecoration(
-                      color: HexColor('#E5ECFF'),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
-                      '${bookingController.ongoingBookingList[index].time} WIB',
+                      '${bookingController.doneBookingList[index].time} WIB',
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: ColorPalette().primary,
+                        color: HexColor('#1A1A1A'),
                       ),
                     ),
                   ),
@@ -134,7 +125,7 @@ class StudentOngoingBookContainer extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl:
                             bookingController
-                                .ongoingBookingList[index]
+                                .doneBookingList[index]
                                 .clientPhoto,
                         fit: BoxFit.cover,
                         height: 30,
@@ -172,12 +163,14 @@ class StudentOngoingBookContainer extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.chat_outlined,
-              size: 26.sp,
-              color: ColorPalette().primary,
+          AbsorbPointer(
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.check_circle_outline_outlined,
+                size: 26.sp,
+                color: HexColor('#36D72A'),
+              ),
             ),
           ),
         ],

@@ -1,8 +1,8 @@
 class Booking {
   final String bookingId;
   final String mentorId;
-  final String mentorName;
-  final String mentorPhoto;
+  final String clientName;
+  final String clientPhoto;
   final String studentId;
   final String day;
   final String duration;
@@ -10,12 +10,11 @@ class Booking {
   final String price;
   String status;
 
-  Booking(
-    {
+  Booking({
     required this.bookingId,
     required this.mentorId,
-    required this.mentorName,
-    required this.mentorPhoto,
+    required this.clientName,
+    required this.clientPhoto,
     required this.studentId,
     required this.day,
     required this.duration,
