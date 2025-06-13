@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/chat/direct_message_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -173,7 +174,18 @@ class StudentOngoingBookContainer extends StatelessWidget {
           ),
           const Spacer(),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(
+                () {
+                  return DirectMessageScreen(
+                    booking: bookingController.ongoingBookingList[index],
+                  );
+                },
+                transition: Transition.rightToLeftWithFade,
+                fullscreenDialog: true,
+                popGesture: false,
+              );
+            },
             icon: Icon(
               Icons.chat_outlined,
               size: 26.sp,

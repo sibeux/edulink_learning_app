@@ -62,7 +62,6 @@ class MentorScreen extends StatelessWidget {
                               },
                               itemCount:
                                   bookingController.exploreMentorList.length,
-                              shrinkWrap: true,
                             ),
                   ),
                 ),

@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/chat/direct_message_screen.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/button_finish.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,122 +34,159 @@ class TeacherOngoingBookContainer extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                bookingController.ongoingBookingList[index].clientName.contains(
-                      'b',
-                    )
-                    ? 'Math'
-                    : 'Science',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                ' • ${bookingController.ongoingBookingList[index].clientName.capitalize!}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: HexColor('#6E6E6E').withValues(alpha: 0.93),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 5.h),
-          Row(
-            children: [
-              Icon(
-                Icons.access_time_filled_outlined,
-                size: 12.sp,
-                color: HexColor('##545454').withValues(alpha: 0.93),
-              ),
-              SizedBox(width: 5.w),
-              Text(
-                'Duration: ${bookingController.ongoingBookingList[index].duration} Hour(s)',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                  color: HexColor('##545454').withValues(alpha: 0.93),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  bookingController.ongoingBookingList[index].day,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: HexColor('#1A1A1A'),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        bookingController.ongoingBookingList[index].clientName
+                                .contains('b')
+                            ? 'Math'
+                            : 'Science',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        ' • ${bookingController.ongoingBookingList[index].clientName.capitalize!}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: HexColor('#6E6E6E').withValues(alpha: 0.93),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  '${bookingController.ongoingBookingList[index].time} WIB',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: HexColor('#1A1A1A'),
+                  SizedBox(height: 5.h),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_filled_outlined,
+                        size: 12.sp,
+                        color: HexColor('##545454').withValues(alpha: 0.93),
+                      ),
+                      SizedBox(width: 5.w),
+                      Text(
+                        'Duration: ${bookingController.ongoingBookingList[index].duration} Hour(s)',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: HexColor('##545454').withValues(alpha: 0.93),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              SizedBox(width: 10.w),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100.r),
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(color: HexColor('#ffdb99')),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        bookingController.ongoingBookingList[index].clientPhoto,
-                    fit: BoxFit.cover,
-                    height: 30,
-                    width: 30,
-                    maxHeightDiskCache: 300,
-                    maxWidthDiskCache: 300,
-                    filterQuality: FilterQuality.medium,
-                    placeholder:
-                        (context, url) => Center(
-                          child: SizedBox(
-                            height: 30.h,
-                            width: 30.w,
-                            child: Image.asset(
-                              'assets/images/screens/Edit Profile.png',
-                              fit: BoxFit.contain,
-                            ),
+                  SizedBox(height: 10.h),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 15.w,
+                          vertical: 5.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Text(
+                          bookingController.ongoingBookingList[index].day,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: HexColor('#1A1A1A'),
                           ),
                         ),
-                    errorWidget:
-                        (context, url, error) => Center(
-                          child: SizedBox(
-                            height: 30.h,
-                            width: 30.w,
-                            child: Image.asset(
-                              'assets/images/screens/Edit Profile.png',
-                              fit: BoxFit.contain,
-                            ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 15.w,
+                          vertical: 5.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Text(
+                          '${bookingController.ongoingBookingList[index].time} WIB',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: HexColor('#1A1A1A'),
                           ),
                         ),
+                      ),
+                      SizedBox(width: 10.w),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100.r),
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(color: HexColor('#ffdb99')),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                bookingController
+                                    .ongoingBookingList[index]
+                                    .clientPhoto,
+                            fit: BoxFit.cover,
+                            height: 30,
+                            width: 30,
+                            maxHeightDiskCache: 300,
+                            maxWidthDiskCache: 300,
+                            filterQuality: FilterQuality.medium,
+                            placeholder:
+                                (context, url) => Center(
+                                  child: SizedBox(
+                                    height: 30.h,
+                                    width: 30.w,
+                                    child: Image.asset(
+                                      'assets/images/screens/Edit Profile.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => Center(
+                                  child: SizedBox(
+                                    height: 30.h,
+                                    width: 30.w,
+                                    child: Image.asset(
+                                      'assets/images/screens/Edit Profile.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                ],
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  Get.to(
+                    () {
+                      return DirectMessageScreen(
+                        booking: bookingController.ongoingBookingList[index],
+                      );
+                    },
+                    transition: Transition.rightToLeftWithFade,
+                    fullscreenDialog: true,
+                    popGesture: false,
+                  );
+                },
+                icon: Icon(
+                  Icons.chat_outlined,
+                  size: 26.sp,
+                  color: ColorPalette().primary,
                 ),
               ),
             ],

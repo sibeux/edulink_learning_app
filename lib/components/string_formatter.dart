@@ -23,3 +23,15 @@ String formatPrice(double price) {
   );
   return formatter.format(price);
 }
+
+String formatChatDate(String dateString) {
+  final date = DateTime.parse(dateString);
+  final now = DateTime.now();
+  if (date.year == now.year && date.month == now.month && date.day == now.day) {
+    // Jika hari ini, tampilkan jam:menit
+    return DateFormat.Hm().format(date);
+  } else {
+    // Jika beda hari, tampilkan tanggal (misal: 13 Jun 2025)
+    return DateFormat('dd MMM yyyy').format(date);
+  }
+}
