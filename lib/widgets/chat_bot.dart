@@ -10,7 +10,7 @@ class ChatBot extends StatelessWidget {
     super.key,
     required this.chatController,
     required this.needResetSession,
-    required this.booking
+    required this.booking,
   });
 
   final ChatController chatController;
@@ -83,6 +83,8 @@ class ChatBot extends StatelessWidget {
                     child: Obx(
                       () => ElevatedButton(
                         onPressed: () async {
+                          // Hilangkan Keyboard
+                          FocusScope.of(context).unfocus();
                           await chatController.sendPromptAnswerBot(
                             needResetSession: needResetSession,
                             booking: booking,
