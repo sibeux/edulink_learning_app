@@ -3,7 +3,7 @@ import 'package:edulink_learning_app/controllers/booking_controller.dart';
 import 'package:edulink_learning_app/models/explore_mentor.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/payment_widget/container_mentor_payment_info.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/payment_widget/container_order_detail_payment.dart';
-import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/payment_widget/container_total_button.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/payment_widget/buttons/container_total_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

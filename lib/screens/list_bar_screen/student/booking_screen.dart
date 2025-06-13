@@ -2,6 +2,7 @@ import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/controllers/booking_controller.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/booking_type_select.dart';
 import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/explore_tutor_button.dart';
+import 'package:edulink_learning_app/widgets/mentor_widget/booking_widget/ongoing_book_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -79,12 +80,12 @@ class _BookingScreenState extends State<BookingScreen>
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            SizedBox(height: 10.h),
-            TabBar(
+      body: Column(
+        children: [
+          SizedBox(height: 10.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: TabBar(
               controller: _tabController,
               indicatorColor: ColorPalette().primary,
               labelColor: ColorPalette().primary,
@@ -115,21 +116,42 @@ class _BookingScreenState extends State<BookingScreen>
                 ),
               ],
             ),
-            // Use Expanded to make TabBarView fill the remaining space
-            Expanded(
-              child: TabBarView(
+          ),
+          // Use Expanded to make TabBarView fill the remaining space
+          Expanded(
+            child: Obx(
+              () => TabBarView(
                 controller: _tabController,
                 // Each tab will display the same empty view for now.
                 // You can replace these with different widgets for each tab.
                 children: [
                   _buildEmptyBookingView(),
-                  _buildEmptyBookingView(),
+                  bookingController.isLoadingGetBooking.value
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: ColorPalette().primary,
+                        ),
+                      )
+                      : bookingController.ongoingBookingList.isEmpty
+                      ? _buildEmptyBookingView()
+                      : ListView.builder(
+                        itemCount:
+                            bookingController.ongoingBookingList.length + 1,
+                        itemBuilder: (context, index) {
+                          return index == 0
+                              ? SizedBox(height: 20.h)
+                              : OngoingBookContainer(
+                                bookingController: bookingController,
+                                index: index - 1,
+                              );
+                        },
+                      ),
                   _buildEmptyBookingView(),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
