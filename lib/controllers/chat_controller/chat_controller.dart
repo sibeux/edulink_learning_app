@@ -39,6 +39,7 @@ class ChatController extends GetxController {
 
     await sendMessageToParticipants(
       message: message,
+      isForBot: true,
       senderID: senderID.toString(),
       participants: [
         senderID.toString(),
@@ -58,18 +59,24 @@ class ChatController extends GetxController {
 
     if (needResetSession) {
       // Reset session token untuk user
-      await http.post(
-        urlResetToken,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'user_id': sessionId}),
-      );
+      await http
+          .post(
+            urlResetToken,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'user_id': sessionId}),
+          )
+          .timeout(Duration(seconds: 10));
+
+      logInfo('Session reset for user: $sessionId');
     }
 
-    final responseSendPrompt = await http.post(
-      urlSendPrompt,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'user_id': sessionId, 'message': message}),
-    );
+    final responseSendPrompt = await http
+        .post(
+          urlSendPrompt,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'user_id': sessionId, 'message': message}),
+        )
+        .timeout(Duration(seconds: 10));
 
     if (responseSendPrompt.statusCode == 200) {
       final data = jsonDecode(responseSendPrompt.body);
@@ -80,6 +87,7 @@ class ChatController extends GetxController {
       // Bot created the message
       sendMessageToParticipants(
         message: botMessage,
+        isForBot: false,
         senderID: 'cybot', // ID bot
         participants: [
           senderID.toString(),
@@ -95,6 +103,7 @@ class ChatController extends GetxController {
   }
 
   Future<void> sendMessageToParticipants({
+    required bool isForBot,
     required String message,
     required String senderID,
     required List<String> participants, // termasuk sender + receiver + bot
@@ -137,6 +146,7 @@ class ChatController extends GetxController {
     // Kirim pesan ke chatroom tersebut
     await firestore.collection('chat').add({
       'messageID': const Uuid().v4(),
+      'isForBot': isForBot,
       'chatRoomID': chatRoomID,
       'senderID': senderID,
       'receiverID': null, // biar netral, karena ini group

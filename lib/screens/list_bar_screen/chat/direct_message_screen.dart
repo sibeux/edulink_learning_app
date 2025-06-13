@@ -140,6 +140,9 @@ class DirectMessageScreen extends StatelessWidget {
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           final msg = messages[index];
+                          final lastBotMessageIndex = messages.lastIndexWhere(
+                            (msg) => msg['senderID'] == 'cybot',
+                          );
                           final isSender =
                               msg['senderID'].toString() ==
                               Get.find<UserProfileController>().idUser
@@ -180,6 +183,34 @@ class DirectMessageScreen extends StatelessWidget {
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5.w),
+                                            child: Icon(
+                                              Icons.check_circle,
+                                              color: Colors.white,
+                                              size: 16.sp,
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          if (index == lastBotMessageIndex)
+                                            // Reply button
+                                            GestureDetector(
+                                              onTap: () {
+                                                chatController
+                                                    .botTextEditingController
+                                                    .clear();
+                                                _showFormInModalBottomSheet(
+                                                  context,
+                                                  needResetSession: false,
+                                                  booking: booking,
+                                                );
+                                              },
+                                              child: Icon(
+                                                Icons.reply,
+                                                color: Colors.white,
+                                                size: 22.sp,
+                                              ),
+                                            ),
                                         ],
                                       ),
                                       SizedBox(height: 5.h),
@@ -213,16 +244,40 @@ class DirectMessageScreen extends StatelessWidget {
                                             : HexColor('#E5ECFF'),
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
-                                  child: Text(
-                                    msg['text'],
-                                    style: TextStyle(
-                                      color:
-                                          isSender
-                                              ? Colors.white
-                                              : HexColor('#054BFF'),
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      if (msg['isForBot'] == true)
+                                        Container(
+                                          padding: EdgeInsets.all(5.h),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              6.r,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            '@EduBot',
+                                            style: TextStyle(
+                                              color: HexColor('#32c4a7'),
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                      SizedBox(width: 5.w),
+                                      Text(
+                                        msg['text'],
+                                        style: TextStyle(
+                                          color:
+                                              isSender
+                                                  ? Colors.white
+                                                  : HexColor('#054BFF'),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
@@ -367,6 +422,7 @@ class ChatInputField extends StatelessWidget {
                       : booking.studentId;
               chatController.sendMessageToParticipants(
                 message: chatController.message.value,
+                isForBot: false,
                 senderID: senderID.toString(),
                 participants: [
                   senderID.toString(),
