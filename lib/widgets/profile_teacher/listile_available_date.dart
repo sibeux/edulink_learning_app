@@ -104,7 +104,7 @@ class ListileAvailableDate extends StatelessWidget {
                         value,
                       );
                     },
-                    activeColor: Color.fromARGB(255, 69, 214, 149),
+                    activeThumbColor: Color.fromARGB(255, 69, 214, 149),
                     inactiveTrackColor: Color(0xffD9D9D9),
                     inactiveThumbColor: Color(0xffFFFFFF),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

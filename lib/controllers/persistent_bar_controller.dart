@@ -1,9 +1,8 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/student/home_student_screen.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/student/booking_screen.dart';
-import 'package:edulink_learning_app/screens/list_bar_screen/student/chat_screen.dart';
+import 'package:edulink_learning_app/screens/list_bar_screen/chat/chat_screen.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/student/mentor_screen.dart';
-import 'package:edulink_learning_app/screens/list_bar_screen/teacher/home_teacher_screen.dart';
 import 'package:edulink_learning_app/screens/list_bar_screen/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,10 +77,23 @@ class PersistentBarController extends GetxController {
         ]
         : [
           buttonNavBar(
-            screen: HomeTeacherScreen(),
+            // screen: HomeTeacherScreen(),
+            screen: HomeStudentScreen(),
             title: 'Home',
             iconActive: Icons.home,
             iconInactive: Icons.home_outlined,
+          ),
+          buttonNavBar(
+            screen: BookingScreen(),
+            title: 'Booking',
+            iconActive: Icons.description_rounded,
+            iconInactive: Icons.description_outlined,
+          ),
+          buttonNavBar(
+            screen: ChatScreen(),
+            title: 'Chat',
+            iconActive: Icons.chat_rounded,
+            iconInactive: Icons.chat_outlined,
           ),
           buttonNavBar(
             screen: UserProfileScreen(),

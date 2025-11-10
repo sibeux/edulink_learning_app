@@ -1,12 +1,12 @@
 import 'package:edulink_learning_app/components/color_palette.dart';
 import 'package:edulink_learning_app/components/shimmer.dart';
+import 'package:edulink_learning_app/components/string_formatter.dart';
 import 'package:edulink_learning_app/controllers/complete_profile_controller.dart';
 import 'package:edulink_learning_app/controllers/profile_teacher_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:intl/intl.dart';
 
 class PriceSection extends StatelessWidget {
   const PriceSection({super.key, required this.controller});
@@ -16,17 +16,6 @@ class PriceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final completeProfileController = Get.find<CompleteProfileController>();
-    String formatPrice(double price) {
-      if (price == 0) {
-        return 'No Price Set';
-      }
-      final formatter = NumberFormat.currency(
-        locale: 'id_ID',
-        symbol: 'Rp. ',
-        decimalDigits: 0,
-      );
-      return formatter.format(price);
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
