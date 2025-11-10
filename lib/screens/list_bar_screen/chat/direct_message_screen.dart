@@ -136,10 +136,15 @@ class DirectMessageScreen extends StatelessWidget {
                       final messages = snapshot.data!.docs;
 
                       return ListView.builder(
+                        // { Biar scroll dari bawah ke atas.
+                        // Tapi, list juga harus di-reverse.
+                        reverse: true,
+                        // }
                         controller: _scrollController,
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
-                          final msg = messages[index];
+                          // Mengakses pesan dari belakang ke depan
+                          final msg = messages[(messages.length - 1) - index];
                           final lastBotMessageIndex = messages.lastIndexWhere(
                             (msg) => msg['senderID'] == 'cybot',
                           );
